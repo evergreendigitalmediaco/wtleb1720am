@@ -19,10 +19,34 @@
     }
 
     .container {
-      max-width: 800px;
+      max-width: 1000px;
       width: 100%;
       padding: 40px 20px;
+    }
+
+    .layout {
+      display: flex;
+      gap: 30px;
+      align-items: flex-start;
+    }
+
+    .main {
+      flex: 1;
       text-align: center;
+    }
+
+    .sidebar {
+      width: 180px;
+      border-left: 1px solid #222;
+      padding-left: 15px;
+      text-align: left;
+    }
+
+    .panel-title {
+      font-size: 12px;
+      color: #888;
+      margin-bottom: 10px;
+      letter-spacing: 1px;
     }
 
     h1 {
@@ -36,6 +60,13 @@
       margin-bottom: 30px;
       font-size: 14px;
       letter-spacing: 1px;
+    }
+
+    #rotating-status {
+      color: #888;
+      font-size: 12px;
+      margin-top: -10px;
+      margin-bottom: 20px;
     }
 
     .section-title {
@@ -86,6 +117,13 @@
       color: #0b0b0b;
     }
 
+    .sidebar .link-button {
+      display: block;
+      margin: 10px 0;
+      padding: 8px 10px;
+      font-size: 12px;
+    }
+
     .footer {
       margin-top: 40px;
       font-size: 12px;
@@ -93,54 +131,76 @@
       line-height: 1.6;
     }
 
-    #rotating-status {
-      color: #888;
-      font-size: 12px;
-      margin-top: -10px;
-      margin-bottom: 20px;
+    /* Mobile fallback */
+    @media (max-width: 768px) {
+      .layout {
+        flex-direction: column;
+      }
+
+      .sidebar {
+        width: 100%;
+        border-left: none;
+        border-top: 1px solid #222;
+        padding-top: 15px;
+      }
+
+      .sidebar .link-button {
+        display: inline-block;
+        margin: 10px;
+      }
     }
   </style>
 </head>
 
 <body>
   <div class="container">
+    <div class="layout">
 
-    <h1>WTLEB 1720 A.M.</h1>
-    <div class="status">STATUS: TRANSMISSION ACTIVE</div>
-    <div id="rotating-status" class="status">INITIALIZING...</div>
+      <!-- MAIN CONTENT -->
+      <div class="main">
 
-    <div class="section-title">CURRENT TRANSMISSION</div>
+        <h1>WTLEB 1720 A.M.</h1>
+        <div class="status">STATUS: TRANSMISSION ACTIVE</div>
+        <div id="rotating-status">INITIALIZING...</div>
 
-    <div class="player">
-      <!-- REPLACE CHANNEL_NAME WITH YOUR YOUTUBE CHANNEL NAME -->
-      <iframe src="https://www.youtube.com/embed/videoseries?list=UUEhbuzHh_AC4gDn0b8cEF0A"
-              allow="autoplay; encrypted-media"
-              allowfullscreen>
-      </iframe>
+        <div class="section-title">CURRENT TRANSMISSION</div>
+
+        <div class="player">
+          <iframe src="https://www.youtube.com/embed/videoseries?list=UUEhbuzHh_AC4gDn0b8cEF0A"
+                  allow="autoplay; encrypted-media"
+                  allowfullscreen>
+          </iframe>
+        </div>
+
+        <div class="text">
+          Signal is being relayed through external infrastructure.<br>
+          Continuity may be affected.
+        </div>
+
+        <div class="text">
+          Additional relay channels are being prepared.
+        </div>
+
+        <div class="footer">
+          Limited distribution materials are available through authorized channels.
+        </div>
+
+      </div>
+
+      <!-- SIDEBAR CONTROL PANEL -->
+      <div class="sidebar">
+        <div class="panel-title">CONTROL INTERFACE</div>
+
+        <a class="link-button" href="https://www.youtube.com/@thelastemergencybroadcast" target="_blank">
+          ACCESS SIGNAL
+        </a>
+
+        <a class="link-button" href="#" target="_blank">
+          SUPPLY ACCESS
+        </a>
+      </div>
+
     </div>
-
-    <div class="text">
-      Signal is being relayed through external infrastructure.<br>
-      Continuity may be affected.
-    </div>
-
-    <a class="link-button" href="https://www.youtube.com/@thelastemergencybroadcast" target="_blank">
-      ACCESS DIRECT SIGNAL
-    </a>
-
-    <div class="text">
-      Additional relay channels are being prepared.
-    </div>
-
-    <div class="footer">
-      Limited distribution materials are available through authorized channels.
-    </div>
-
-    <!-- REPLACE # WITH YOUR MERCH URL WHEN READY -->
-    <a class="link-button" href="#" target="_blank">
-      SUPPLY ACCESS
-    </a>
-
   </div>
 
   <script>
@@ -165,7 +225,7 @@
     }
 
     rotateStatus();
-    setInterval(rotateStatus, 8000); // change every 8 seconds
+    setInterval(rotateStatus, 8000);
   </script>
 
 </body>
