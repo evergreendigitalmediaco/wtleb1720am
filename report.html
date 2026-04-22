@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>WTLEB 1720 AM - Submit Report</title>
+
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #0b0b0b;
+      color: #e0a106;
+      font-family: "Courier New", Courier, monospace;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 700px;
+      width: 100%;
+      padding: 40px 20px;
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 24px;
+      margin-bottom: 20px;
+      letter-spacing: 2px;
+    }
+
+    .text {
+      font-size: 13px;
+      color: #888;
+      margin-bottom: 30px;
+      line-height: 1.6;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    input, textarea {
+      background-color: #0b0b0b;
+      border: 1px solid #333;
+      color: #e0a106;
+      padding: 10px;
+      font-family: inherit;
+      font-size: 13px;
+    }
+
+    textarea {
+      min-height: 120px;
+      resize: vertical;
+    }
+
+    button {
+      margin-top: 10px;
+      padding: 10px;
+      border: 1px solid #e0a106;
+      background: none;
+      color: #e0a106;
+      cursor: pointer;
+      font-family: inherit;
+      letter-spacing: 1px;
+    }
+
+    button:hover {
+      background-color: #e0a106;
+      color: #0b0b0b;
+    }
+
+    .back-link {
+      margin-top: 30px;
+      display: inline-block;
+      color: #888;
+      text-decoration: none;
+      font-size: 12px;
+    }
+
+    .back-link:hover {
+      color: #e0a106;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+
+    <h1>INCOMING REPORT CHANNEL</h1>
+
+    <div class="text">
+      Reports may be submitted while transmission remains active.<br>
+      Submitted information may be incomplete or unverified.<br>
+      Do not include sensitive personal data.
+    </div>
+
+    <form action="https://formspree.io/f/mbdqzzlr" method="POST">
+
+      <input type="text" name="location" placeholder="Location (optional)" />
+
+      <input type="text" name="timestamp" placeholder="Time of occurrence (optional)" />
+
+      <textarea name="message" placeholder="Describe the event..." required></textarea>
+
+      <button type="submit">TRANSMIT REPORT</button>
+
+    </form>
+
+    <a href="/" class="back-link">Return to signal</a>
+
+  </div>
+</body>
+</html>
