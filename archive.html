@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-GECBCD38LX"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-GECBCD38LX');
+  </script>
+
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>WTLEB 1720 AM - Archived Transmissions</title>
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon/favicon-16x16.png">
+  <link rel="shortcut icon" href="/images/favicon/favicon.ico">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon/apple-touch-icon.png">
+  <link rel="manifest" href="/images/favicon/site.webmanifest">
+
+  <meta name="theme-color" content="#0b0b0b">
+
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #0b0b0b;
+      color: #e0a106;
+      font-family: "Courier New", Courier, monospace;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 900px;
+      width: 100%;
+      padding: 40px 20px;
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 28px;
+      margin-bottom: 10px;
+      letter-spacing: 2px;
+    }
+
+    .status {
+      text-align: center;
+      color: #c9472d;
+      margin-bottom: 30px;
+      font-size: 14px;
+      letter-spacing: 1px;
+      font-weight: bold;
+    }
+
+    .text {
+      text-align: center;
+      font-size: 13px;
+      color: #888;
+      margin-bottom: 40px;
+      line-height: 1.6;
+    }
+
+    .archive-container {
+      border-top: 1px solid #222;
+      padding-top: 10px;
+    }
+
+    .archive-entry {
+      padding: 20px 0;
+      border-bottom: 1px solid #1a1a1a;
+    }
+
+    .transmission-id {
+      color: #666;
+      font-size: 11px;
+      letter-spacing: 1px;
+      margin-bottom: 6px;
+    }
+
+    .transmission-status {
+      color: #666;
+      font-size: 11px;
+      margin-bottom: 10px;
+      letter-spacing: 1px;
+    }
+
+    .transmission-link {
+      color: #e0a106;
+      text-decoration: none;
+      font-size: 18px;
+      letter-spacing: 1px;
+      line-height: 1.4;
+    }
+
+    .transmission-link:hover {
+      color: #ffffff;
+    }
+
+    .transmission-date {
+      color: #666;
+      font-size: 11px;
+      margin-top: 10px;
+      letter-spacing: 1px;
+    }
+
+    .back-link {
+      margin-top: 40px;
+      text-align: center;
+    }
+
+    .back-link a {
+      color: #888;
+      text-decoration: none;
+      font-size: 12px;
+    }
+
+    .back-link a:hover {
+      color: #e0a106;
+    }
+
+    @media (max-width: 768px) {
+      .transmission-link {
+        font-size: 16px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+
+    <h1>ARCHIVED TRANSMISSIONS</h1>
+
+    <div class="status">
+      STATUS: ARCHIVE ACCESS PERMITTED
+    </div>
+
+    <div class="text">
+      Historical transmissions have been indexed for continuity review.<br>
+      Some records may be incomplete, corrupted, or internally inconsistent.<br>
+      Signal degradation increases with archive depth.
+    </div>
+
+    <div id="archive-list" class="archive-container">
+      <!-- archive.js populates this -->
+    </div>
+
+    <div class="back-link">
+      <a href="/">Return to active transmission</a>
+    </div>
+
+  </div>
+
+  <script src="/archive.js"></script>
+</body>
+</html>
