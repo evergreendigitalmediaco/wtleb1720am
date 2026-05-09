@@ -12,7 +12,6 @@ const statuses = [
 ];
 
 const transmissions = [
-
   {
     title: "TIME LOSS EVENTS REPORTED WORLDWIDE",
     date: "2026.05.08",
@@ -95,12 +94,12 @@ const transmissions = [
     title: "THE NIGHT THE WORLD WENT QUIET",
     date: "2026.02.06",
     url: "https://youtu.be/1fO-n0HddxA"
-  },
+  }
 ];
 
 const archiveList = document.getElementById("archive-list");
 
-transmissions.forEach((transmission) => {
+transmissions.forEach((transmission, index) => {
 
   const transmissionNumber =
     String(transmissions.length - index).padStart(3, '0');
