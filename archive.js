@@ -144,7 +144,7 @@ transmissions.forEach((transmission, index) => {
     <div class="transmission-date">
       LOGGED: ${transmission.date}
       <br /><br />
-      Transmission Source:
+      Transmission Sources:
       <a class="inline-link" title="${transmission.title} Video Broadcast" href="${transmission.url1}" target="_blank">YouTube</a> |
       <a class="inline-link" title="${transmission.title} Audio Broadcast" href="${transmission.url2}" target="_blank">Spotify</a> |
       <a class="inline-link" title="The Last Emergency Broadcast on Patreon" href="https://www.patreon.com/cw/TheLastEmergencyBroadcast" target="_blank">Patreon</a>
