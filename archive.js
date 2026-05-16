@@ -13,6 +13,12 @@ const statuses = [
 
 const transmissions = [
   {
+    title: "Simultaneous Global Blackout Reported",
+    date: "2026.05.15",
+    url1: "https://youtu.be/pMeKpl1wPQg",
+    url2: "https://open.spotify.com/episode/4Y6nffmnS8stSgrMC1Avpq?si=LjKyaEHEQMOokN5yOFt2UA"
+  },
+  {
     title: "TIME LOSS EVENTS REPORTED WORLDWIDE",
     date: "2026.05.08",
     url1: "https://youtu.be/vnxoFX3kc3U",
@@ -145,9 +151,9 @@ transmissions.forEach((transmission, index) => {
       LOGGED: ${transmission.date}
       <br /><br />
       Transmission Sources:
-      <a class="inline-link" title="${transmission.title} Video Broadcast" href="${transmission.url1}" target="_blank">YouTube</a> |
-      <a class="inline-link" title="${transmission.title} Audio Broadcast" href="${transmission.url2}" target="_blank">Spotify</a> |
-      <a class="inline-link" title="The Last Emergency Broadcast on Patreon" href="https://www.patreon.com/cw/TheLastEmergencyBroadcast" target="_blank">Patreon</a>
+      <a class="inline-link" title="${transmission.title} Youtube Video Broadcast" href="${transmission.url1}" target="_blank">YouTube</a> |
+      <a class="inline-link" title="${transmission.title} Spotify Audio Broadcast" href="${transmission.url2}" target="_blank">Spotify</a> |
+      <a class="inline-link" title="The Last Emergency Broadcast on Patreon" href="https://www.patreon.com/TheLastEmergencyBroadcast" target="_blank">Patreon</a>
     </div>
   `;
 
