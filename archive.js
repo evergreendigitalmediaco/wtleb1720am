@@ -12,6 +12,12 @@ const statuses = [
 ];
 
 const transmissions = [
+   {
+    title: "The Ocean Is Receding Worldwide",
+    date: "2026.05.29",
+    url1: "https://youtu.be/3FdLvSiV2iA",
+    url2: "https://open.spotify.com/episode/03X7256bRWMuMc032X4KVO?si=By6ZGHIqQ4y4noozNIEauA"
+  },
   {
     title: "People Who Go Outside After Midnight Don't Come Back",
     date: "2026.05.22",
