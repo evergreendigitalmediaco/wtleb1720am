@@ -12,6 +12,31 @@ const statuses = [
 ];
 
 const transmissions = [
+
+   {
+    title: "The Horizon Is Getting Closer",
+    date: "2026.03.03",
+    url1: "https://youtu.be/3AO3va7s9-c",
+    url2: "https://open.spotify.com/show/2HImUC8mgbFOSEdd7tUyKp"
+   },
+   {
+    title: "Lunar Orbit Deviation Detected",
+    date: "2026.06.26",
+    url1: "https://youtu.be/-QZbd9fO9q0",
+    url2: "https://open.spotify.com/show/2HImUC8mgbFOSEdd7tUyKp"
+   },
+   {
+    title: "The Sky Started Flickering Off",
+    date: "2026.06.19",
+    url1: "https://youtu.be/qGBbGbpAfHs",
+    url2: "https://open.spotify.com/show/2HImUC8mgbFOSEdd7tUyKp"
+   },
+   {
+    title: "Every Phone Call Contains a Third Voice",
+    date: "2026.06.12",
+    url1: "https://youtu.be/w25_7KYMtWc",
+    url2: "https://open.spotify.com/show/2HImUC8mgbFOSEdd7tUyKp"
+   },
    {
     title: "The Earth's Rotation Is Slowing",
     date: "2026.06.05",
