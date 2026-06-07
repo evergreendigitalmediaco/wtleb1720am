@@ -13,6 +13,12 @@ const statuses = [
 
 const transmissions = [
    {
+    title: "The Earth's Rotation Is Slowing",
+    date: "2026.06.05",
+    url1: "https://youtu.be/x7WIocOoerE",
+    url2: "https://open.spotify.com/episode/0XQoaKbO8ZnPNMoIdB7Ny3?si=jdiiarq5TEmb3x2CsSN_Tw"
+   },
+   {
     title: "The Ocean Is Receding Worldwide",
     date: "2026.05.29",
     url1: "https://youtu.be/3FdLvSiV2iA",
