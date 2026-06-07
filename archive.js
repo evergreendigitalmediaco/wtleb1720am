@@ -135,12 +135,23 @@ const transmissions = [
   }
 ];
 
+const now = new Date();
+
+const visibleTransmissions = transmissions.filter(transmission => {
+
+  // Convert "2026.06.12" -> "2026-06-12T12:00:00Z"
+  const publishDate =
+    new Date(transmission.date.replace(/\./g, '-') + 'T12:00:00Z');
+
+  return now >= publishDate;
+});
+
 const archiveList = document.getElementById("archive-list");
 
-transmissions.forEach((transmission, index) => {
+visibleTransmissions.forEach((transmission, index) => {
 
   const transmissionNumber =
-    String(transmissions.length - index).padStart(3, '0');
+    String(visibleTransmissions.length - index).padStart(3, '0');
 
   const transmissionId = `WTLEB-${transmissionNumber}`;
 
