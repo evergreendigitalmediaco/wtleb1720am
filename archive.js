@@ -15,7 +15,7 @@ const transmissions = [
 
    {
     title: "The Horizon Is Getting Closer",
-    date: "2026.03.03",
+    date: "2026.07.03",
     url1: "https://youtu.be/3AO3va7s9-c",
     url2: "https://open.spotify.com/show/2HImUC8mgbFOSEdd7tUyKp"
    },
