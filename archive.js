@@ -12,7 +12,12 @@ const statuses = [
 ];
 
 const transmissions = [
-
+   {
+    title: "The Maps No Longer Match Reality",
+    date: "2026.07.10",
+    url1: "https://youtu.be/HWEtgYQpmE4",
+    url2: "https://open.spotify.com/show/2HImUC8mgbFOSEdd7tUyKp"
+   },
    {
     title: "The Horizon Is Getting Closer",
     date: "2026.07.03",
