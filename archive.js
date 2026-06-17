@@ -12,6 +12,7 @@ const statuses = [
 ];
 
 const transmissions = [
+
    {
     title: "The Maps No Longer Match Reality",
     date: "2026.07.10",
