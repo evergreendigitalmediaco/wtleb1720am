@@ -41,7 +41,7 @@ const transmissions = [
     title: "Every Phone Call Contains a Third Voice",
     date: "2026.06.12",
     url1: "https://youtu.be/w25_7KYMtWc",
-    url2: "https://open.spotify.com/show/2HImUC8mgbFOSEdd7tUyKp"
+    url2: "https://open.spotify.com/episode/28L6lFN43xQx4XJRu81MTg?si=VRjgi6McSA2SbNKbZxpDgA"
    },
    {
     title: "The Earth's Rotation Is Slowing",
