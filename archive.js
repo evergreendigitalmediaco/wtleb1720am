@@ -35,7 +35,7 @@ const transmissions = [
     title: "The Sky Started Flickering Off",
     date: "2026.06.19",
     url1: "https://youtu.be/qGBbGbpAfHs",
-    url2: "https://open.spotify.com/show/2HImUC8mgbFOSEdd7tUyKp"
+    url2: "https://open.spotify.com/episode/2h05zpbgPpiQ9SQUXS6DQv?si=V37S70vXQJ-6VigANz1TZA"
    },
    {
     title: "Every Phone Call Contains a Third Voice",
