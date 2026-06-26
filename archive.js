@@ -12,7 +12,12 @@ const statuses = [
 ];
 
 const transmissions = [
-
+   {
+    title: "There Are Doors Where Doors Should Not Exist",
+    date: "2026.07.17",
+    url1: "https://youtu.be/mYUnUmhfb-w",
+    url2: "https://open.spotify.com/show/2HImUC8mgbFOSEdd7tUyKp"
+   },
    {
     title: "The Maps No Longer Match Reality",
     date: "2026.07.10",
@@ -29,7 +34,7 @@ const transmissions = [
     title: "Lunar Orbit Deviation Detected",
     date: "2026.06.26",
     url1: "https://youtu.be/-QZbd9fO9q0",
-    url2: "https://open.spotify.com/show/2HImUC8mgbFOSEdd7tUyKp"
+    url2: "https://open.spotify.com/episode/0CNVElB1lBBkllqEpgrPcR?si=7quTA-qXTBu5e0bV5c0b-A"
    },
    {
     title: "The Sky Started Flickering Off",
