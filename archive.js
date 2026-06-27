@@ -31,7 +31,7 @@ const transmissions = [
     url2: "https://open.spotify.com/show/2HImUC8mgbFOSEdd7tUyKp"
    },
    {
-    title: "Lunar Orbit Deviation Detected",
+    title: "The Moon Left Its Orbit",
     date: "2026.06.26",
     url1: "https://youtu.be/-QZbd9fO9q0",
     url2: "https://open.spotify.com/episode/0CNVElB1lBBkllqEpgrPcR?si=7quTA-qXTBu5e0bV5c0b-A"
