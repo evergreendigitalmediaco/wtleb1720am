@@ -13,61 +13,73 @@ const statuses = [
 
 const transmissions = [
    {
-    title: "There Are Doors Where Doors Should Not Exist",
+    title: "SHADOW PEOPLE ARE APPEARING WORLDWIDE",
+    date: "2026.07.31",
+    url1: "https://youtu.be/z28Hc2mm38Y",
+    url2: "https://open.spotify.com/show/2HImUC8mgbFOSEdd7tUyKp"
+   },
+   {
+    title: "PEOPLE WHO COME HOME ARE NOT THE SAME",
+    date: "2026.07.24",
+    url1: "https://youtu.be/_nom61Yonj4",
+    url2: "https://open.spotify.com/show/2HImUC8mgbFOSEdd7tUyKp"
+   },
+   {
+    title: "THERE ARE DOORS WHERE DOORS SHOULD NOT EXIST",
     date: "2026.07.17",
     url1: "https://youtu.be/mYUnUmhfb-w",
     url2: "https://open.spotify.com/show/2HImUC8mgbFOSEdd7tUyKp"
    },
    {
-    title: "The Maps No Longer Match Reality",
+    title: "THE MAPS NO LONGER MATCH REALITY",
     date: "2026.07.10",
     url1: "https://youtu.be/HWEtgYQpmE4",
     url2: "https://open.spotify.com/show/2HImUC8mgbFOSEdd7tUyKp"
    },
    {
-    title: "The Horizon Is Getting Closer",
+    title: "THE HORIZON IS GETTING CLOSER",
     date: "2026.07.03",
     url1: "https://youtu.be/3AO3va7s9-c",
-    url2: "https://open.spotify.com/show/2HImUC8mgbFOSEdd7tUyKp"
+    url2: "https://open.spotify.com/episode/5q3CDwMS3Ojyvog4YFs6nu?si=anQuu7xaSNKFqX_lk5onHA"
    },
    {
-    title: "The Moon Left Its Orbit",
+    title: "THE MOON LEFT ITS ORBIT",
     date: "2026.06.26",
     url1: "https://youtu.be/-QZbd9fO9q0",
     url2: "https://open.spotify.com/episode/0CNVElB1lBBkllqEpgrPcR?si=7quTA-qXTBu5e0bV5c0b-A"
    },
    {
-    title: "The Sky Started Flickering Off",
+    title: "THE SKY STARTED FLICKERING OFF",
     date: "2026.06.19",
     url1: "https://youtu.be/qGBbGbpAfHs",
     url2: "https://open.spotify.com/episode/2h05zpbgPpiQ9SQUXS6DQv?si=V37S70vXQJ-6VigANz1TZA"
    },
    {
-    title: "Every Phone Call Contains a Third Voice",
+    title: "EVERY PHONE CALL CONTAINS A THIRD VOICE",
     date: "2026.06.12",
     url1: "https://youtu.be/w25_7KYMtWc",
     url2: "https://open.spotify.com/episode/28L6lFN43xQx4XJRu81MTg?si=VRjgi6McSA2SbNKbZxpDgA"
    },
    {
-    title: "The Earth's Rotation Is Slowing",
+    title: "THE EARTH'S ROTATION IS SLOWING",
     date: "2026.06.05",
     url1: "https://youtu.be/x7WIocOoerE",
     url2: "https://open.spotify.com/episode/0XQoaKbO8ZnPNMoIdB7Ny3?si=jdiiarq5TEmb3x2CsSN_Tw"
    },
    {
-    title: "The Ocean Is Receding Worldwide",
+    title: "THE OCEAN IS RECEDING WORLDWIDE",
     date: "2026.05.29",
     url1: "https://youtu.be/3FdLvSiV2iA",
     url2: "https://open.spotify.com/episode/03X7256bRWMuMc032X4KVO?si=By6ZGHIqQ4y4noozNIEauA"
   },
   {
-    title: "People Who Go Outside After Midnight Don't Come Back",
+    title: "PEOPLE WHO GO OUTSIDE AFTER MIDNIGHT DON'T COME BACK",
     date: "2026.05.22",
     url1: "https://youtu.be/_4MoUlb8yGo",
     url2: "https://open.spotify.com/episode/0ROJIwqdGTeVp63bxkcSyG?si=uR2B34oMQ6C-_Vtu1I0d6A"
   },
   {
-    title: "Simultaneous Global Blackout Reported",
+    title: "SIMULTANEOUS GLOBAL BLACKOUT REPORTED",
     date: "2026.05.15",
     url1: "https://youtu.be/pMeKpl1wPQg",
     url2: "https://open.spotify.com/episode/4Y6nffmnS8stSgrMC1Avpq?si=LjKyaEHEQMOokN5yOFt2UA"
