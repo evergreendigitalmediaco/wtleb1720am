@@ -11,36 +11,38 @@ const statuses = [
   "ARCHIVAL RECOVERY INCOMPLETE"
 ];
 
+const SPOTIFY_SHOW_URL = "https://open.spotify.com/show/2HImUC8mgbFOSEdd7tUyKp";
+
 const transmissions = [
    {
     title: "MACHINES NO LONGER WORK FOR US",
     date: "2026.08.14",
     url1: "https://youtu.be/EamgNNoSNPo",
-    url2: "https://open.spotify.com/show/2HImUC8mgbFOSEdd7tUyKp"
+    url2: SPOTIFY_SHOW_URL
    },
    {
     title: "THE VOYAGER PROBES HAVE RETURNED TO EARTH",
     date: "2026.08.07",
     url1: "https://youtu.be/Zn1k0jR0aPo",
-    url2: "https://open.spotify.com/show/2HImUC8mgbFOSEdd7tUyKp"
+    url2: SPOTIFY_SHOW_URL
    },
    {
     title: "SHADOW PEOPLE ARE APPEARING WORLDWIDE",
     date: "2026.07.31",
     url1: "https://youtu.be/z28Hc2mm38Y",
-    url2: "https://open.spotify.com/show/2HImUC8mgbFOSEdd7tUyKp"
+    url2: SPOTIFY_SHOW_URL
    },
    {
     title: "PEOPLE WHO COME HOME ARE NOT THE SAME",
     date: "2026.07.24",
     url1: "https://youtu.be/_nom61Yonj4",
-    url2: "https://open.spotify.com/show/2HImUC8mgbFOSEdd7tUyKp"
+    url2: SPOTIFY_SHOW_URL
    },
    {
     title: "THERE ARE DOORS WHERE DOORS SHOULD NOT EXIST",
     date: "2026.07.17",
     url1: "https://youtu.be/mYUnUmhfb-w",
-    url2: "https://open.spotify.com/show/2HImUC8mgbFOSEdd7tUyKp"
+    url2: "https://open.spotify.com/episode/2WV4kUp8N7cXmBUVS5Uu48?si=lgsgQU0rT8unoo8-_2L4ag"
    },
    {
     title: "THE MAPS NO LONGER MATCH REALITY",
