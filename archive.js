@@ -13,6 +13,18 @@ const statuses = [
 
 const transmissions = [
    {
+    title: "MACHINES NO LONGER WORK FOR US",
+    date: "2026.08.14",
+    url1: "https://youtu.be/EamgNNoSNPo",
+    url2: "https://open.spotify.com/show/2HImUC8mgbFOSEdd7tUyKp"
+   },
+   {
+    title: "THE VOYAGER PROBES HAVE RETURNED TO EARTH",
+    date: "2026.08.07",
+    url1: "https://youtu.be/Zn1k0jR0aPo",
+    url2: "https://open.spotify.com/show/2HImUC8mgbFOSEdd7tUyKp"
+   },
+   {
     title: "SHADOW PEOPLE ARE APPEARING WORLDWIDE",
     date: "2026.07.31",
     url1: "https://youtu.be/z28Hc2mm38Y",
@@ -34,7 +46,7 @@ const transmissions = [
     title: "THE MAPS NO LONGER MATCH REALITY",
     date: "2026.07.10",
     url1: "https://youtu.be/HWEtgYQpmE4",
-    url2: "https://open.spotify.com/show/2HImUC8mgbFOSEdd7tUyKp"
+    url2: "https://open.spotify.com/episode/5Y4fYsEVTIaEO1sVp04CSn?si=XOfG-ftCTyCQk284Vtng0A"
    },
    {
     title: "THE HORIZON IS GETTING CLOSER",
