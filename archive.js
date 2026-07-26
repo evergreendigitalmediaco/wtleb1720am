@@ -36,7 +36,7 @@ const TRANSMISSIONS = [
     title: "PEOPLE WHO COME HOME ARE NOT THE SAME",
     date: "2026.07.24",
     url1: "https://youtu.be/_nom61Yonj4",
-    url2: SPOTIFY_SHOW_URL
+    url2: "https://open.spotify.com/episode/1RHnylRQYwCl35fPSGLoyN?si=2J84kOXCSOiLI7S050AwOg"
    },
    {
     title: "THERE ARE DOORS WHERE DOORS SHOULD NOT EXIST",
