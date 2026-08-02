@@ -30,7 +30,7 @@ const TRANSMISSIONS = [
     title: "SHADOW PEOPLE ARE APPEARING WORLDWIDE",
     date: "2026.07.31",
     url1: "https://youtu.be/z28Hc2mm38Y",
-    url2: SPOTIFY_SHOW_URL
+    url2: "https://open.spotify.com/episode/7aDdDaykmxXr6kredpKtXi?si=_vyKNc3uSSqpaG4hKTUU6w"
    },
    {
     title: "PEOPLE WHO COME HOME ARE NOT THE SAME",
