@@ -15,6 +15,12 @@ const SPOTIFY_SHOW_URL = "https://open.spotify.com/show/2HImUC8mgbFOSEdd7tUyKp";
 
 const TRANSMISSIONS = [
    {
+    title: "A Figure Is Appearing in Every Photograph",
+    date: "2026.08.21",
+    url1: "https://youtu.be/dwWn42C8DNw",
+    url2: SPOTIFY_SHOW_URL
+   },
+   {
     title: "MACHINES NO LONGER WORK FOR US",
     date: "2026.08.14",
     url1: "https://youtu.be/EamgNNoSNPo",
