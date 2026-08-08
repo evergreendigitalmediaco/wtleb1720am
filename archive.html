@@ -31,9 +31,17 @@
     .archive-entry { padding: 20px 0; border-bottom: 1px solid #1a1a1a; }
     .transmission-id { color: #666; font-size: 11px; letter-spacing: 1px; margin-bottom: 6px; }
     .transmission-status { color: #666; font-size: 11px; margin-bottom: 10px; letter-spacing: 1px; }
-    .transmission-link { color: #e0a106; text-decoration: none; font-size: 18px; letter-spacing: 1px; line-height: 1.4; }
-    .transmission-link:hover { color: #ffffff; }
+    .transmission-link,
+    .transmission-link:link,
+    .transmission-link:visited { color: #e0a106; -webkit-text-fill-color: #e0a106; text-decoration: none; font-size: 18px; letter-spacing: 1px; line-height: 1.4; }
+    .transmission-link:hover,
+    .transmission-link:focus { color: #ffffff; -webkit-text-fill-color: #ffffff; }
     .transmission-date { color: #666; font-size: 11px; margin-top: 10px; letter-spacing: 1px; }
+    .inline-link,
+    .inline-link:link,
+    .inline-link:visited { color: #e0a106; -webkit-text-fill-color: #e0a106; text-decoration: underline; font-size: 10px; }
+    .inline-link:hover,
+    .inline-link:focus { color: #ffffff; -webkit-text-fill-color: #ffffff; }
     @media (max-width: 768px) { .transmission-link { font-size: 16px; } }
   </style>
 </head>
