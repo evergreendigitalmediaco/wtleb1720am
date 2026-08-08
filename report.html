@@ -29,10 +29,41 @@
     }
 
     .container {
-      max-width: 700px;
+      max-width: 1000px;
       width: 100%;
       padding: 40px 20px;
+    }
+
+    .layout {
+      display: flex;
+      gap: 30px;
+      align-items: flex-start;
+    }
+
+    .main {
+      flex: 1;
       text-align: center;
+    }
+
+    .sidebar {
+      width: 180px;
+      border-left: 1px solid #222;
+      padding-left: 15px;
+      text-align: left;
+    }
+
+    .panel-title {
+      font-size: 12px;
+      color: #888;
+      margin-bottom: 10px;
+      letter-spacing: 1px;
+    }
+
+    .panel-subtitle {
+      font-size: 11px;
+      color: #666;
+      margin-bottom: 12px;
+      letter-spacing: 1px;
     }
 
     h1 {
@@ -84,49 +115,79 @@
       color: #0b0b0b;
     }
 
-    .back-link {
-      margin-top: 30px;
+    .link-button {
       display: inline-block;
-      color: #888;
+      margin: 10px;
+      padding: 10px 18px;
+      border: 1px solid #e0a106;
+      color: #e0a106;
       text-decoration: none;
+      font-size: 13px;
+      letter-spacing: 1px;
+      transition: all 0.2s ease;
+    }
+
+    .link-button:hover,
+    .link-button.active {
+      background-color: #e0a106;
+      color: #0b0b0b;
+    }
+
+    .sidebar .link-button {
+      display: block;
+      margin: 10px 0;
+      padding: 8px 10px;
       font-size: 12px;
     }
 
-    .back-link:hover {
-      color: #e0a106;
+    @media (max-width: 768px) {
+      .layout {
+        flex-direction: column;
+      }
+
+      .sidebar {
+        width: 100%;
+        border-left: none;
+        border-top: 1px solid #222;
+        padding-top: 15px;
+      }
+
+      .sidebar .link-button {
+        display: inline-block;
+        margin: 10px;
+      }
     }
   </style>
 </head>
 
 <body>
   <div class="container">
+    <div class="layout">
 
-    <h1>INCOMING REPORT CHANNEL</h1>
+      <div class="main">
+        <h1>INCOMING REPORT CHANNEL</h1>
 
-    <div class="text">
-      Reports may be submitted while transmission remains active.<br>
-      Submitted information may be incomplete or unverified.<br>
-      Do not include sensitive personal data.
+        <div class="text">
+          Reports may be submitted while transmission remains active.<br>
+          Submitted information may be incomplete or unverified.<br>
+          Do not include sensitive personal data.
+        </div>
+
+        <form action="https://formspree.io/f/mbdqzzlr" method="POST">
+          <input type="text" name="name" placeholder="Name" required />
+          <input type="text" name="email" placeholder="Email" required />
+          <input type="text" name="location" placeholder="Location (optional)" />
+          <input type="text" name="timestamp" placeholder="Time of occurrence (optional)" />
+          <textarea name="message" placeholder="Describe the event..." required></textarea>
+          <button type="submit">TRANSMIT REPORT</button>
+        </form>
+      </div>
+
+      <div id="station-navigation" class="sidebar"></div>
+
     </div>
-
-    <form action="https://formspree.io/f/mbdqzzlr" method="POST">
-
-      <input type="text" name="name" placeholder="Name"  required />
-
-      <input type="text" name="email" placeholder="Email"  required />
-
-      <input type="text" name="location" placeholder="Location (optional)" />
-
-      <input type="text" name="timestamp" placeholder="Time of occurrence (optional)" />
-
-      <textarea name="message" placeholder="Describe the event..." required></textarea>
-
-      <button type="submit">TRANSMIT REPORT</button>
-
-    </form>
-
-    <a href="/" class="back-link">Return to signal</a>
-
   </div>
+
+  <script src="/js/navigation.js"></script>
 </body>
 </html>
