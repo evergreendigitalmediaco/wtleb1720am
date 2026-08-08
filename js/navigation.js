@@ -9,11 +9,11 @@
     <div class="panel-title">CONTROL INTERFACE</div>
     <div class="panel-subtitle">STATION SERVICES AVAILABLE</div>
 
-    <a class="link-button" href="/">
+    <a class="link-button" href="/" data-station-path="/">
       STATION HOME
     </a>
 
-    <a class="link-button" href="/archive.html">
+    <a class="link-button" href="/archive.html" data-station-path="/archive.html">
       ARCHIVED TRANSMISSIONS
     </a>
 
@@ -25,8 +25,16 @@
       SUPPLY ACCESS
     </a>
 
-    <a class="link-button" href="/report.html">
+    <a class="link-button" href="/report.html" data-station-path="/report.html">
       SUBMIT REPORT
     </a>
   `;
+
+  const currentPath = window.location.pathname.replace(/\/index\.html$/, "/");
+  const activeControl = navigation.querySelector(`[data-station-path="${currentPath}"]`);
+
+  if (activeControl) {
+    activeControl.classList.add("active");
+    activeControl.setAttribute("aria-current", "page");
+  }
 })();
