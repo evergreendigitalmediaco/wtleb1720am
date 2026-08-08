@@ -13,6 +13,10 @@
       STATION HOME
     </a>
 
+    <a class="link-button" href="/relay.html" data-station-path="/relay.html">
+      RELAY NETWORKS
+    </a>
+
     <a class="link-button" href="/archive.html" data-station-path="/archive.html">
       ARCHIVED TRANSMISSIONS
     </a>
