@@ -7,7 +7,6 @@
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
-
     gtag('config', 'G-GECBCD38LX');
   </script>
 
@@ -20,197 +19,32 @@
   <link rel="shortcut icon" href="/images/favicon/favicon.ico">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon/apple-touch-icon.png">
   <link rel="manifest" href="/images/favicon/site.webmanifest">
+  <link rel="stylesheet" href="/css/style.css">
 
   <meta name="theme-color" content="#0b0b0b">
 
   <style>
-    body {
-      margin: 0;
-      padding: 0;
-      background-color: #0b0b0b;
-      color: #e0a106;
-      font-family: "Courier New", Courier, monospace;
-      display: flex;
-      justify-content: center;
-      align-items: flex-start;
-      min-height: 100vh;
-    }
-
-    .container {
-      max-width: 1000px;
-      width: 100%;
-      padding: 40px 20px;
-    }
-
-    .layout {
-      display: flex;
-      gap: 30px;
-      align-items: flex-start;
-    }
-
-    .main {
-      flex: 1;
-    }
-
-    .sidebar {
-      width: 180px;
-      border-left: 1px solid #222;
-      padding-left: 15px;
-      text-align: left;
-    }
-
-    .panel-title {
-      font-size: 12px;
-      color: #888;
-      margin-bottom: 10px;
-      letter-spacing: 1px;
-    }
-
-    .panel-subtitle {
-      font-size: 11px;
-      color: #666;
-      margin-bottom: 12px;
-      letter-spacing: 1px;
-    }
-
-    h1 {
-      text-align: center;
-      font-size: 28px;
-      margin-bottom: 10px;
-      letter-spacing: 2px;
-    }
-
-    .status {
-      text-align: center;
-      color: #c9472d;
-      margin-bottom: 30px;
-      font-size: 14px;
-      letter-spacing: 1px;
-      font-weight: bold;
-    }
-
-    .text {
-      text-align: center;
-      font-size: 13px;
-      color: #888;
-      margin-bottom: 40px;
-      line-height: 1.6;
-    }
-
-    .archive-container {
-      border-top: 1px solid #222;
-      padding-top: 10px;
-    }
-
-    .archive-entry {
-      padding: 20px 0;
-      border-bottom: 1px solid #1a1a1a;
-    }
-
-    .transmission-id {
-      color: #666;
-      font-size: 11px;
-      letter-spacing: 1px;
-      margin-bottom: 6px;
-    }
-
-    .transmission-status {
-      color: #666;
-      font-size: 11px;
-      margin-bottom: 10px;
-      letter-spacing: 1px;
-    }
-
-    .transmission-link {
-      color: #e0a106;
-      text-decoration: none;
-      font-size: 18px;
-      letter-spacing: 1px;
-      line-height: 1.4;
-    }
-
-    .inline-link {
-      color: #e0a106;
-      text-decoration: underline;
-      font-size: 10px;
-    }
-
-    .inline-link:hover {
-      color: #ffffff;
-    }
-
-    .transmission-link:hover {
-      color: #ffffff;
-    }
-
-    .transmission-date {
-      color: #666;
-      font-size: 11px;
-      margin-top: 10px;
-      letter-spacing: 1px;
-    }
-
-    .link-button {
-      display: inline-block;
-      margin: 10px;
-      padding: 10px 18px;
-      border: 1px solid #e0a106;
-      color: #e0a106;
-      text-decoration: none;
-      font-size: 13px;
-      letter-spacing: 1px;
-      transition: all 0.2s ease;
-    }
-
-    .link-button:hover,
-    .link-button.active {
-      background-color: #e0a106;
-      color: #0b0b0b;
-    }
-
-    .sidebar .link-button {
-      display: block;
-      margin: 10px 0;
-      padding: 8px 10px;
-      font-size: 12px;
-    }
-
-    @media (max-width: 768px) {
-      .layout {
-        flex-direction: column;
-      }
-
-      .sidebar {
-        width: 100%;
-        border-left: none;
-        border-top: 1px solid #222;
-        padding-top: 15px;
-      }
-
-      .sidebar .link-button {
-        display: inline-block;
-        margin: 10px;
-      }
-
-      .transmission-link {
-        font-size: 16px;
-      }
-    }
+    h1 { text-align: center; font-size: 28px; margin-bottom: 10px; letter-spacing: 2px; }
+    .status { text-align: center; color: #c9472d; margin-bottom: 30px; font-size: 14px; letter-spacing: 1px; font-weight: bold; }
+    .text { text-align: center; font-size: 13px; color: #888; margin-bottom: 40px; line-height: 1.6; }
+    .archive-container { border-top: 1px solid #222; padding-top: 10px; }
+    .archive-entry { padding: 20px 0; border-bottom: 1px solid #1a1a1a; }
+    .transmission-id { color: #666; font-size: 11px; letter-spacing: 1px; margin-bottom: 6px; }
+    .transmission-status { color: #666; font-size: 11px; margin-bottom: 10px; letter-spacing: 1px; }
+    .transmission-link { color: #e0a106; text-decoration: none; font-size: 18px; letter-spacing: 1px; line-height: 1.4; }
+    .transmission-link:hover { color: #ffffff; }
+    .transmission-date { color: #666; font-size: 11px; margin-top: 10px; letter-spacing: 1px; }
+    @media (max-width: 768px) { .transmission-link { font-size: 16px; } }
   </style>
 </head>
 
 <body>
   <div class="container">
     <div class="layout">
-
-      <!-- MAIN CONTENT -->
       <div class="main">
-
         <h1>ARCHIVED TRANSMISSIONS</h1>
 
-        <div class="status">
-          STATUS: ARCHIVE ACCESS PERMITTED
-        </div>
+        <div class="status">STATUS: ARCHIVE ACCESS PERMITTED</div>
 
         <div class="text">
           Historical transmissions have been indexed for continuity review.<br>
@@ -221,12 +55,9 @@
         <div id="archive-list" class="archive-container">
           <!-- archive.js populates this -->
         </div>
-
       </div>
 
-      <!-- SIDEBAR CONTROL PANEL -->
       <div id="station-navigation" class="sidebar"></div>
-
     </div>
   </div>
 
