@@ -15,6 +15,12 @@ const SPOTIFY_SHOW_URL = "https://open.spotify.com/show/2HImUC8mgbFOSEdd7tUyKp";
 
 const TRANSMISSIONS = [
    {
+    title: "The Dead Are Speaking Through Radio Static",
+    date: "2026.08.28",
+    url1: "https://youtu.be/z-qJryrteiE",
+    url2: SPOTIFY_SHOW_URL
+   },
+   {
     title: "A Figure Is Appearing in Every Photograph",
     date: "2026.08.21",
     url1: "https://youtu.be/dwWn42C8DNw",
@@ -30,7 +36,7 @@ const TRANSMISSIONS = [
     title: "THE VOYAGER PROBES HAVE RETURNED TO EARTH",
     date: "2026.08.07",
     url1: "https://youtu.be/Zn1k0jR0aPo",
-    url2: SPOTIFY_SHOW_URL
+    url2: "https://open.spotify.com/episode/1CWMZ9h0rQqQbofLyL5AWq?si=uepqJ9dGQBGTRE6lPjdgsA"
    },
    {
     title: "SHADOW PEOPLE ARE APPEARING WORLDWIDE",
