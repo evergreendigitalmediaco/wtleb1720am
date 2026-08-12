@@ -5,8 +5,6 @@
     return;
   }
 
-  const dt = new Date().getFullYear();
-
   navigation.innerHTML = `
     <div class="panel-title">CONTROL INTERFACE</div>
     <div class="panel-subtitle">STATION SERVICES AVAILABLE</div>
@@ -34,8 +32,6 @@
     <a class="link-button" href="/report.html" data-station-path="/report.html">
       SUBMIT REPORT
     </a>
-
-    <div class="panel-subtitle">Copyright ${dt} WTLEB 1720 AM</div>
   `;
 
   const currentPath = window.location.pathname.replace(/\/index\.html$/, "/");
