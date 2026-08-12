@@ -77,6 +77,16 @@ body {
   font-size: 12px;
 }
 
+.site-footer {
+  margin-top: 48px;
+  padding-top: 18px;
+  border-top: 1px solid #1a1a1a;
+  color: #555;
+  font-size: 10px;
+  letter-spacing: 1px;
+  text-align: center;
+}
+
 @media (max-width: 768px) {
   .container {
     padding: 28px 18px;
@@ -105,5 +115,9 @@ body {
     margin: 8px 0;
     padding: 11px 12px;
     text-align: left;
+  }
+
+  .site-footer {
+    margin-top: 36px;
   }
 }
