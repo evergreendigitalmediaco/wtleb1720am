@@ -16,6 +16,12 @@ const SPOTIFY_SHOW_URL = "https://open.spotify.com/show/2HImUC8mgbFOSEdd7tUyKp";
 const TRANSMISSIONS = [
    {
     title: "The Dead Are Speaking Through Radio Static",
+    date: "2026.09.04",
+    url1: "https://youtu.be/73htW7yNmzk",
+    url2: SPOTIFY_SHOW_URL
+   },
+   {
+    title: "The Dead Are Speaking Through Radio Static",
     date: "2026.08.28",
     url1: "https://youtu.be/z-qJryrteiE",
     url2: SPOTIFY_SHOW_URL
