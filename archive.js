@@ -15,28 +15,40 @@ const SPOTIFY_SHOW_URL = "https://open.spotify.com/show/2HImUC8mgbFOSEdd7tUyKp";
 
 const TRANSMISSIONS = [
    {
-    title: "The Dead Are Speaking Through Radio Static",
+    title: "EVERYONE RECEIVED AN ENVELOPE. INSTRUCTIONS MUST BE FOLLOWED.",
+    date: "2026.09.18",
+    url1: "https://youtu.be/EI-pU6S-UeY",
+    url2: SPOTIFY_SHOW_URL
+   },
+   {
+    title: "GIANT MONSTERS ARE COMING FROM UNDERGROUND",
+    date: "2026.09.11",
+    url1: "https://youtu.be/QGWSmKkLdNk",
+    url2: SPOTIFY_SHOW_URL
+   },
+   {
+    title: "SOMETHING IS UNDER YOUR BED",
     date: "2026.09.04",
     url1: "https://youtu.be/73htW7yNmzk",
     url2: SPOTIFY_SHOW_URL
    },
    {
-    title: "The Dead Are Speaking Through Radio Static",
+    title: "THE DEAD ARE SPEAKING THROUGH RADIO STATIC",
     date: "2026.08.28",
     url1: "https://youtu.be/z-qJryrteiE",
     url2: SPOTIFY_SHOW_URL
    },
    {
-    title: "A Figure Is Appearing in Every Photograph",
+    title: "A FIGURE IS APPEARING IN EVERY PHOTOGRAPH",
     date: "2026.08.21",
     url1: "https://youtu.be/dwWn42C8DNw",
-    url2: SPOTIFY_SHOW_URL
+    url2: "https://open.spotify.com/episode/5lsYiYYgR6vV3semsJZcmO?si=ZMx_eXJ5RBOFN77JEowELw"
    },
    {
     title: "MACHINES NO LONGER WORK FOR US",
     date: "2026.08.14",
     url1: "https://youtu.be/EamgNNoSNPo",
-    url2: SPOTIFY_SHOW_URL
+    url2: "https://open.spotify.com/episode/2BmYuufnufxGs2PkfDO9Sh?si=TS_anVh0Quy-1NJwdVwkZw"
    },
    {
     title: "THE VOYAGER PROBES HAVE RETURNED TO EARTH",
