@@ -48,6 +48,30 @@
     .text { font-size: 13px; color: #888; margin: 15px 0 25px; line-height: 1.6; }
     .inline-link { color: #e0a106; text-decoration: underline; }
     .inline-link:hover { color: #ffffff; }
+    .live-panel {
+      margin: 18px 0 30px;
+      padding: 18px 0;
+      border-top: 1px solid #222;
+      border-bottom: 1px solid #222;
+    }
+    .live-state {
+      color: #c9472d;
+      font-size: 12px;
+      font-weight: bold;
+      letter-spacing: 1px;
+      margin-bottom: 10px;
+    }
+    .live-description {
+      color: #888;
+      font-size: 13px;
+      line-height: 1.6;
+      margin-bottom: 14px;
+    }
+    .live-links {
+      font-size: 11px;
+      letter-spacing: 1px;
+      line-height: 2;
+    }
     .footer { margin-top: 40px; font-size: 12px; color: #666; line-height: 1.6; }
 
     @media (max-width: 768px) {
@@ -85,6 +109,22 @@
         <div class="text">
           Signal is being relayed through external infrastructure.<br>
           Continuity is not guaranteed.
+        </div>
+
+        <div class="section-title">LIVE TRANSMISSION</div>
+
+        <div class="live-panel">
+          <div class="live-state">CONTINUOUS BROADCAST FEED ACTIVE</div>
+          <div class="live-description">
+            WTLEB 1720 AM is transmitting continuously through available external relay infrastructure.
+          </div>
+          <div class="live-links">
+            <a href="https://youtube.com/@wtleb1720am/live" class="inline-link" target="_blank" rel="noopener noreferrer">MONITOR VIA YOUTUBE</a>
+            |
+            <a href="https://rumble.com/c/wtleb1720am/live" class="inline-link" target="_blank" rel="noopener noreferrer">MONITOR VIA RUMBLE</a>
+            <br>
+            <a href="/live.html" class="inline-link">OPEN LIVE TRANSMISSION INTERFACE</a>
+          </div>
         </div>
 
         <div class="section-title">RELAY NETWORKS</div>
