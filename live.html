@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-GECBCD38LX"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-GECBCD38LX');
+  </script>
+
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>WTLEB 1720 AM - Live Transmission</title>
+  <meta name="description" content="Monitor the continuous WTLEB 1720 AM live transmission through authorized external relay networks." />
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon/favicon-32x32.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon/apple-touch-icon.png">
+  <link rel="manifest" href="/images/favicon/site.webmanifest">
+  <link rel="stylesheet" href="/css/style.css">
+
+  <meta name="theme-color" content="#0b0b0b">
+
+  <style>
+    .main { text-align: center; }
+    .status { color: #c9472d; margin-bottom: 30px; font-size: 14px; letter-spacing: 1px; font-weight: bold; }
+    .text { font-size: 13px; color: #888; margin: 15px 0 30px; line-height: 1.6; }
+
+    .transmission-record {
+      max-width: 650px;
+      margin: 0 auto;
+      text-align: left;
+    }
+
+    .broadcast-panel {
+      margin: 26px 0 30px;
+      padding: 18px 0;
+      border-top: 1px solid #222;
+      border-bottom: 1px solid #222;
+      text-align: center;
+    }
+
+    .broadcast-label {
+      color: #666;
+      font-size: 11px;
+      letter-spacing: 1px;
+      margin-bottom: 8px;
+    }
+
+    .broadcast-name {
+      color: #bbbbbb;
+      font-size: 18px;
+      letter-spacing: 2px;
+      margin-bottom: 8px;
+    }
+
+    .broadcast-state {
+      color: #e0a106;
+      font-size: 12px;
+      letter-spacing: 1px;
+    }
+
+    .relay-section {
+      border-top: 1px solid #222;
+      padding-top: 22px;
+      margin-top: 25px;
+    }
+
+    .relay-section-title {
+      color: #666;
+      font-size: 14px;
+      letter-spacing: 1px;
+      margin-bottom: 15px;
+    }
+
+    .relay-entry {
+      padding: 14px 0;
+      border-bottom: 1px solid #1a1a1a;
+    }
+
+    .relay-name {
+      color: #bbbbbb;
+      font-size: 16px;
+      letter-spacing: 1px;
+      margin-bottom: 6px;
+    }
+
+    .relay-description {
+      color: #777;
+      font-size: 12px;
+      line-height: 1.5;
+      margin-bottom: 10px;
+    }
+
+    .relay-link {
+      color: #e0a106;
+      font-size: 11px;
+      text-decoration: underline;
+      letter-spacing: 1px;
+    }
+
+    .relay-link:hover { color: #ffffff; }
+
+    .continuity-note {
+      margin-top: 30px;
+      color: #777;
+      font-size: 12px;
+      line-height: 1.6;
+      text-align: center;
+    }
+
+    .continuity-note strong {
+      color: #c9472d;
+      font-weight: normal;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <div class="layout">
+      <div class="main">
+        <h1 class="page-title">LIVE TRANSMISSION</h1>
+        <div class="status">STATUS: CONTINUOUS TRANSMISSION ACTIVE</div>
+
+        <div class="transmission-record">
+          <div class="text">
+            WTLEB 1720 AM maintains a continuous broadcast through available external relay infrastructure.
+            Relay availability may vary without notice.
+          </div>
+
+          <div class="broadcast-panel">
+            <div class="broadcast-label">ACTIVE BROADCAST FEED</div>
+            <div class="broadcast-name">WTLEB 1720 AM</div>
+            <div class="broadcast-state">TRANSMISSION IN PROGRESS</div>
+          </div>
+
+          <div class="relay-section">
+            <div class="relay-section-title">PRIMARY LIVE RELAY</div>
+            <div class="relay-entry">
+              <div class="relay-name">YOUTUBE</div>
+              <div class="relay-description">Primary public relay for the continuous WTLEB 1720 AM transmission.</div>
+              <a class="relay-link" href="https://youtube.com/@wtleb1720am/live" target="_blank" rel="noopener noreferrer">MONITOR TRANSMISSION</a>
+            </div>
+          </div>
+
+          <div class="relay-section">
+            <div class="relay-section-title">SECONDARY LIVE RELAY</div>
+            <div class="relay-entry">
+              <div class="relay-name">RUMBLE</div>
+              <div class="relay-description">Alternate public relay for the continuous WTLEB 1720 AM transmission.</div>
+              <a class="relay-link" href="https://rumble.com/c/wtleb1720am/live" target="_blank" rel="noopener noreferrer">MONITOR TRANSMISSION</a>
+            </div>
+          </div>
+
+          <div class="continuity-note">
+            If transmission is unavailable through one relay, listeners are advised to attempt the alternate relay.
+            <br>
+            <strong>CONTINUITY IS NOT GUARANTEED.</strong>
+          </div>
+        </div>
+      </div>
+
+      <div id="station-navigation" class="sidebar"></div>
+    </div>
+  </div>
+
+  <script src="/js/navigation.js"></script>
+  <script src="/js/footer.js"></script>
+</body>
+</html>
