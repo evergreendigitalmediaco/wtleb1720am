@@ -18,7 +18,7 @@
     </a>
 
     <a class="link-button" href="/station-info.html" data-station-path="/station-info.html">
-      STATION INFORMATION
+      STATION INFO
     </a>
 
     <a class="link-button" href="/relay.html" data-station-path="/relay.html">
@@ -26,7 +26,7 @@
     </a>
 
     <a class="link-button" href="/archive.html" data-station-path="/archive.html">
-      ARCHIVED TRANSMISSIONS
+      ARCHIVED BROADCASTS
     </a>
 
     <a class="link-button" href="https://www.patreon.com/TheLastEmergencyBroadcast" target="_blank" rel="noopener noreferrer">
