@@ -14,7 +14,7 @@
     </a>
 
     <a class="link-button" href="/live.html" data-station-path="/live.html">
-      LIVE TRANSMISSION
+      LIVE NOW!
     </a>
 
     <a class="link-button" href="/station-info.html" data-station-path="/station-info.html">
