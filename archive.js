@@ -1,269 +1,220 @@
-const statuses = [
-  "ACTIVE EVENT RECORD",
-  "SIGNAL INSTABILITY DETECTED",
-  "PARTIAL RECORD RECOVERED",
-  "CONTAINMENT FAILURE",
-  "SOURCE VERIFICATION PENDING",
-  "DATA INTEGRITY UNCONFIRMED",
-  "BROADCAST ANOMALY DETECTED",
-  "TIMELINE CONSISTENCY FAILURE",
-  "RELAY INTERRUPTION LOGGED",
-  "ARCHIVAL RECOVERY INCOMPLETE"
-];
+(() => {
+  "use strict";
 
-const SPOTIFY_SHOW_URL = "https://open.spotify.com/show/2HImUC8mgbFOSEdd7tUyKp";
+  // Public, read-only catalog endpoint. The API manages source synchronization,
+  // publication visibility, pagination, and HTTP caching.
+  const CATALOG_URL = "https://api.evergreendigitalmedia.co/catalog/v1/tleb/stories";
+  const PAGE_SIZE = 20;
+  const FETCH_TIMEOUT_MS = 12000;
 
-const TRANSMISSIONS = [
-   {
-    title: "EVERYONE RECEIVED AN ENVELOPE. INSTRUCTIONS MUST BE FOLLOWED.",
-    date: "2026.09.18",
-    url1: "https://youtu.be/EI-pU6S-UeY",
-    url2: SPOTIFY_SHOW_URL
-   },
-   {
-    title: "GIANT MONSTERS ARE COMING FROM UNDERGROUND",
-    date: "2026.09.11",
-    url1: "https://youtu.be/QGWSmKkLdNk",
-    url2: SPOTIFY_SHOW_URL
-   },
-   {
-    title: "SOMETHING IS UNDER YOUR BED",
-    date: "2026.09.04",
-    url1: "https://youtu.be/73htW7yNmzk",
-    url2: SPOTIFY_SHOW_URL
-   },
-   {
-    title: "THE DEAD ARE SPEAKING THROUGH RADIO STATIC",
-    date: "2026.08.28",
-    url1: "https://youtu.be/z-qJryrteiE",
-    url2: SPOTIFY_SHOW_URL
-   },
-   {
-    title: "A FIGURE IS APPEARING IN EVERY PHOTOGRAPH",
-    date: "2026.08.21",
-    url1: "https://youtu.be/dwWn42C8DNw",
-    url2: "https://open.spotify.com/episode/5lsYiYYgR6vV3semsJZcmO?si=ZMx_eXJ5RBOFN77JEowELw"
-   },
-   {
-    title: "MACHINES NO LONGER WORK FOR US",
-    date: "2026.08.14",
-    url1: "https://youtu.be/EamgNNoSNPo",
-    url2: "https://open.spotify.com/episode/2BmYuufnufxGs2PkfDO9Sh?si=TS_anVh0Quy-1NJwdVwkZw"
-   },
-   {
-    title: "THE VOYAGER PROBES HAVE RETURNED TO EARTH",
-    date: "2026.08.07",
-    url1: "https://youtu.be/Zn1k0jR0aPo",
-    url2: "https://open.spotify.com/episode/1CWMZ9h0rQqQbofLyL5AWq?si=uepqJ9dGQBGTRE6lPjdgsA"
-   },
-   {
-    title: "SHADOW PEOPLE ARE APPEARING WORLDWIDE",
-    date: "2026.07.31",
-    url1: "https://youtu.be/z28Hc2mm38Y",
-    url2: "https://open.spotify.com/episode/7aDdDaykmxXr6kredpKtXi?si=_vyKNc3uSSqpaG4hKTUU6w"
-   },
-   {
-    title: "PEOPLE WHO COME HOME ARE NOT THE SAME",
-    date: "2026.07.24",
-    url1: "https://youtu.be/_nom61Yonj4",
-    url2: "https://open.spotify.com/episode/1RHnylRQYwCl35fPSGLoyN?si=2J84kOXCSOiLI7S050AwOg"
-   },
-   {
-    title: "THERE ARE DOORS WHERE DOORS SHOULD NOT EXIST",
-    date: "2026.07.17",
-    url1: "https://youtu.be/mYUnUmhfb-w",
-    url2: "https://open.spotify.com/episode/2WV4kUp8N7cXmBUVS5Uu48?si=lgsgQU0rT8unoo8-_2L4ag"
-   },
-   {
-    title: "THE MAPS NO LONGER MATCH REALITY",
-    date: "2026.07.10",
-    url1: "https://youtu.be/HWEtgYQpmE4",
-    url2: "https://open.spotify.com/episode/5Y4fYsEVTIaEO1sVp04CSn?si=XOfG-ftCTyCQk284Vtng0A"
-   },
-   {
-    title: "THE HORIZON IS GETTING CLOSER",
-    date: "2026.07.03",
-    url1: "https://youtu.be/3AO3va7s9-c",
-    url2: "https://open.spotify.com/episode/5q3CDwMS3Ojyvog4YFs6nu?si=anQuu7xaSNKFqX_lk5onHA"
-   },
-   {
-    title: "THE MOON LEFT ITS ORBIT",
-    date: "2026.06.26",
-    url1: "https://youtu.be/-QZbd9fO9q0",
-    url2: "https://open.spotify.com/episode/0CNVElB1lBBkllqEpgrPcR?si=7quTA-qXTBu5e0bV5c0b-A"
-   },
-   {
-    title: "THE SKY STARTED FLICKERING OFF",
-    date: "2026.06.19",
-    url1: "https://youtu.be/qGBbGbpAfHs",
-    url2: "https://open.spotify.com/episode/2h05zpbgPpiQ9SQUXS6DQv?si=V37S70vXQJ-6VigANz1TZA"
-   },
-   {
-    title: "EVERY PHONE CALL CONTAINS A THIRD VOICE",
-    date: "2026.06.12",
-    url1: "https://youtu.be/w25_7KYMtWc",
-    url2: "https://open.spotify.com/episode/28L6lFN43xQx4XJRu81MTg?si=VRjgi6McSA2SbNKbZxpDgA"
-   },
-   {
-    title: "THE EARTH'S ROTATION IS SLOWING",
-    date: "2026.06.05",
-    url1: "https://youtu.be/x7WIocOoerE",
-    url2: "https://open.spotify.com/episode/0XQoaKbO8ZnPNMoIdB7Ny3?si=jdiiarq5TEmb3x2CsSN_Tw"
-   },
-   {
-    title: "THE OCEAN IS RECEDING WORLDWIDE",
-    date: "2026.05.29",
-    url1: "https://youtu.be/3FdLvSiV2iA",
-    url2: "https://open.spotify.com/episode/03X7256bRWMuMc032X4KVO?si=By6ZGHIqQ4y4noozNIEauA"
-  },
-  {
-    title: "PEOPLE WHO GO OUTSIDE AFTER MIDNIGHT DON'T COME BACK",
-    date: "2026.05.22",
-    url1: "https://youtu.be/_4MoUlb8yGo",
-    url2: "https://open.spotify.com/episode/0ROJIwqdGTeVp63bxkcSyG?si=uR2B34oMQ6C-_Vtu1I0d6A"
-  },
-  {
-    title: "SIMULTANEOUS GLOBAL BLACKOUT REPORTED",
-    date: "2026.05.15",
-    url1: "https://youtu.be/pMeKpl1wPQg",
-    url2: "https://open.spotify.com/episode/4Y6nffmnS8stSgrMC1Avpq?si=LjKyaEHEQMOokN5yOFt2UA"
-  },
-  {
-    title: "TIME LOSS EVENTS REPORTED WORLDWIDE",
-    date: "2026.05.08",
-    url1: "https://youtu.be/vnxoFX3kc3U",
-    url2: "https://open.spotify.com/episode/244SCoM6fXRY93poMNENAS?si=S0V1Q66XR9Scpa2ynSs2Dg"
-  },
-  {
-    title: "ALL SHADOWS ARE MISALIGNED",
-    date: "2026.05.01",
-    url1: "https://youtu.be/zukdeFP4iU4",
-    url2: "https://open.spotify.com/episode/0lGeKxzTGvis5ah1NjHy00?si=BZPPlztoTQqCoHessXYdzQ"
-  },
-  {
-    title: "WEATHER RADAR IS TRACKING SOMETHING THAT ISN'T THERE",
-    date: "2026.04.24",
-    url1: "https://youtu.be/vgfoe_xot3Y",
-    url2: "https://open.spotify.com/episode/2mX7o9mzmrTBM4RtiDET0d?si=vI7u7uG2T7eJY8_aXTecNw"
-  },
-  {
-    title: "EVERY BROADCAST WAS REPLACED BY THE SAME MESSAGE",
-    date: "2026.04.17",
-    url1: "https://youtu.be/icq2m-rKXFM",
-    url2: "https://open.spotify.com/episode/18Y8N2RfguC5hdWgVakNIE?si=L9u4F-KZTxyHSLRlPTVqJQ"
-  },
-  {
-    title: "GRAVITY IS FAILING",
-    date: "2026.04.10",
-    url1: "https://youtu.be/IltMmEsiivc",
-    url2: "https://open.spotify.com/episode/6rplhdEfRRXA87daVJRCKN?si=ykn1d1kUSNGupA53mUZuFg"
-  },
-  {
-    title: "RESIDENTS REPORT UNKNOWN INDIVIDUALS",
-    date: "2026.04.03",
-    url1: "https://youtu.be/DEMtxDkHBAA",
-    url2: "https://open.spotify.com/episode/3f8amjlQ5nM1Acp7nAt44G?si=iIrI35xSQLi6kuVIW2eKtQ"
-  },
-  {
-    title: "SPECIAL ADVISORY: DO NOT ENTER THE FOG",
-    date: "2026.03.27",
-    url1: "https://youtu.be/Ywq0Cp_vB6M",
-    url2: "https://open.spotify.com/episode/5YsXQ3YunI1W6cRnjdpVPg?si=DMIZERmfSaWEU6WhtARRWw"
-  },
-  {
-    title: "EVERY CHILD IS SEEING THE SAME ENTITY",
-    date: "2026.03.20",
-    url1: "https://youtu.be/JFoEiTqxMmU",
-    url2: "https://open.spotify.com/episode/1Rk1EYl4zKtXLJvuAx7hPH?si=H0U4LcvuSmGwegiNvPcoCQ"
-  },
-  {
-    title: "THE SKY IS BROADCASTING A SOUND",
-    date: "2026.03.13",
-    url1: "https://youtu.be/QAjWLGt_9ww",
-    url2: "https://open.spotify.com/episode/5KGPdMXcNjaeCWPpGTQG3h?si=S4HyWEx_Qo6p4dD-3b_FKw"
-  },
-  {
-    title: "MONSTERS ARE RISING FROM THE OCEANS",
-    date: "2026.03.26",
-    url1: "https://youtu.be/DGmfj8w8YHQ",
-    url2: "https://open.spotify.com/episode/1CdS9qZEzPvVywU8OQi8GI?si=S-NpgxS_Q2eVT-N9f38csg"
-  },
-  {
-    title: "ALIEN FIRST CONTACT FAILED",
-    date: "2026.02.27",
-    url1: "https://youtu.be/tnZOPN2KLck",
-    url2: "https://open.spotify.com/episode/6oX5XVSeBgI1n7napbQejW?si=p6SDgS_oRPS9zF2g0mmO4g"
-  },
-  {
-    title: "GLOBAL OUTBREAK: THE RAGE VIRUS",
-    date: "2026.02.20",
-    url1: "https://youtu.be/-K_YPzbHTN8",
-    url2: "https://open.spotify.com/episode/3gt1VRuR0x7LgpinGHYHQf?si=ZZ6J8GPnQRa_w3defuzJCA"
-  },
-  {
-    title: "THE DAY THE SUN NEVER ROSE",
-    date: "2026.02.13",
-    url1: "https://youtu.be/HRDcjIH4p6o",
-    url2: "https://open.spotify.com/episode/0mwRonEaZTURzV52kC7SaC?si=_6M_CZuNQRadJy7zywEBUQ"
-  },
-  {
-    title: "THE NIGHT THE WORLD WENT QUIET",
-    date: "2026.02.06",
-    url1: "https://youtu.be/1fO-n0HddxA",
-    url2: "https://open.spotify.com/episode/7ekQoGkBmKAe9YwlLusI4Y?si=JN-QvdHjSBSVU9_e75Pk0A"
+  // Fictional classifications are stable for a given transmission, rather than
+  // changing every time a listener reloads the archive.
+  const STATUSES = [
+    "ACTIVE EVENT RECORD",
+    "SIGNAL INSTABILITY DETECTED",
+    "PARTIAL RECORD RECOVERED",
+    "CONTAINMENT FAILURE",
+    "SOURCE VERIFICATION PENDING",
+    "DATA INTEGRITY UNCONFIRMED",
+    "BROADCAST ANOMALY DETECTED",
+    "TIMELINE CONSISTENCY FAILURE",
+    "RELAY INTERRUPTION LOGGED",
+    "ARCHIVAL RECOVERY INCOMPLETE"
+  ];
+
+  const list = document.getElementById("archive-list");
+  const feedback = document.getElementById("archive-feedback");
+  const loadMore = document.getElementById("archive-load-more");
+  const recordCount = document.getElementById("archive-record-count");
+
+  if (!list || !feedback || !loadMore || !recordCount) return;
+
+  let nextCursor = null;
+  let retrievedCount = 0;
+  let requestInProgress = false;
+
+  function stableStatus(story) {
+    const key = String(story.content_id || story.episode_number || story.title);
+    let hash = 0;
+    for (const char of key) {
+      hash = (Math.imul(hash, 31) + char.codePointAt(0)) | 0;
+    }
+    return STATUSES[(hash >>> 0) % STATUSES.length];
   }
-];
 
-const now = new Date();
+  function broadcastReference(story) {
+    if (Number.isInteger(story.episode_number) && story.episode_number > 0) {
+      return "WTLEB-" + String(story.episode_number).padStart(3, "0");
+    }
+    if (typeof story.content_id === "string" && /^[0-9a-f-]{36}$/i.test(story.content_id)) {
+      return "WTLEB-" + story.content_id.slice(0, 8).toUpperCase();
+    }
+    return "REFERENCE PENDING";
+  }
 
-const visibleTransmissions = TRANSMISSIONS.filter(transmission => {
+  function displayDate(value) {
+    if (typeof value !== "string" || !/^\d{4}-\d{2}-\d{2}$/.test(value)) {
+      return "UNVERIFIED";
+    }
+    return value.replace(/-/g, ".");
+  }
 
-  // Convert "2026.06.12" -> "2026-06-12T12:00:00Z"
-  const publishDate =
-    new Date(transmission.date.replace(/\./g, '-') + 'T12:00:00Z');
+  function durationLabel(story) {
+    const sources = Array.isArray(story.sources) ? story.sources : [];
+    const source = sources.find(item => item.source_type === "podcast_rss" &&
+      Number.isInteger(item.duration_seconds) && item.duration_seconds > 0) ||
+      sources.find(item => Number.isInteger(item.duration_seconds) && item.duration_seconds > 0);
+    if (!source) return null;
 
-  return now >= publishDate;
-});
+    const seconds = source.duration_seconds;
+    const hours = Math.floor(seconds / 3600);
+    const minutes = Math.floor((seconds % 3600) / 60);
+    const remainder = seconds % 60;
+    const padded = number => String(number).padStart(2, "0");
+    return hours
+      ? padded(hours) + ":" + padded(minutes) + ":" + padded(remainder)
+      : padded(minutes) + ":" + padded(remainder);
+  }
 
-const archiveList = document.getElementById("archive-list");
+  function safeSourceUrl(value) {
+    if (typeof value !== "string") return null;
+    try {
+      const url = new URL(value);
+      return url.protocol === "https:" ? url.href : null;
+    } catch {
+      return null;
+    }
+  }
 
-visibleTransmissions.forEach((transmission, index) => {
+  function element(tag, className, text) {
+    const node = document.createElement(tag);
+    if (className) node.className = className;
+    if (text !== undefined) node.textContent = text;
+    return node;
+  }
 
-  const transmissionNumber =
-    String(visibleTransmissions.length - index).padStart(3, '0');
+  function sourceLink(url, label) {
+    const link = element("a", "archive-source-link", label + " ↗");
+    link.href = url;
+    link.target = "_blank";
+    link.rel = "noopener noreferrer";
+    return link;
+  }
 
-  const transmissionId = `WTLEB-${transmissionNumber}`;
+  function renderTransmission(story) {
+    if (!story || typeof story.title !== "string" || !story.title.trim()) return;
 
-  const randomStatus =
-    statuses[Math.floor(Math.random() * statuses.length)];
+    const sources = Array.isArray(story.sources) ? story.sources : [];
+    const youtube = sources.find(source => source.source_type === "youtube" &&
+      safeSourceUrl(source.source_url));
+    const podcast = sources.find(source => source.source_type === "podcast_rss" &&
+      safeSourceUrl(source.source_url));
+    const youtubeUrl = youtube ? safeSourceUrl(youtube.source_url) : null;
+    const podcastUrl = podcast ? safeSourceUrl(podcast.source_url) : null;
 
-  const entry = document.createElement("div");
-  entry.className = "archive-entry";
+    const entry = element("article", "archive-entry");
+    const heading = element("h2", "archive-transmission-heading");
+    const header = element("div", "archive-record-header");
+    header.appendChild(element("span", "archive-record-id",
+      "TRANSMISSION ID: " + broadcastReference(story)));
+    header.appendChild(element("span", "archive-record-status",
+      "STATUS: " + stableStatus(story)));
+    entry.appendChild(header);
 
-  entry.innerHTML = `
-    <div class="transmission-id">
-      TRANSMISSION ID: ${transmissionId}
-    </div>
+    const mainUrl = youtubeUrl || podcastUrl;
+    if (mainUrl) {
+      const titleLink = element("a", "archive-transmission-link", story.title);
+      titleLink.href = mainUrl;
+      titleLink.target = "_blank";
+      titleLink.rel = "noopener noreferrer";
+      heading.appendChild(titleLink);
+    } else {
+      heading.appendChild(element("span", "archive-transmission-title", story.title));
+    }
+    entry.appendChild(heading);
 
-    <div class="transmission-status">
-      STATUS: ${randomStatus}
-    </div>
+    const meta = element("div", "archive-record-meta");
+    meta.appendChild(element("span", "", "LOGGED: " + displayDate(story.published_date)));
+    const duration = durationLabel(story);
+    if (duration) meta.appendChild(element("span", "", "DURATION: " + duration));
+    entry.appendChild(meta);
 
-    <a class="transmission-link"
-       href="${transmission.url1}"
-       target="_blank">
-      ${transmission.title}
-    </a>
+    const relays = element("div", "archive-source-links");
+    relays.appendChild(element("span", "archive-relay-caption", "AVAILABLE SOURCES:"));
+    if (youtubeUrl) relays.appendChild(sourceLink(youtubeUrl, "YOUTUBE"));
+    if (podcastUrl) relays.appendChild(sourceLink(podcastUrl, "PODCAST"));
+    if (!youtubeUrl && !podcastUrl) {
+      relays.appendChild(element("span", "archive-no-source", "SOURCE LINK UNAVAILABLE"));
+    }
+    entry.appendChild(relays);
+    list.appendChild(entry);
+  }
 
-    <div class="transmission-date">
-      LOGGED: ${transmission.date}
-      <br /><br />
-      Transmission Sources:
-      <a class="inline-link" title="${transmission.title} Youtube Video Broadcast" href="${transmission.url1}" target="_blank">YouTube</a> |
-      <a class="inline-link" title="${transmission.title} Spotify Audio Broadcast" href="${transmission.url2}" target="_blank">Spotify</a> |
-      <a class="inline-link" title="The Last Emergency Broadcast on Patreon" href="https://www.patreon.com/TheLastEmergencyBroadcast" target="_blank">Patreon</a>
-    </div>
-  `;
+  async function retrieveRecords() {
+    if (requestInProgress) return;
+    requestInProgress = true;
+    loadMore.disabled = true;
+    loadMore.hidden = true;
+    feedback.hidden = false;
+    feedback.textContent = retrievedCount === 0
+      ? "CONTACTING REMOTE CATALOG..."
+      : "RETRIEVING ADDITIONAL RECORDS...";
 
-  archiveList.appendChild(entry);
-});
+    const url = new URL(CATALOG_URL);
+    url.searchParams.set("limit", String(PAGE_SIZE));
+    url.searchParams.set("order", "newest");
+    if (nextCursor) url.searchParams.set("cursor", nextCursor);
+
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), FETCH_TIMEOUT_MS);
+
+    try {
+      const response = await fetch(url.href, {
+        method: "GET",
+        headers: { "Accept": "application/json" },
+        mode: "cors",
+        credentials: "omit",
+        signal: controller.signal
+      });
+      if (!response.ok) throw new Error("Catalog HTTP status: " + response.status);
+
+      const page = await response.json();
+      if (!page || !Array.isArray(page.stories) ||
+          (page.next_cursor !== null && typeof page.next_cursor !== "string")) {
+        throw new Error("Unexpected catalog response format");
+      }
+
+      // The catalog publishes at most PAGE_SIZE records, newest first, and
+      // supplies an opaque cursor if another page is available.
+      for (const story of page.stories) renderTransmission(story);
+      retrievedCount += page.stories.length;
+      nextCursor = page.next_cursor;
+
+      recordCount.textContent = "RECORDS RETRIEVED: " + retrievedCount;
+      if (retrievedCount === 0) {
+        feedback.textContent = "NO PUBLIC TRANSMISSION RECORDS ARE CURRENTLY AVAILABLE.";
+      } else {
+        feedback.textContent = "ARCHIVE INDEX SYNCHRONIZED.";
+      }
+
+      loadMore.hidden = !nextCursor;
+      loadMore.textContent = "RETRIEVE ADDITIONAL RECORDS ↓";
+    } catch (error) {
+      console.warn("WTLEB archive retrieval failed:", error);
+      feedback.textContent = retrievedCount
+        ? "REMOTE CATALOG INTERRUPTED. PREVIOUSLY RETRIEVED RECORDS REMAIN AVAILABLE."
+        : "ARCHIVE CONNECTION INTERRUPTED. REMOTE RECORDS TEMPORARILY UNAVAILABLE.";
+      loadMore.textContent = retrievedCount
+        ? "RETRY RECORD RETRIEVAL ↻"
+        : "RETRY ARCHIVE CONNECTION ↻";
+      loadMore.hidden = false;
+    } finally {
+      clearTimeout(timeout);
+      loadMore.disabled = false;
+      requestInProgress = false;
+    }
+  }
+
+  loadMore.addEventListener("click", retrieveRecords);
+  retrieveRecords();
+})();
