@@ -11,7 +11,7 @@
   </script>
 
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>WTLEB 1720 AM - The Last Emergency Broadcast</title>
   <meta name="description" content="WTLEB 1720 AM — The Last Emergency Broadcast. Station status, relay networks, archived transmissions, reports, and official broadcast channels." />
 
@@ -23,130 +23,447 @@
   <meta name="theme-color" content="#0b0b0b">
 
   <style>
-    .main { text-align: center; }
-    .visually-hidden {
-      position: absolute;
-      width: 1px;
-      height: 1px;
-      padding: 0;
-      margin: -1px;
-      overflow: hidden;
-      clip: rect(0, 0, 0, 0);
-      white-space: nowrap;
-      border: 0;
+    /* Homepage-only styling; other station pages keep their existing layout. */
+    .home-container {
+      max-width: 1080px;
+      padding-top: 32px;
     }
-    .station-logo {
+
+    .home-skip-link {
+      position: absolute;
+      top: -100px;
+      left: 16px;
+      z-index: 10;
+      padding: 10px 14px;
+      background: #e0a106;
+      color: #0b0b0b;
+    }
+
+    .home-skip-link:focus { top: 10px; }
+
+    .home-masthead {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      padding: 4px 0 24px;
+      margin-bottom: 36px;
+      border-bottom: 1px solid #393022;
+    }
+
+    .home-brand {
+      display: block;
+      flex: 0 1 355px;
+      min-width: 0;
+    }
+
+    .home-brand img {
       display: block;
       width: 100%;
-      max-width: 520px;
+      max-width: 355px;
       height: auto;
-      margin: 0 auto 14px;
     }
-    .status { color: #c9472d; margin-bottom: 30px; font-size: 14px; letter-spacing: 1px; font-weight: bold; }
-    #rotating-status { color: #888; font-size: 12px; margin-top: -10px; margin-bottom: 20px; }
-    .section-title { margin: 30px 0 15px; font-size: 16px; letter-spacing: 1px; }
-    .text { font-size: 13px; color: #888; margin: 15px 0 25px; line-height: 1.6; }
-    .inline-link { color: #e0a106; text-decoration: underline; }
-    .inline-link:hover { color: #ffffff; }
-    .live-panel {
-      margin: 18px 0 30px;
-      padding: 18px 0;
-      border-top: 1px solid #222;
-      border-bottom: 1px solid #222;
+
+    .home-masthead-meta {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 10px;
+      text-align: right;
     }
-    .live-state {
+
+    .home-system-label,
+    .home-code,
+    .home-telemetry,
+    .home-relay-caption {
+      font-size: 11px;
+      letter-spacing: 1.2px;
+      line-height: 1.6;
+    }
+
+    .home-system-label { color: #777064; }
+
+    .home-on-air {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
       color: #c9472d;
-      font-size: 12px;
+      font-size: 11px;
       font-weight: bold;
       letter-spacing: 1px;
-      margin-bottom: 10px;
     }
-    .live-description {
-      color: #888;
-      font-size: 13px;
-      line-height: 1.6;
-      margin-bottom: 14px;
+
+    .home-indicator {
+      display: inline-block;
+      width: 7px;
+      height: 7px;
+      flex: 0 0 7px;
+      border-radius: 50%;
+      background: #c9472d;
     }
-    .live-links {
-      font-size: 11px;
+
+    .home-layout { gap: 42px; }
+
+    .home-main { text-align: left; }
+
+    .home-code {
+      color: #b87f07;
+      font-weight: bold;
+      margin: 0 0 16px;
+    }
+
+    .home-intro {
+      padding: 0 0 40px;
+    }
+
+    .home-intro h1 {
+      color: #e0a106;
+      font-size: clamp(26px, 3.4vw, 36px);
+      letter-spacing: 1.1px;
+      line-height: 1.25;
+      margin: 0 0 23px;
+      max-width: 720px;
+    }
+
+    .home-lead {
+      color: #d1cdc3;
+      font-size: 16px;
+      line-height: 1.7;
+      max-width: 60ch;
+      margin: 0 0 15px;
+    }
+
+    .home-detail {
+      color: #918b82;
+      font-size: 14px;
+      line-height: 1.7;
+      max-width: 64ch;
+      margin: 0;
+    }
+
+    .home-actions {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 14px 24px;
+      margin-top: 30px;
+    }
+
+    .home-primary-action,
+    .home-secondary-action,
+    .home-panel-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      font-size: 12px;
+      font-weight: bold;
+      letter-spacing: .65px;
+      line-height: 1.5;
+      text-decoration: none;
+      transition: background-color .15s ease, color .15s ease, border-color .15s ease;
+    }
+
+    .home-primary-action {
+      padding: 12px 16px;
+      border: 1px solid #e0a106;
+      color: #e0a106;
+    }
+
+    .home-primary-action:hover,
+    .home-primary-action:focus-visible {
+      background: #e0a106;
+      color: #0b0b0b;
+    }
+
+    .home-secondary-action {
+      color: #bbb4a9;
+      padding: 12px 0;
+      border-bottom: 1px solid transparent;
+    }
+
+    .home-secondary-action:hover,
+    .home-secondary-action:focus-visible {
+      color: #e0a106;
+      border-bottom-color: #e0a106;
+    }
+
+    .home-broadcast {
+      border: 1px solid #383021;
+      background: #11100d;
+      padding: 23px 24px 19px;
+      margin: 0 0 37px;
+    }
+
+    .home-panel-top,
+    .home-panel-bottom {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px 20px;
+    }
+
+    .home-panel-top {
+      margin-bottom: 20px;
+    }
+
+    .home-panel-top .home-code { margin: 0; }
+
+    .home-broadcast h2,
+    .home-relays h2 {
+      color: #dfd8c9;
+      font-size: 21px;
       letter-spacing: 1px;
-      line-height: 2;
+      line-height: 1.35;
+      margin: 0 0 12px;
     }
-    .footer { margin-top: 40px; font-size: 12px; color: #666; line-height: 1.6; }
+
+    .home-broadcast p,
+    .home-relays p {
+      color: #aaa398;
+      font-size: 14px;
+      line-height: 1.7;
+      max-width: 63ch;
+      margin: 0;
+    }
+
+    .home-panel-link {
+      color: #e0a106;
+      margin-top: 22px;
+      text-decoration: underline;
+      text-underline-offset: 4px;
+    }
+
+    .home-panel-link:hover,
+    .home-panel-link:focus-visible { color: #fff; }
+
+    .home-panel-bottom {
+      border-top: 1px solid #332c23;
+      color: #777064;
+      font-size: 10px;
+      letter-spacing: .75px;
+      margin-top: 23px;
+      padding-top: 15px;
+    }
+
+    .home-relays {
+      border-top: 1px solid #383021;
+      padding-top: 27px;
+    }
+
+    .home-relays .home-code { margin-bottom: 10px; }
+
+    .home-relay-links {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 0 18px;
+      list-style: none;
+      padding: 0;
+      margin: 22px 0 0;
+    }
+
+    .home-relay-links li {
+      border-bottom: 1px solid #2b261d;
+      min-width: 0;
+    }
+
+    .home-relay-links a {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      color: #e0a106;
+      font-size: 12px;
+      letter-spacing: .5px;
+      text-decoration: none;
+      padding: 14px 1px;
+    }
+
+    .home-relay-links a:hover,
+    .home-relay-links a:focus-visible {
+      color: #fff;
+    }
+
+    .home-relay-links a span { color: #82735e; }
+
+    .home-advisory {
+      border-top: 1px solid #29251e;
+      color: #777064;
+      font-size: 12px;
+      line-height: 1.7;
+      margin: 38px 0 0;
+      padding-top: 20px;
+    }
+
+    .home-telemetry {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 8px 20px;
+      color: #756d60;
+      margin-top: 30px;
+    }
+
+    .home-container .site-footer {
+      text-align: left;
+      margin-top: 32px;
+    }
 
     @media (max-width: 768px) {
-      .station-logo {
-        max-width: 360px;
-        margin-bottom: 12px;
+      .home-container { padding-top: 24px; }
+
+      .home-masthead {
+        gap: 18px;
+        margin-bottom: 30px;
       }
+
+      .home-brand { flex-basis: 300px; }
+
+      .home-layout { gap: 34px; }
+
+      .home-intro { padding-bottom: 33px; }
+
+      .home-broadcast { margin-bottom: 33px; }
+    }
+
+    @media (max-width: 560px) {
+      .home-masthead {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 16px;
+        padding-bottom: 20px;
+      }
+
+      .home-brand {
+        flex: none;
+        width: 100%;
+        max-width: 315px;
+      }
+
+      .home-masthead-meta {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        width: 100%;
+        gap: 8px 16px;
+        text-align: left;
+      }
+
+      .home-intro h1 { font-size: 28px; }
+
+      .home-lead { font-size: 15px; }
+
+      .home-actions {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .home-broadcast { padding: 20px 18px 18px; }
+
+      .home-relay-links {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 0 14px;
+      }
+    }
+
+    @media (max-width: 370px) {
+      .home-relay-links { grid-template-columns: 1fr; }
+      .home-system-label { display: none; }
     }
   </style>
 </head>
 
 <body>
-  <div class="container">
-    <div class="layout">
-      <div class="main">
-        <h1 class="visually-hidden">WTLEB 1720 AM</h1>
+  <a class="home-skip-link" href="#main-content">SKIP TO STATION CONTENT</a>
+  <div class="container home-container">
+    <header class="home-masthead">
+      <a href="/" class="home-brand" aria-label="WTLEB 1720 AM station home">
         <img
-          class="station-logo"
           src="/images/wtleb1720am-logo.png"
           alt="WTLEB 1720 AM"
           loading="eager"
           fetchpriority="high"
           decoding="async"
+          width="2080"
+          height="326"
         >
-        <div class="status">STATUS: TRANSMISSION ACTIVE</div>
-        <div id="rotating-status">INITIALIZING...</div>
+      </a>
 
-        <div class="section-title">THE LAST EMERGENCY BROADCAST</div>
-
-        <div class="text">
-          Emergency information is transmitted on this frequency<br>
-          for as long as broadcast infrastructure remains operational.
-        </div>
-
-        <div class="text">
-          Signal is being relayed through external infrastructure.<br>
-          Continuity is not guaranteed.
-        </div>
-
-        <div class="section-title">LIVE TRANSMISSION</div>
-
-        <div class="text">
-          <div class="live-state">CONTINUOUS BROADCAST FEED ACTIVE</div>
-          <div class="live-description">
-            WTLEB 1720 AM is transmitting continuously through available external relay infrastructure.
-          </div>
-          <div class="live-links">
-            <a href="/live.html" class="inline-link">OPEN LIVE TRANSMISSION INTERFACE</a>
-          </div>
-        </div>
-
-        <div class="section-title">RELAY NETWORKS</div>
-
-        <div class="text">
-          External relay infrastructure remains available.
-          <br>
-          <a href="https://youtube.com/@thelastemergencybroadcast" class="inline-link" target="_blank" rel="noopener noreferrer">YOUTUBE</a>
-          |
-          <a href="https://open.spotify.com/show/2HImUC8mgbFOSEdd7tUyKp" class="inline-link" target="_blank" rel="noopener noreferrer">SPOTIFY</a>
-          |
-          <a href="https://podcasts.apple.com/us/podcast/the-last-emergency-broadcast/id1895206186" class="inline-link" target="_blank" rel="noopener noreferrer">APPLE</a>
-          |
-          <a href="https://iheart.com/podcast/331351285/" class="inline-link" target="_blank" rel="noopener noreferrer">IHEARTRADIO</a>
-          |
-          <a href="https://music.amazon.com/podcasts/4365cff7-e8ee-4260-8cb8-3f466d347c7e" class="inline-link" target="_blank" rel="noopener noreferrer">AMAZON MUSIC</a>
-          |
-          <a href="https://pca.st/qpqdgwr6" class="inline-link" target="_blank" rel="noopener noreferrer">POCKETCASTS</a>
-        </div>
-
-        <div class="footer">
-          Material distribution is restricted. Access is available through authorized channels.
-        </div>
+      <div class="home-masthead-meta">
+        <span class="home-system-label">STATION CONTROL // AM 1720</span>
+        <span class="home-on-air"><span class="home-indicator" aria-hidden="true"></span>TRANSMISSION ACTIVE</span>
       </div>
+    </header>
 
-      <div id="station-navigation" class="sidebar"></div>
+    <div class="layout home-layout">
+      <main class="main home-main" id="main-content">
+        <section class="home-intro" aria-labelledby="station-heading">
+          <div class="home-code">STATION STATUS / 001</div>
+          <h1 id="station-heading">THE LAST EMERGENCY BROADCAST</h1>
+          <p class="home-lead">
+            Emergency information is transmitted on this frequency for as long as broadcast
+            infrastructure remains operational.
+          </p>
+          <p class="home-detail">
+            Signal is being relayed through external infrastructure.
+            Continuity is not guaranteed.
+          </p>
+
+          <div class="home-actions">
+            <a class="home-primary-action" href="/live.html">MONITOR LIVE TRANSMISSION <span aria-hidden="true">→</span></a>
+            <a class="home-secondary-action" href="/archive.html">VIEW BROADCAST ARCHIVE <span aria-hidden="true">→</span></a>
+          </div>
+        </section>
+
+        <section class="home-broadcast" aria-labelledby="live-heading">
+          <div class="home-panel-top">
+            <div class="home-code">BROADCAST CHANNEL / 002</div>
+            <span class="home-on-air"><span class="home-indicator" aria-hidden="true"></span>CONTINUOUS FEED ACTIVE</span>
+          </div>
+          <h2 id="live-heading">LIVE TRANSMISSION</h2>
+          <p>
+            WTLEB 1720 AM is transmitting continuously through available external relay
+            infrastructure.
+          </p>
+          <a href="/live.html" class="home-panel-link">OPEN LIVE TRANSMISSION INTERFACE <span aria-hidden="true">→</span></a>
+          <div class="home-panel-bottom">
+            <span>TRANSMISSION ROUTING: EXTERNAL</span>
+            <span>CONTINUITY: UNVERIFIED</span>
+          </div>
+        </section>
+
+        <section class="home-relays" aria-labelledby="relay-heading">
+          <div class="home-code">RELAY INFRASTRUCTURE / 003</div>
+          <h2 id="relay-heading">RELAY NETWORKS</h2>
+          <p>
+            External relay infrastructure remains available. Select an authorized
+            network to monitor archived and continuing transmissions.
+          </p>
+
+          <ul class="home-relay-links">
+            <li><a href="https://youtube.com/@thelastemergencybroadcast" target="_blank" rel="noopener noreferrer">YOUTUBE <span aria-hidden="true">↗</span></a></li>
+            <li><a href="https://open.spotify.com/show/2HImUC8mgbFOSEdd7tUyKp" target="_blank" rel="noopener noreferrer">SPOTIFY <span aria-hidden="true">↗</span></a></li>
+            <li><a href="https://podcasts.apple.com/us/podcast/the-last-emergency-broadcast/id1895206186" target="_blank" rel="noopener noreferrer">APPLE <span aria-hidden="true">↗</span></a></li>
+            <li><a href="https://iheart.com/podcast/331351285/" target="_blank" rel="noopener noreferrer">IHEARTRADIO <span aria-hidden="true">↗</span></a></li>
+            <li><a href="https://music.amazon.com/podcasts/4365cff7-e8ee-4260-8cb8-3f466d347c7e" target="_blank" rel="noopener noreferrer">AMAZON MUSIC <span aria-hidden="true">↗</span></a></li>
+            <li><a href="https://pca.st/qpqdgwr6" target="_blank" rel="noopener noreferrer">POCKET CASTS <span aria-hidden="true">↗</span></a></li>
+          </ul>
+        </section>
+
+        <p class="home-advisory">
+          Material distribution is restricted. Access is available through authorized channels.
+        </p>
+
+        <div class="home-telemetry" aria-label="Station system telemetry">
+          <span>CONTROL CHANNEL: 1720 AM</span>
+          <span id="rotating-status">INITIALIZING...</span>
+        </div>
+      </main>
+
+      <nav id="station-navigation" class="sidebar" aria-label="Station control navigation"></nav>
     </div>
   </div>
 
