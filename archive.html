@@ -11,8 +11,9 @@
   </script>
 
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>WTLEB 1720 AM - Archived Transmissions</title>
+  <meta name="description" content="Access recovered WTLEB 1720 AM transmission records, including YouTube and podcast relays." />
 
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon/favicon-32x32.png">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon/apple-touch-icon.png">
@@ -22,47 +23,248 @@
   <meta name="theme-color" content="#0b0b0b">
 
   <style>
-    .status { text-align: center; color: #c9472d; margin-bottom: 30px; font-size: 14px; letter-spacing: 1px; font-weight: bold; }
-    .text { text-align: center; font-size: 13px; color: #888; margin-bottom: 40px; line-height: 1.6; }
-    .archive-container { border-top: 1px solid #222; padding-top: 10px; }
-    .archive-entry { padding: 20px 0; border-bottom: 1px solid #1a1a1a; }
-    .transmission-id { color: #666; font-size: 11px; letter-spacing: 1px; margin-bottom: 6px; }
-    .transmission-status { color: #666; font-size: 11px; margin-bottom: 10px; letter-spacing: 1px; }
-    .transmission-link,
-    .transmission-link:link,
-    .transmission-link:visited { color: #e0a106; -webkit-text-fill-color: #e0a106; text-decoration: none; font-size: 18px; letter-spacing: 1px; line-height: 1.4; }
-    .transmission-link:hover,
-    .transmission-link:focus { color: #ffffff; -webkit-text-fill-color: #ffffff; }
-    .transmission-date { color: #666; font-size: 11px; margin-top: 10px; letter-spacing: 1px; }
-    .inline-link,
-    .inline-link:link,
-    .inline-link:visited { color: #e0a106; -webkit-text-fill-color: #e0a106; text-decoration: underline; font-size: 10px; }
-    .inline-link:hover,
-    .inline-link:focus { color: #ffffff; -webkit-text-fill-color: #ffffff; }
-    @media (max-width: 768px) { .transmission-link { font-size: 16px; } }
+    /* Archive-only layout to preserve the styling of other station pages. */
+    .archive-container-shell { max-width: 1080px; padding-top: 32px; }
+    .archive-layout { gap: 42px; }
+    .archive-main { text-align: left; }
+
+    .archive-heading-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 14px 22px;
+      border-bottom: 1px solid #393022;
+      padding: 4px 0 25px;
+    }
+
+    .archive-page-title {
+      color: #e0a106;
+      font-size: clamp(25px, 3.2vw, 32px);
+      letter-spacing: 1px;
+      line-height: 1.25;
+      margin: 0;
+      text-align: left;
+    }
+
+    .archive-access-status {
+      color: #c9472d;
+      font-size: 11px;
+      font-weight: bold;
+      letter-spacing: 1px;
+      line-height: 1.6;
+      margin: 0;
+    }
+
+    .archive-lead {
+      color: #aaa398;
+      font-size: 15px;
+      line-height: 1.7;
+      margin: 27px 0 31px;
+      max-width: 60ch;
+    }
+
+    .archive-index-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      flex-wrap: wrap;
+      gap: 10px 18px;
+      padding-bottom: 14px;
+      border-bottom: 1px solid #383021;
+    }
+
+    .archive-index-label,
+    .archive-record-count,
+    .archive-record-id,
+    .archive-record-status,
+    .archive-record-meta,
+    .archive-relay-caption,
+    .archive-no-source {
+      font-size: 11px;
+      letter-spacing: .65px;
+      line-height: 1.6;
+    }
+
+    .archive-index-label { color: #b87f07; font-weight: bold; }
+    .archive-record-count { color: #82786a; }
+
+    .archive-entry {
+      padding: 23px 0 22px;
+      border-bottom: 1px solid #2d281f;
+    }
+
+    .archive-record-header {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 5px 15px;
+    }
+
+    .archive-record-id { color: #8b8275; }
+    .archive-record-status { color: #a37738; }
+
+    .archive-transmission-heading {
+      font-size: 18px;
+      font-weight: normal;
+      letter-spacing: .45px;
+      line-height: 1.45;
+      margin: 12px 0 12px;
+    }
+
+    .archive-transmission-link,
+    .archive-transmission-link:link,
+    .archive-transmission-link:visited,
+    .archive-transmission-title {
+      color: #e0a106;
+      text-decoration: none;
+      overflow-wrap: anywhere;
+    }
+
+    .archive-transmission-link:hover,
+    .archive-transmission-link:focus-visible {
+      color: #fff;
+      text-decoration: underline;
+      text-underline-offset: 4px;
+    }
+
+    .archive-record-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px 24px;
+      color: #948b7d;
+    }
+
+    .archive-source-links {
+      display: flex;
+      align-items: baseline;
+      flex-wrap: wrap;
+      gap: 9px 20px;
+      margin-top: 13px;
+    }
+
+    .archive-relay-caption { color: #756c5f; }
+
+    .archive-source-link,
+    .archive-source-link:link,
+    .archive-source-link:visited {
+      color: #e0a106;
+      font-size: 11px;
+      letter-spacing: .5px;
+      line-height: 1.6;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+
+    .archive-source-link:hover,
+    .archive-source-link:focus-visible { color: #fff; }
+    .archive-no-source { color: #82786a; }
+
+    .archive-footer-controls {
+      display: flex;
+      align-items: flex-start;
+      flex-direction: column;
+      gap: 15px;
+      padding-top: 24px;
+    }
+
+    .archive-feedback {
+      color: #948b7d;
+      font-size: 11px;
+      letter-spacing: .6px;
+      line-height: 1.6;
+      margin: 0;
+    }
+
+    .archive-load-more {
+      appearance: none;
+      background: transparent;
+      border: 1px solid #e0a106;
+      color: #e0a106;
+      cursor: pointer;
+      font: inherit;
+      font-size: 12px;
+      font-weight: bold;
+      letter-spacing: .6px;
+      padding: 12px 17px;
+      text-align: center;
+    }
+
+    .archive-load-more:hover,
+    .archive-load-more:focus-visible {
+      background: #e0a106;
+      color: #0b0b0b;
+    }
+
+    .archive-load-more:disabled { opacity: .55; cursor: progress; }
+    .archive-load-more[hidden] { display: none; }
+
+    .archive-continuity-note {
+      border-top: 1px solid #2d281f;
+      color: #756c5f;
+      font-size: 12px;
+      line-height: 1.7;
+      margin-top: 38px;
+      padding-top: 20px;
+    }
+
+    .archive-container-shell .site-footer { text-align: left; margin-top: 32px; }
+
+    @media (max-width: 768px) {
+      .archive-container-shell { padding-top: 24px; }
+      .archive-layout { gap: 30px; }
+    }
+
+    @media (max-width: 560px) {
+      .archive-page-title { font-size: 27px; }
+      .archive-lead { font-size: 14px; }
+      .archive-transmission-heading { font-size: 17px; }
+      .archive-index-header { align-items: flex-start; }
+      .archive-record-header { flex-direction: column; }
+      .archive-load-more { width: 100%; }
+    }
   </style>
 </head>
 
 <body>
-  <div class="container">
-    <div class="layout">
-      <div class="main">
-        <h1 class="page-title">ARCHIVED TRANSMISSIONS</h1>
+  <div class="container archive-container-shell">
+    <div class="layout archive-layout">
+      <main class="main archive-main" id="main-content">
+        <header class="archive-heading-row">
+          <h1 class="archive-page-title">ARCHIVED TRANSMISSIONS</h1>
+          <p class="archive-access-status">● ACCESS PERMITTED</p>
+        </header>
 
-        <div class="status">STATUS: ARCHIVE ACCESS PERMITTED</div>
-
-        <div class="text">
-          Historical transmissions have been indexed for continuity review.<br>
-          Some records may be incomplete, corrupted, or internally inconsistent.<br>
+        <p class="archive-lead">
+          Historical transmissions have been indexed for continuity review.
+          Some records may be incomplete, corrupted, or internally inconsistent.
           Signal degradation increases with archive depth.
+        </p>
+
+        <div class="archive-index-header">
+          <span class="archive-index-label">TRANSMISSION RECORDS / NEWEST FIRST</span>
+          <span id="archive-record-count" class="archive-record-count">RECORDS RETRIEVED: 0</span>
         </div>
 
-        <div id="archive-list" class="archive-container">
-          <!-- archive.js populates this -->
-        </div>
-      </div>
+        <div id="archive-list" class="archive-container" aria-label="Recovered transmission records"></div>
 
-      <div id="station-navigation" class="sidebar"></div>
+        <div class="archive-footer-controls">
+          <p id="archive-feedback" class="archive-feedback" role="status" aria-live="polite">
+            CONTACTING REMOTE CATALOG...
+          </p>
+          <button id="archive-load-more" class="archive-load-more" type="button" hidden>
+            RETRIEVE ADDITIONAL RECORDS ↓
+          </button>
+        </div>
+
+        <p class="archive-continuity-note">
+          Material distribution remains subject to relay availability.
+          Archive integrity and transmission continuity are not guaranteed.
+        </p>
+      </main>
+
+      <nav id="station-navigation" class="sidebar" aria-label="Station control navigation"></nav>
     </div>
   </div>
 
