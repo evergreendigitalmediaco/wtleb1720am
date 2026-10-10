@@ -10,7 +10,7 @@
 
   const image = document.createElement("img");
   image.src = "/images/wtleb1720am-logo.png";
-  image.alt = "WTLEB 1720 AM";
+  image.alt = "WTLEB 1720 AM - The Last Emergency Broadcast";
   image.width = 2080;
   image.height = 326;
   image.loading = "eager";
