@@ -247,6 +247,64 @@
       padding-top: 15px;
     }
 
+
+    /* Compact catalog-driven update; broadcast playback status remains separate. */
+    .home-latest {
+      border-top: 1px solid #383021;
+      padding: 24px 0 30px;
+      margin-bottom: 29px;
+    }
+
+    .home-latest .home-code { margin-bottom: 10px; }
+
+    .home-latest h2 {
+      color: #dfd8c9;
+      font-size: 18px;
+      font-weight: normal;
+      letter-spacing: 1px;
+      line-height: 1.4;
+      margin: 0 0 12px;
+    }
+
+    .home-latest-title {
+      color: #e0a106;
+      font-size: 16px;
+      font-weight: bold;
+      letter-spacing: .35px;
+      line-height: 1.5;
+      margin: 0 0 8px;
+    }
+
+    .home-latest-meta {
+      color: #938a7c;
+      font-size: 11px;
+      letter-spacing: .8px;
+      line-height: 1.6;
+      margin: 0;
+    }
+
+    .home-latest-links,
+    .home-latest-sources {
+      display: flex;
+      align-items: baseline;
+      flex-wrap: wrap;
+      gap: 8px 22px;
+    }
+
+    .home-latest-links { margin-top: 18px; }
+
+    .home-latest-link {
+      color: #e0a106;
+      font-size: 11px;
+      letter-spacing: .5px;
+      line-height: 1.6;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+
+    .home-latest-link:hover,
+    .home-latest-link:focus-visible { color: #fff; }
+
     .home-relays {
       border-top: 1px solid #383021;
       padding-top: 27px;
@@ -435,8 +493,20 @@
           </div>
         </section>
 
+
+        <section class="home-latest" aria-labelledby="latest-broadcast-heading">
+          <div class="home-code">ARCHIVE UPDATE / 003</div>
+          <h2 id="latest-broadcast-heading">LATEST RECOVERED BROADCAST</h2>
+          <p id="latest-broadcast-title" class="home-latest-title" aria-live="polite">RETRIEVING LATEST TRANSMISSION...</p>
+          <p id="latest-broadcast-meta" class="home-latest-meta">REMOTE CATALOG QUERY IN PROGRESS</p>
+          <div class="home-latest-links">
+            <span id="latest-broadcast-links" class="home-latest-sources"></span>
+            <a class="home-latest-link" href="/archive.html">FULL ARCHIVE →</a>
+          </div>
+        </section>
+
         <section class="home-relays" aria-labelledby="relay-heading">
-          <div class="home-code">RELAY INFRASTRUCTURE / 003</div>
+          <div class="home-code">RELAY INFRASTRUCTURE / 004</div>
           <h2 id="relay-heading">RELAY NETWORKS</h2>
           <p>
             External relay infrastructure remains available. Select an authorized
@@ -469,6 +539,7 @@
 
   <script src="/js/navigation.js"></script>
   <script src="/js/footer.js"></script>
+  <script src="/js/latest-broadcast.js"></script>
   <script>
     const messages = [
       "SIGNAL STABILITY: VARIABLE",
