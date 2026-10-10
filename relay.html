@@ -21,82 +21,76 @@
 
   <meta name="theme-color" content="#0b0b0b">
 
-  <style>
-    .main { text-align: center; }
-    .status { color: #c9472d; margin-bottom: 30px; font-size: 14px; letter-spacing: 1px; font-weight: bold; }
-    .text { font-size: 13px; color: #888; margin: 15px 0 30px; line-height: 1.6; }
-    .relay-section { border-top: 1px solid #222; padding-top: 22px; margin-top: 25px; text-align: left; }
-    .relay-section-title { color: #666; font-size: 14px; letter-spacing: 1px; margin-bottom: 15px; }
-    .relay-entry { padding: 14px 0; border-bottom: 1px solid #1a1a1a; }
-    .relay-name { color: #bbbbbb; font-size: 16px; letter-spacing: 1px; margin-bottom: 6px; }
-    .relay-description { color: #777; font-size: 12px; line-height: 1.5; margin-bottom: 8px; }
-    .relay-link { color: #e0a106; font-size: 11px; text-decoration: underline; letter-spacing: 1px; }
-    .relay-link:hover { color: #ffffff; }
-  </style>
-</head>
+  </head>
 <body>
   <div class="container">
+    <header id="station-header" class="station-header"></header>
     <div class="layout">
-      <div class="main">
+      <main class="main" id="main-content">
+        <p class="page-kicker">RELAY INFRASTRUCTURE / 004</p>
         <h1 class="page-title">RELAY NETWORKS</h1>
-        <div class="status">STATUS: AUTHORIZED RELAYS AVAILABLE</div>
-        <div class="text">
-          Official WTLEB transmissions and station material are distributed<br>
-          through the following authorized relay networks.
-        </div>
+        <p class="page-status">● AUTHORIZED RELAYS AVAILABLE</p>
+        <p class="page-intro">
+          Official WTLEB transmissions and station material are distributed through
+          the following authorized relay networks.
+        </p>
 
-        <div class="relay-section">
-          <div class="relay-section-title">LIVE VIDEO RELAYS</div>
-          <div class="relay-entry">
-            <div class="relay-name">YOUTUBE — WTLEB 1720 AM</div>
-            <div class="relay-description">Primary public relay for the continuous WTLEB 1720 AM transmission.</div>
-            <a class="relay-link" href="https://youtube.com/@wtleb1720am/live" target="_blank" rel="noopener noreferrer">MONITOR LIVE RELAY</a>
+        <section class="station-section" aria-labelledby="live-relays-heading">
+          <p class="station-section-code">RELAY DIRECTORY / 001</p>
+          <h2 class="station-section-heading" id="live-relays-heading">LIVE VIDEO RELAYS</h2>
+          <div class="station-row">
+            <h3 class="station-row-title">YOUTUBE — WTLEB 1720 AM</h3>
+            <p class="station-row-desc">Primary public relay for the continuous WTLEB 1720 AM transmission.</p>
+            <a class="station-link" href="https://youtube.com/@wtleb1720am/live" target="_blank" rel="noopener noreferrer">MONITOR LIVE RELAY ↗</a>
           </div>
-          <div class="relay-entry">
-            <div class="relay-name">RUMBLE — WTLEB 1720 AM</div>
-            <div class="relay-description">Alternate public relay for the continuous WTLEB 1720 AM transmission.</div>
-            <a class="relay-link" href="https://rumble.com/c/wtleb1720am/live" target="_blank" rel="noopener noreferrer">MONITOR LIVE RELAY</a>
+          <div class="station-row">
+            <h3 class="station-row-title">RUMBLE — WTLEB 1720 AM</h3>
+            <p class="station-row-desc">Alternate public relay for the continuous WTLEB 1720 AM transmission.</p>
+            <a class="station-link" href="https://rumble.com/c/wtleb1720am/live" target="_blank" rel="noopener noreferrer">MONITOR LIVE RELAY ↗</a>
           </div>
-        </div>
+        </section>
 
-        <div class="relay-section">
-          <div class="relay-section-title">VIDEO TRANSMISSION ARCHIVE</div>
-          <div class="relay-entry">
-            <div class="relay-name">YOUTUBE — THE LAST EMERGENCY BROADCAST</div>
-            <div class="relay-description">Primary public video archive for recorded WTLEB transmissions.</div>
-            <a class="relay-link" href="https://youtube.com/@thelastemergencybroadcast" target="_blank" rel="noopener noreferrer">ACCESS ARCHIVE</a>
+        <section class="station-section" aria-labelledby="recorded-relays-heading">
+          <p class="station-section-code">RELAY DIRECTORY / 002</p>
+          <h2 class="station-section-heading" id="recorded-relays-heading">VIDEO TRANSMISSION ARCHIVE</h2>
+          <div class="station-row">
+            <h3 class="station-row-title">YOUTUBE — THE LAST EMERGENCY BROADCAST</h3>
+            <p class="station-row-desc">Primary public video archive for recorded WTLEB transmissions.</p>
+            <a class="station-link" href="https://youtube.com/@thelastemergencybroadcast" target="_blank" rel="noopener noreferrer">ACCESS ARCHIVE ↗</a>
           </div>
-        </div>
+        </section>
 
-        <div class="relay-section">
-          <div class="relay-section-title">AUDIO RELAYS</div>
-          <div class="relay-entry"><div class="relay-name">SPOTIFY</div><a class="relay-link" href="https://open.spotify.com/show/2HImUC8mgbFOSEdd7tUyKp" target="_blank" rel="noopener noreferrer">ACCESS RELAY</a></div>
-          <div class="relay-entry"><div class="relay-name">APPLE PODCASTS</div><a class="relay-link" href="https://podcasts.apple.com/us/podcast/the-last-emergency-broadcast/id1895206186" target="_blank" rel="noopener noreferrer">ACCESS RELAY</a></div>
-          <div class="relay-entry"><div class="relay-name">IHEARTRADIO</div><a class="relay-link" href="https://iheart.com/podcast/331351285/" target="_blank" rel="noopener noreferrer">ACCESS RELAY</a></div>
-          <div class="relay-entry"><div class="relay-name">AMAZON MUSIC</div><a class="relay-link" href="https://music.amazon.com/podcasts/4365cff7-e8ee-4260-8cb8-3f466d347c7e" target="_blank" rel="noopener noreferrer">ACCESS RELAY</a></div>
-          <div class="relay-entry"><div class="relay-name">POCKET CASTS</div><a class="relay-link" href="https://pca.st/qpqdgwr6" target="_blank" rel="noopener noreferrer">ACCESS RELAY</a></div>
-        </div>
+        <section class="station-section" aria-labelledby="audio-relays-heading">
+          <p class="station-section-code">RELAY DIRECTORY / 003</p>
+          <h2 class="station-section-heading" id="audio-relays-heading">AUDIO RELAYS</h2>
+          <div class="station-row"><h3 class="station-row-title">SPOTIFY</h3><a class="station-link" href="https://open.spotify.com/show/2HImUC8mgbFOSEdd7tUyKp" target="_blank" rel="noopener noreferrer">ACCESS RELAY ↗</a></div>
+          <div class="station-row"><h3 class="station-row-title">APPLE PODCASTS</h3><a class="station-link" href="https://podcasts.apple.com/us/podcast/the-last-emergency-broadcast/id1895206186" target="_blank" rel="noopener noreferrer">ACCESS RELAY ↗</a></div>
+          <div class="station-row"><h3 class="station-row-title">IHEARTRADIO</h3><a class="station-link" href="https://iheart.com/podcast/331351285/" target="_blank" rel="noopener noreferrer">ACCESS RELAY ↗</a></div>
+          <div class="station-row"><h3 class="station-row-title">AMAZON MUSIC</h3><a class="station-link" href="https://music.amazon.com/podcasts/4365cff7-e8ee-4260-8cb8-3f466d347c7e" target="_blank" rel="noopener noreferrer">ACCESS RELAY ↗</a></div>
+          <div class="station-row"><h3 class="station-row-title">POCKET CASTS</h3><a class="station-link" href="https://pca.st/qpqdgwr6" target="_blank" rel="noopener noreferrer">ACCESS RELAY ↗</a></div>
+        </section>
 
-        <div class="relay-section">
-          <div class="relay-section-title">RESTRICTED RELAY</div>
-          <div class="relay-entry">
-            <div class="relay-name">PATREON</div>
-            <div class="relay-description">Classified transmissions and early-access station material.</div>
-            <a class="relay-link" href="https://www.patreon.com/TheLastEmergencyBroadcast" target="_blank" rel="noopener noreferrer">ACCESS SECURE RELAY</a>
+        <section class="station-section" aria-labelledby="restricted-relay-heading">
+          <p class="station-section-code">RELAY DIRECTORY / 004</p>
+          <h2 class="station-section-heading" id="restricted-relay-heading">RESTRICTED RELAY</h2>
+          <div class="station-row">
+            <h3 class="station-row-title">PATREON</h3>
+            <p class="station-row-desc">Classified transmissions and early-access station material.</p>
+            <a class="station-link" href="https://www.patreon.com/TheLastEmergencyBroadcast" target="_blank" rel="noopener noreferrer">ACCESS SECURE RELAY ↗</a>
           </div>
-        </div>
+        </section>
 
-        <div class="relay-section">
-          <div class="relay-section-title">SOCIAL RELAYS</div>
-          <div class="relay-entry"><div class="relay-name">FACEBOOK</div><a class="relay-link" href="https://facebook.com/thelastemergencybroadcast" target="_blank" rel="noopener noreferrer">ACCESS RELAY</a></div>
-          <div class="relay-entry"><div class="relay-name">INSTAGRAM</div><a class="relay-link" href="https://instagram.com/thelastemergencybroadcast" target="_blank" rel="noopener noreferrer">ACCESS RELAY</a></div>
-        </div>
-      </div>
-
-      <div id="station-navigation" class="sidebar"></div>
+        <section class="station-section" aria-labelledby="social-relays-heading">
+          <p class="station-section-code">RELAY DIRECTORY / 005</p>
+          <h2 class="station-section-heading" id="social-relays-heading">SOCIAL RELAYS</h2>
+          <div class="station-row"><h3 class="station-row-title">FACEBOOK</h3><a class="station-link" href="https://facebook.com/thelastemergencybroadcast" target="_blank" rel="noopener noreferrer">ACCESS RELAY ↗</a></div>
+          <div class="station-row"><h3 class="station-row-title">INSTAGRAM</h3><a class="station-link" href="https://instagram.com/thelastemergencybroadcast" target="_blank" rel="noopener noreferrer">ACCESS RELAY ↗</a></div>
+        </section>
+      </main>
+      <nav id="station-navigation" class="sidebar" aria-label="Station control navigation"></nav>
     </div>
   </div>
-
+  <script src="/js/header.js"></script>
   <script src="/js/navigation.js"></script>
   <script src="/js/footer.js"></script>
 </body>

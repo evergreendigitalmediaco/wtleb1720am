@@ -19,43 +19,54 @@
   <link rel="manifest" href="/images/favicon/site.webmanifest">
   <link rel="stylesheet" href="/css/style.css">
 
-  <style>
-    .main { text-align: center; }
-    .text { font-size: 13px; color: #888; margin-bottom: 30px; line-height: 1.6; }
-    form { display: flex; flex-direction: column; gap: 15px; }
-    input, textarea { background-color: #0b0b0b; border: 1px solid #333; color: #e0a106; padding: 10px; font-family: inherit; font-size: 13px; }
-    textarea { min-height: 120px; resize: vertical; }
-    button { margin-top: 10px; padding: 10px; border: 1px solid #e0a106; background: none; color: #e0a106; cursor: pointer; font-family: inherit; letter-spacing: 1px; }
-    button:hover { background-color: #e0a106; color: #0b0b0b; }
-  </style>
-</head>
-
+  </head>
 <body>
   <div class="container">
+    <header id="station-header" class="station-header"></header>
     <div class="layout">
-      <div class="main">
+      <main class="main" id="main-content">
+        <p class="page-kicker">INCOMING REPORT CHANNEL / 005</p>
         <h1 class="page-title">INCOMING REPORT CHANNEL</h1>
-
-        <div class="text">
-          Reports may be submitted while transmission remains active.<br>
-          Submitted information may be incomplete or unverified.<br>
+        <p class="page-status">● REPORT CHANNEL AVAILABLE</p>
+        <p class="page-intro">
+          Reports may be submitted while transmission remains active.
+          Submitted information may be incomplete or unverified.
           Do not include sensitive personal data.
-        </div>
+        </p>
 
-        <form action="https://formspree.io/f/mbdqzzlr" method="POST">
-          <input type="text" name="name" placeholder="Name" required />
-          <input type="text" name="email" placeholder="Email" required />
-          <input type="text" name="location" placeholder="Location (optional)" />
-          <input type="text" name="timestamp" placeholder="Time of occurrence (optional)" />
-          <textarea name="message" placeholder="Describe the event..." required></textarea>
-          <button type="submit">TRANSMIT REPORT</button>
-        </form>
-      </div>
-
-      <div id="station-navigation" class="sidebar"></div>
+        <section class="station-section" aria-labelledby="report-form-heading">
+          <p class="station-section-code">INCIDENT SUBMISSION / 001</p>
+          <h2 class="station-section-heading" id="report-form-heading">TRANSMIT AN OBSERVATION</h2>
+          <form class="station-form" action="https://formspree.io/f/mbdqzzlr" method="POST">
+            <div class="station-field">
+              <label for="report-name">NAME</label>
+              <input id="report-name" type="text" name="name" autocomplete="name" placeholder="Name" required>
+            </div>
+            <div class="station-field">
+              <label for="report-email">EMAIL</label>
+              <input id="report-email" type="email" name="email" autocomplete="email" placeholder="Email address" required>
+            </div>
+            <div class="station-field">
+              <label for="report-location">LOCATION <span class="field-optional">/ OPTIONAL</span></label>
+              <input id="report-location" type="text" name="location" placeholder="Location of occurrence">
+            </div>
+            <div class="station-field">
+              <label for="report-timestamp">TIME OF OCCURRENCE <span class="field-optional">/ OPTIONAL</span></label>
+              <input id="report-timestamp" type="text" name="timestamp" placeholder="Time of occurrence">
+            </div>
+            <div class="station-field">
+              <label for="report-message">INCIDENT DESCRIPTION</label>
+              <textarea id="report-message" name="message" placeholder="Describe the event..." required></textarea>
+            </div>
+            <button class="station-submit" type="submit">TRANSMIT REPORT →</button>
+          </form>
+        </section>
+        <p class="station-note">Incoming reports are subject to verification. Do not transmit sensitive personal information.</p>
+      </main>
+      <nav id="station-navigation" class="sidebar" aria-label="Station control navigation"></nav>
     </div>
   </div>
-
+  <script src="/js/header.js"></script>
   <script src="/js/navigation.js"></script>
   <script src="/js/footer.js"></script>
 </body>
