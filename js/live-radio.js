@@ -35,6 +35,7 @@
   let popupWindow = null;
   let metadataPending = false;
   let lastGoodMetadata = 0;
+  let storyClock = null; // Latest confirmed position plus a local monotonic clock.
 
   function setPlaybackState(state, label) {
     playbackState = state;
@@ -230,6 +231,7 @@
   }
 
   function setUnknownMetadata(message) {
+    storyClock = null;
     title.textContent = "STATION DATA UNAVAILABLE";
     context.hidden = true;
     progress.hidden = true;
@@ -238,6 +240,20 @@
     bars.forEach(bar => { bar.style.opacity = "0.16"; });
     barGroup.setAttribute("aria-label", "Signal indicator unavailable");
     metadataStatus.textContent = message;
+  }
+
+  function updateStoryClock() {
+    if (!storyClock) return;
+    // Stop extrapolating if the receiver loses contact with the metadata feed.
+    if (lastGoodMetadata && Date.now() - lastGoodMetadata > FRESHNESS_MS) {
+      storyClock.advancing = false;
+    }
+    const elapsed = storyClock.advancing
+      ? Math.max(0, (performance.now() - storyClock.receivedAt) / 1000)
+      : 0;
+    const position = Math.min(storyClock.duration, storyClock.position + elapsed);
+    progress.textContent = "STORY POSITION: " + clock(position) +
+      " / " + clock(storyClock.duration);
   }
 
   function renderMetadata(data) {
@@ -258,8 +274,18 @@
       position >= 0 && typeof duration === "number" && Number.isFinite(duration) && duration > 0;
     progress.hidden = !hasProgress;
     if (hasProgress) {
-      progress.textContent = "STORY POSITION: " + clock(Math.min(position, duration)) +
-        " / " + clock(duration);
+      // Anchor the display at each confirmed server sample; interpolate locally
+      // once per second until the next metadata refresh. Commercials and
+      // other inserted material keep the reported story position frozen.
+      storyClock = {
+        position: Math.min(position, duration),
+        duration,
+        receivedAt: performance.now(),
+        advancing: playout.category === "story"
+      };
+      updateStoryClock();
+    } else {
+      storyClock = null;
     }
 
     const allowed = ["NORMAL", "ELEVATED", "DEGRADED", "CRITICAL"];
@@ -328,6 +354,7 @@
   showFeedback("SELECT TUNE TO LISTEN TO THE LIVE TRANSMISSION");
   void refreshMetadata();
   window.setInterval(() => { void refreshMetadata(); }, POLL_MS);
+  window.setInterval(updateStoryClock, 1000);
   document.addEventListener("visibilitychange", () => {
     if (!document.hidden) void refreshMetadata();
   });
