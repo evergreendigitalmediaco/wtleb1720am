@@ -245,13 +245,17 @@
   function updateStoryClock() {
     if (!storyClock) return;
     // Stop extrapolating if the receiver loses contact with the metadata feed.
-    if (lastGoodMetadata && Date.now() - lastGoodMetadata > FRESHNESS_MS) {
+    if (lastGoodMetadata && Date.now() - lastGoodMetadata > FRESHNESS_MS &&
+        storyClock.advancing) {
+      // Freeze at the last displayed value, not the older server anchor.
+      storyClock.position = storyClock.displayPosition ?? storyClock.position;
       storyClock.advancing = false;
     }
     const elapsed = storyClock.advancing
       ? Math.max(0, (performance.now() - storyClock.receivedAt) / 1000)
       : 0;
     const position = Math.min(storyClock.duration, storyClock.position + elapsed);
+    storyClock.displayPosition = position;
     progress.textContent = "STORY POSITION: " + clock(position) +
       " / " + clock(storyClock.duration);
   }
