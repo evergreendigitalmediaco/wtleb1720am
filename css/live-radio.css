@@ -157,7 +157,7 @@
 .radio-button, .radio-popout-button {
   appearance: none;
   border: 1px solid var(--station-amber);
-  border-radius: 0;
+  border-radius: 5px;
   background: transparent;
   color: var(--station-amber);
   font: inherit;
