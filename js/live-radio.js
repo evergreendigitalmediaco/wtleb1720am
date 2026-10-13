@@ -13,6 +13,7 @@
   const tuneButton = document.getElementById("radio-tune");
   const disconnectButton = document.getElementById("radio-disconnect");
   const volume = document.getElementById("radio-volume");
+  const muteButton = document.getElementById("radio-mute");
   const status = document.getElementById("radio-playback-status");
   const feedback = document.getElementById("radio-feedback");
   const title = document.getElementById("radio-current-title");
@@ -24,7 +25,7 @@
   const metadataStatus = document.getElementById("radio-metadata-status");
   const popout = document.getElementById("radio-popout");
 
-  if (!audio || !tuneButton || !disconnectButton || !volume || !status ||
+  if (!audio || !tuneButton || !disconnectButton || !volume || !muteButton || !status ||
       !feedback || !title || !context || !progress || !condition ||
       bars.length !== 4 || !barGroup || !metadataStatus) return;
 
@@ -82,10 +83,25 @@
     }
   }
 
+  function updateMuteButton() {
+    const muted = audio.muted;
+    muteButton.textContent = muted ? "UNMUTE" : "MUTE";
+    muteButton.setAttribute("aria-pressed", String(muted));
+    muteButton.setAttribute("aria-label", muted ? "Unmute audio" : "Mute audio");
+  }
+
   audio.volume = Number(volume.value) / 100;
   volume.addEventListener("input", () => {
     audio.volume = Number(volume.value) / 100;
+    if (audio.muted && audio.volume > 0) audio.muted = false;
+    updateMuteButton();
   });
+  muteButton.addEventListener("click", () => {
+    audio.muted = !audio.muted;
+    updateMuteButton();
+  });
+  audio.addEventListener("volumechange", updateMuteButton);
+  updateMuteButton();
 
   tuneButton.addEventListener("click", () => { void tuneAudio(); });
   disconnectButton.addEventListener("click", stopAudio);
@@ -134,7 +150,7 @@
       const path = autoTune ? "/radio.html?autotune=1" : "/radio.html";
       popupWindow = window.open(
         path, "wtleb1720_radio",
-        "popup=yes,width=530,height=680,menubar=no,toolbar=no,location=no,status=no,scrollbars=yes,resizable=yes"
+        "popup=yes,width=530,height=570,menubar=no,toolbar=no,location=no,status=no,scrollbars=yes,resizable=yes"
       );
       if (!popupWindow) {
         showFeedback("POP-OUT BLOCKED. ALLOW POP-UPS FOR WTLEB1720AM.COM.", true);
@@ -151,6 +167,34 @@
       if (!manuallyStopped) stopAudio();
       showFeedback("AUDIO TRANSFERRED TO POP-OUT RECEIVER");
     });
+  }
+
+  // Browser window managers may ignore resize requests (especially when
+  // configured to open pop-ups as tabs). For script-opened windows, fit the
+  // actual compact receiver plus browser chrome instead of forcing screen height.
+  if (isPopup) {
+    const shell = document.querySelector(".radio-popup-shell");
+    if (shell && window.opener) {
+      let pendingFit = false;
+      const fitWindow = () => {
+        if (pendingFit) return;
+        pendingFit = true;
+        window.requestAnimationFrame(() => {
+          pendingFit = false;
+          const contentHeight = Math.ceil(shell.getBoundingClientRect().bottom + 10);
+          const chromeHeight = Math.max(0, window.outerHeight - window.innerHeight);
+          const target = Math.min(screen.availHeight, Math.max(350, contentHeight + chromeHeight));
+          if (Math.abs(window.outerHeight - target) > 12) {
+            window.resizeTo(window.outerWidth, target);
+          }
+        });
+      };
+      window.addEventListener("load", fitWindow);
+      if (typeof ResizeObserver !== "undefined") {
+        const observer = new ResizeObserver(fitWindow);
+        observer.observe(shell);
+      }
+    }
   }
 
   function clock(seconds) {
