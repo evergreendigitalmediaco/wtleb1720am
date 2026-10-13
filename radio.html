@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, follow">
+  <meta name="theme-color" content="#0b0b0b">
+  <meta name="description" content="WTLEB 1720 AM compact live audio receiver.">
+  <title>WTLEB 1720 AM | Radio Receiver</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon/favicon-32x32.png">
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/live-radio.css">
+</head>
+<body class="radio-popup-body">
+  <main class="radio-popup-shell">
+    <nav class="radio-popup-nav" aria-label="Receiver navigation">
+      <a href="/live.html">← FULL LIVE INTERFACE</a>
+      <a href="/">STATION HOME ↗</a>
+    </nav>
+        <section class="live-radio" id="live-radio" data-receiver="popup" data-audio-state="standby" aria-label="WTLEB 1720 AM live radio receiver">
+          <div class="radio-topline">
+            <span>WTLEB RECEIVER / AUDIO CHANNEL 01</span>
+            <span id="radio-playback-status" class="radio-playback-status" role="status"><span class="radio-status-led" aria-hidden="true"></span>● STANDBY</span>
+          </div>
+          <div class="radio-dial">
+            <div class="radio-frequency" aria-label="WTLEB 1720 kilohertz">
+              <span>1720</span><span class="radio-frequency-unit">kHz / AM</span>
+            </div>
+            <p class="radio-dial-caption">THE LAST EMERGENCY BROADCAST</p>
+          </div>
+          <div class="radio-readout">
+            <p class="radio-small-label">NOW TRANSMITTING</p>
+            <p class="radio-current-title" id="radio-current-title">AWAITING STATION DATA</p>
+            <p class="radio-program-context" id="radio-program-context" hidden></p>
+            <p class="radio-story-progress" id="radio-story-progress" hidden></p>
+          </div>
+          <div class="radio-environment" aria-label="Fictional station broadcast environment">
+            <div class="radio-condition-row">
+              <span class="radio-small-label">BROADCAST CONDITION</span>
+              <span class="radio-condition" id="radio-condition">UNAVAILABLE</span>
+            </div>
+            <div class="radio-condition-row">
+              <span class="radio-small-label">SIGNAL INTEGRITY</span>
+              <span class="radio-bars" id="radio-bars" role="img" aria-label="Signal indicator unavailable">
+                <span class="radio-bar" aria-hidden="true"></span>
+                <span class="radio-bar" aria-hidden="true"></span>
+                <span class="radio-bar" aria-hidden="true"></span>
+                <span class="radio-bar" aria-hidden="true"></span>
+              </span>
+            </div>
+            <p class="radio-metadata-status" id="radio-metadata-status">STATION TELEMETRY / CONNECTING</p>
+          </div>
+          <div class="radio-controls">
+            <button class="radio-button radio-tune-button" type="button" id="radio-tune">▶ TUNE INTO TRANSMISSION</button>
+            <button class="radio-button radio-disconnect-button" type="button" id="radio-disconnect" disabled>DISCONNECT</button>
+          </div>
+          <div class="radio-bottomline">
+            <div class="radio-volume-group">
+              <label for="radio-volume">VOLUME</label>
+              <input class="radio-volume" type="range" id="radio-volume" min="0" max="100" value="75" step="1" aria-label="Receiver volume">
+            </div>
+            
+          </div>
+          <p class="radio-feedback" id="radio-feedback" role="status" aria-live="polite">SELECT TUNE TO LISTEN TO THE LIVE TRANSMISSION</p>
+          <audio class="radio-audio-element" id="radio-audio" preload="none" playsinline aria-label="WTLEB live audio stream"></audio>
+        </section>
+  </main>
+  <script src="/js/live-radio.js"></script>
+</body>
+</html>
