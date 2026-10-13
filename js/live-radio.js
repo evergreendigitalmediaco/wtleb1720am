@@ -45,6 +45,7 @@
     disconnectButton.disabled = state === "standby";
     tuneButton.textContent = (state === "error" || state === "buffering")
       ? "↻ RECONNECT TRANSMISSION" : "▶ TUNE INTO TRANSMISSION";
+    synchronizeStoryClockPlayback();
   }
 
   function showFeedback(message, isError = false) {
@@ -242,14 +243,35 @@
     metadataStatus.textContent = message;
   }
 
+  function freezeStoryClock() {
+    if (!storyClock || !storyClock.advancing) return;
+    const elapsed = Math.max(0, (performance.now() - storyClock.receivedAt) / 1000);
+    storyClock.position = Math.min(storyClock.duration, storyClock.position + elapsed);
+    storyClock.receivedAt = performance.now();
+    storyClock.advancing = false;
+    updateStoryClock();
+  }
+
+  function synchronizeStoryClockPlayback() {
+    if (!storyClock) return;
+    const shouldAdvance = !manuallyStopped && playbackState === "playing" &&
+      !audio.paused && storyClock.category === "story" &&
+      lastGoodMetadata && Date.now() - lastGoodMetadata <= FRESHNESS_MS;
+    if (shouldAdvance && !storyClock.advancing) {
+      storyClock.receivedAt = performance.now();
+      storyClock.advancing = true;
+    } else if (!shouldAdvance && storyClock.advancing) {
+      freezeStoryClock();
+    }
+  }
+
   function updateStoryClock() {
     if (!storyClock) return;
+    synchronizeStoryClockPlayback();
     // Stop extrapolating if the receiver loses contact with the metadata feed.
     if (lastGoodMetadata && Date.now() - lastGoodMetadata > FRESHNESS_MS &&
         storyClock.advancing) {
-      // Freeze at the last displayed value, not the older server anchor.
-      storyClock.position = storyClock.displayPosition ?? storyClock.position;
-      storyClock.advancing = false;
+      freezeStoryClock();
     }
     const elapsed = storyClock.advancing
       ? Math.max(0, (performance.now() - storyClock.receivedAt) / 1000)
@@ -278,15 +300,33 @@
       position >= 0 && typeof duration === "number" && Number.isFinite(duration) && duration > 0;
     progress.hidden = !hasProgress;
     if (hasProgress) {
-      // Anchor the display at each confirmed server sample; interpolate locally
-      // once per second until the next metadata refresh. Commercials and
-      // other inserted material keep the reported story position frozen.
-      storyClock = {
-        position: Math.min(position, duration),
-        duration,
-        receivedAt: performance.now(),
-        advancing: playout.category === "story"
-      };
+      const eventId = typeof playout.event_id === "string" && playout.event_id
+        ? playout.event_id : playout.category + ":" + displayed;
+      const sameEvent = storyClock && storyClock.eventId === eventId;
+      const isPlaying = !manuallyStopped && playbackState === "playing" && !audio.paused;
+
+      // When disconnected or buffering, preserve the last displayed position
+      // rather than jumping forward each time a new JSON snapshot arrives.
+      if (!sameEvent || isPlaying) {
+        let basePosition = Math.min(position, duration);
+        if (sameEvent && storyClock.advancing && playout.category === "story") {
+          const localPosition = Math.min(storyClock.duration, storyClock.position +
+            Math.max(0, (performance.now() - storyClock.receivedAt) / 1000));
+          // Ignore tiny transport jitter that would otherwise make the counter
+          // skip or repeat a second; correct meaningful drift immediately.
+          if (Math.abs(basePosition - localPosition) < 2) basePosition = localPosition;
+        }
+        storyClock = {
+          eventId,
+          category: playout.category,
+          position: basePosition,
+          duration,
+          receivedAt: performance.now(),
+          advancing: isPlaying && playout.category === "story"
+        };
+      } else {
+        freezeStoryClock();
+      }
       updateStoryClock();
     } else {
       storyClock = null;
