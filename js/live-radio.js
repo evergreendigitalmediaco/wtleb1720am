@@ -83,25 +83,48 @@
     }
   }
 
-  function updateMuteButton() {
-    const muted = audio.muted;
-    muteButton.textContent = muted ? "UNMUTE" : "MUTE";
+  const muteLabel = muteButton.querySelector(".radio-mute-label");
+  let previousVolume = Number(volume.value) > 0 ? Number(volume.value) : 75;
+
+  function updateVolumeControls() {
+    const muted = audio.muted || Number(volume.value) === 0;
+    const action = muted ? "Restore previous volume" : "Mute audio";
     muteButton.setAttribute("aria-pressed", String(muted));
-    muteButton.setAttribute("aria-label", muted ? "Unmute audio" : "Mute audio");
+    muteButton.setAttribute("aria-label", action);
+    muteButton.title = action;
+    if (muteLabel) muteLabel.textContent = muted ? "UNMUTE" : "MUTE";
+    volume.style.setProperty("--radio-volume-percent", volume.value + "%");
+  }
+
+  function setMuted(muted) {
+    if (muted) {
+      const currentVolume = Number(volume.value);
+      if (currentVolume > 0) previousVolume = currentVolume;
+      volume.value = "0";
+      audio.volume = 0;
+      audio.muted = true;
+    } else {
+      const restoredVolume = Math.max(1, Math.min(100, previousVolume));
+      volume.value = String(restoredVolume);
+      audio.volume = restoredVolume / 100;
+      audio.muted = false;
+    }
+    updateVolumeControls();
   }
 
   audio.volume = Number(volume.value) / 100;
   volume.addEventListener("input", () => {
-    audio.volume = Number(volume.value) / 100;
-    if (audio.muted && audio.volume > 0) audio.muted = false;
-    updateMuteButton();
+    const nextVolume = Number(volume.value);
+    if (nextVolume > 0) previousVolume = nextVolume;
+    audio.volume = nextVolume / 100;
+    // Moving the slider off zero restores sound, just like a desktop mixer.
+    audio.muted = nextVolume === 0;
+    updateVolumeControls();
   });
   muteButton.addEventListener("click", () => {
-    audio.muted = !audio.muted;
-    updateMuteButton();
+    setMuted(!(audio.muted || Number(volume.value) === 0));
   });
-  audio.addEventListener("volumechange", updateMuteButton);
-  updateMuteButton();
+  updateVolumeControls();
 
   tuneButton.addEventListener("click", () => { void tuneAudio(); });
   disconnectButton.addEventListener("click", stopAudio);
