@@ -204,8 +204,20 @@
   min-width: 70px;
   max-width: 185px;
   width: 100%;
+  flex: 1 1 75px;
   accent-color: var(--station-amber);
   cursor: pointer;
+}
+.radio-mute-button {
+  flex: none;
+  padding: 7px 10px;
+  min-height: 35px;
+  font-size: 10px;
+  white-space: nowrap;
+}
+.radio-mute-button[aria-pressed="true"] {
+  background: var(--station-amber);
+  color: #0b0b0b;
 }
 .radio-popout-button {
   padding: 8px 12px;
@@ -265,7 +277,7 @@
 }
 .radio-popup-body {
   display: block;
-  min-height: 100vh;
+  min-height: 0;
   padding: 0;
 }
 .radio-popup-shell {
@@ -289,7 +301,22 @@
   color: #b87f07;
 }
 .radio-popup-nav a:hover, .radio-popup-nav a:focus-visible { color: #fff; }
-.radio-popup-shell .live-radio { padding: 21px; }
+/* Compact controls only in the pop-out; the full live page is unchanged. */
+.radio-popup-shell .live-radio { padding: 15px 18px 14px; }
+.radio-popup-shell .radio-popup-nav { margin-bottom: 9px; }
+.radio-popup-shell .radio-topline { padding-bottom: 9px; }
+.radio-popup-shell .radio-dial { padding: 14px 0 11px; }
+.radio-popup-shell .radio-frequency { font-size: 56px; }
+.radio-popup-shell .radio-readout { min-height: 0; padding: 13px 15px; }
+.radio-popup-shell .radio-current-title { font-size: 17px; margin-top: 6px; }
+.radio-popup-shell .radio-program-context,
+.radio-popup-shell .radio-story-progress { margin-top: 7px; }
+.radio-popup-shell .radio-environment { margin-top: 12px; padding: 11px 0; }
+.radio-popup-shell .radio-condition-row + .radio-condition-row { margin-top: 8px; }
+.radio-popup-shell .radio-metadata-status { margin-top: 8px; }
+.radio-popup-shell .radio-controls { margin: 14px 0 10px; }
+.radio-popup-shell .radio-controls .radio-button { min-height: 39px; padding: 8px 10px; }
+.radio-popup-shell .radio-feedback { margin-top: 10px; }
 @media (max-width: 560px) {
   .live-radio { padding: 20px 17px; }
   .radio-readout { padding: 16px; }
