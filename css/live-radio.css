@@ -361,24 +361,8 @@
   margin: 0 auto;
   padding: 18px;
 }
-.radio-popup-nav {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  flex-wrap: wrap;
-  margin-bottom: 15px;
-  font-size: 10px;
-  letter-spacing: .7px;
-}
-.radio-popup-nav a {
-  text-decoration: none;
-  color: #b87f07;
-}
-.radio-popup-nav a:hover, .radio-popup-nav a:focus-visible { color: #fff; }
 /* Compact controls only in the pop-out; the full live page is unchanged. */
 .radio-popup-shell .live-radio { padding: 15px 18px 14px; }
-.radio-popup-shell .radio-popup-nav { margin-bottom: 9px; }
 .radio-popup-shell .radio-topline { padding-bottom: 9px; }
 .radio-popup-shell .radio-dial { padding: 14px 0 11px; }
 .radio-popup-shell .radio-frequency { font-size: 56px; }
