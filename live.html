@@ -9,20 +9,17 @@
     gtag('js', new Date());
     gtag('config', 'G-GECBCD38LX');
   </script>
-
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>WTLEB 1720 AM - Live Transmission</title>
-  <meta name="description" content="Monitor the continuous WTLEB 1720 AM live transmission through authorized external relay networks." />
-
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0b0b0b">
+  <title>WTLEB 1720 AM - Live Radio Transmission</title>
+  <meta name="description" content="Listen live to WTLEB 1720 AM - The Last Emergency Broadcast. Tune in to the continuous audio station, view live signal telemetry, or open our YouTube and Rumble video relays.">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon/favicon-32x32.png">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon/apple-touch-icon.png">
   <link rel="manifest" href="/images/favicon/site.webmanifest">
   <link rel="stylesheet" href="/css/style.css">
-
-  <meta name="theme-color" content="#0b0b0b">
-
-  </head>
+  <link rel="stylesheet" href="/css/live-radio.css">
+</head>
 <body>
   <div class="container">
     <header id="station-header" class="station-header"></header>
@@ -30,40 +27,81 @@
       <main class="main" id="main-content">
         <p class="page-kicker">BROADCAST CHANNEL / 002</p>
         <h1 class="page-title">LIVE TRANSMISSION</h1>
-        <p class="page-status">● CONTINUOUS TRANSMISSION ACTIVE</p>
+        <p class="page-status">● CONTINUOUS AUDIO RECEIVER</p>
         <p class="page-intro">
-          WTLEB 1720 AM maintains a continuous broadcast through available external relay infrastructure.
-          Relay availability may vary without notice.
+          Monitor the WTLEB 1720 AM continuous audio transmission.
+          Select TUNE to connect to the live station. Transmission availability may vary.
         </p>
-
-        <section class="station-panel" aria-labelledby="active-feed-heading">
-          <p class="station-section-code">ACTIVE BROADCAST FEED</p>
-          <h2 class="station-panel-heading" id="active-feed-heading">WTLEB 1720 AM</h2>
-          <p class="station-panel-meta">TRANSMISSION IN PROGRESS</p>
-        </section>
-
-        <section class="station-section" aria-labelledby="primary-relay-heading">
-          <p class="station-section-code">LIVE RELAY / PRIMARY</p>
-          <h2 class="station-section-heading" id="primary-relay-heading">PRIMARY LIVE RELAY</h2>
-          <div class="station-row">
-            <h3 class="station-row-title">YOUTUBE</h3>
-            <p class="station-row-desc">Primary public relay for the continuous WTLEB 1720 AM transmission.</p>
-            <a class="station-link" href="https://youtube.com/@wtleb1720am/live" target="_blank" rel="noopener noreferrer">MONITOR TRANSMISSION ↗</a>
+        <p class="station-section-code">PRIMARY RECEIVER / LIVE AUDIO</p>
+        <section class="live-radio" id="live-radio" data-receiver="inline" data-audio-state="standby" aria-label="WTLEB 1720 AM live radio receiver">
+          <div class="radio-topline">
+            <span>WTLEB RECEIVER / AUDIO CHANNEL 01</span>
+            <span id="radio-playback-status" class="radio-playback-status" role="status"><span class="radio-status-led" aria-hidden="true"></span>● STANDBY</span>
           </div>
+          <div class="radio-dial">
+            <div class="radio-frequency" aria-label="WTLEB 1720 kilohertz">
+              <span>1720</span><span class="radio-frequency-unit">kHz / AM</span>
+            </div>
+            <p class="radio-dial-caption">THE LAST EMERGENCY BROADCAST</p>
+          </div>
+          <div class="radio-readout">
+            <p class="radio-small-label">NOW TRANSMITTING</p>
+            <p class="radio-current-title" id="radio-current-title">AWAITING STATION DATA</p>
+            <p class="radio-program-context" id="radio-program-context" hidden></p>
+            <p class="radio-story-progress" id="radio-story-progress" hidden></p>
+          </div>
+          <div class="radio-environment" aria-label="Fictional station broadcast environment">
+            <div class="radio-condition-row">
+              <span class="radio-small-label">BROADCAST CONDITION</span>
+              <span class="radio-condition" id="radio-condition">UNAVAILABLE</span>
+            </div>
+            <div class="radio-condition-row">
+              <span class="radio-small-label">SIGNAL INTEGRITY</span>
+              <span class="radio-bars" id="radio-bars" role="img" aria-label="Signal indicator unavailable">
+                <span class="radio-bar" aria-hidden="true"></span>
+                <span class="radio-bar" aria-hidden="true"></span>
+                <span class="radio-bar" aria-hidden="true"></span>
+                <span class="radio-bar" aria-hidden="true"></span>
+              </span>
+            </div>
+            <p class="radio-metadata-status" id="radio-metadata-status">STATION TELEMETRY / CONNECTING</p>
+          </div>
+          <div class="radio-controls">
+            <button class="radio-button radio-tune-button" type="button" id="radio-tune">▶ TUNE INTO TRANSMISSION</button>
+            <button class="radio-button radio-disconnect-button" type="button" id="radio-disconnect" disabled>DISCONNECT</button>
+          </div>
+          <div class="radio-bottomline">
+            <div class="radio-volume-group">
+              <label for="radio-volume">VOLUME</label>
+              <input class="radio-volume" type="range" id="radio-volume" min="0" max="100" value="75" step="1" aria-label="Receiver volume">
+            </div>
+            
+            <button class="radio-popout-button" type="button" id="radio-popout" title="Open the receiver in a separate window">POP OUT RECEIVER ↗</button>
+          </div>
+          <p class="radio-feedback" id="radio-feedback" role="status" aria-live="polite">SELECT TUNE TO LISTEN TO THE LIVE TRANSMISSION</p>
+          <audio class="radio-audio-element" id="radio-audio" preload="none" playsinline aria-label="WTLEB live audio stream"></audio>
         </section>
 
-        <section class="station-section" aria-labelledby="secondary-relay-heading">
-          <p class="station-section-code">LIVE RELAY / SECONDARY</p>
-          <h2 class="station-section-heading" id="secondary-relay-heading">SECONDARY LIVE RELAY</h2>
-          <div class="station-row">
-            <h3 class="station-row-title">RUMBLE</h3>
-            <p class="station-row-desc">Alternate public relay for the continuous WTLEB 1720 AM transmission.</p>
-            <a class="station-link" href="https://rumble.com/c/wtleb1720am/live" target="_blank" rel="noopener noreferrer">MONITOR TRANSMISSION ↗</a>
+        <section class="live-relays" aria-labelledby="live-relays-heading">
+          <p class="station-section-code">EXTERNAL RELAYS / VIDEO</p>
+          <h2 class="station-section-heading" id="live-relays-heading">ALTERNATE LIVE TRANSMISSIONS</h2>
+          <div class="live-relay-grid">
+            <a class="live-relay-tile" href="https://youtube.com/@wtleb1720am/live" target="_blank" rel="noopener noreferrer" aria-label="Open WTLEB's YouTube live video relay in a new tab">
+              <span class="live-relay-type">VIDEO RELAY / 01</span>
+              <span class="live-relay-name">YOUTUBE</span>
+              <span class="live-relay-action">OPEN LIVE RELAY ↗</span>
+            </a>
+            <a class="live-relay-tile" href="https://rumble.com/c/wtleb1720am/live" target="_blank" rel="noopener noreferrer" aria-label="Open WTLEB's Rumble live video relay in a new tab">
+              <span class="live-relay-type">VIDEO RELAY / 02</span>
+              <span class="live-relay-name">RUMBLE</span>
+              <span class="live-relay-action">OPEN LIVE RELAY ↗</span>
+            </a>
           </div>
         </section>
 
         <p class="station-note">
-          If transmission is unavailable through one relay, listeners are advised to attempt the alternate relay.
+          The audio receiver operates independently of the video relay networks.
+          If one transmission is unavailable, listeners may attempt an alternate relay.
           <strong>CONTINUITY IS NOT GUARANTEED.</strong>
         </p>
       </main>
@@ -73,5 +111,6 @@
   <script src="/js/header.js"></script>
   <script src="/js/navigation.js"></script>
   <script src="/js/footer.js"></script>
+  <script src="/js/live-radio.js"></script>
 </body>
 </html>
