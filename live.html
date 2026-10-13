@@ -18,7 +18,7 @@
   <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon/apple-touch-icon.png">
   <link rel="manifest" href="/images/favicon/site.webmanifest">
   <link rel="stylesheet" href="/css/style.css">
-  <link rel="stylesheet" href="/css/live-radio.css">
+  <link rel="stylesheet" href="/css/live-radio.css?v=1.1">
 </head>
 <body>
   <div class="container">
@@ -74,7 +74,14 @@
             <div class="radio-volume-group">
               <label for="radio-volume">VOLUME</label>
               <input class="radio-volume" type="range" id="radio-volume" min="0" max="100" value="75" step="1" aria-label="Receiver volume">
-              <button class="radio-button radio-mute-button" type="button" id="radio-mute" aria-pressed="false" aria-label="Mute audio">MUTE</button>
+              <button class="radio-mute-button" type="button" id="radio-mute" aria-pressed="false" aria-label="Mute audio" title="Mute audio">
+                <svg class="radio-mute-icon" viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+                  <path d="M11 5 6 9H3v6h3l5 4V5Z"></path>
+                  <path class="radio-icon-waves" d="M15.5 8.5a5 5 0 0 1 0 7 M18.5 5.5a9 9 0 0 1 0 13"></path>
+                  <path class="radio-icon-muted" d="m16 9 5 6 m0-6-5 6"></path>
+                </svg>
+                <span class="radio-mute-label">MUTE</span>
+              </button>
             </div>
             
             <button class="radio-popout-button" type="button" id="radio-popout" title="Open the receiver in a separate window">POP OUT RECEIVER ↗</button>
@@ -112,6 +119,6 @@
   <script src="/js/header.js"></script>
   <script src="/js/navigation.js"></script>
   <script src="/js/footer.js"></script>
-  <script src="/js/live-radio.js"></script>
+  <script src="/js/live-radio.js?v=1.1"></script>
 </body>
 </html>
