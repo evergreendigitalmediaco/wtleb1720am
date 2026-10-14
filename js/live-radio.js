@@ -1,4 +1,4 @@
-/* WTLEB 1720 AM — lightweight live audio and station metadata receiver. */
+/* WTLEB 1720 AM — listener-aligned ICY radio receiver (v1.3). */
 (() => {
   "use strict";
 
@@ -6,9 +6,6 @@
   if (!root) return;
 
   const AUDIO_URL = "https://live.wtleb1720am.com/live.mp3";
-  const METADATA_URL = "https://live.wtleb1720am.com/live.json";
-  const POLL_MS = 5000;
-  const FRESHNESS_MS = 30000;
   const audio = document.getElementById("radio-audio");
   const tuneButton = document.getElementById("radio-tune");
   const disconnectButton = document.getElementById("radio-disconnect");
@@ -33,10 +30,9 @@
   let manuallyStopped = true;
   let playbackState = "standby";
   let popupWindow = null;
-  let metadataPending = false;
-  let lastGoodMetadata = 0;
-  let storyClock = null; // Latest confirmed position plus a local monotonic clock.
-  let latestMetadata = null; // Last fresh station snapshot for when playback starts.
+  let player = null;
+  let stopPending = false;
+  let receiverGeneration = 0;
 
   function setPlaybackState(state, label) {
     playbackState = state;
@@ -46,7 +42,6 @@
     disconnectButton.disabled = state === "standby";
     tuneButton.textContent = (state === "error" || state === "buffering")
       ? "↻ RECONNECT TRANSMISSION" : "▶ TUNE INTO TRANSMISSION";
-    synchronizeStoryClockPlayback();
   }
 
   function showFeedback(message, isError = false) {
@@ -55,37 +50,99 @@
     feedback.hidden = !message;
   }
 
-  function stopAudio() {
+  // Each tune creates a new streaming connection. Disconnect aborts its
+  // fetch and discards buffered media before another tune is allowed.
+  async function stopAudio() {
+    if (stopPending) return;
     manuallyStopped = true;
-    audio.pause();
-    audio.removeAttribute("src");
-    audio.load(); // Release the streaming HTTP connection.
-    setPlaybackState("standby", "● STANDBY");
-    storyClock = null;
-    progress.hidden = true;
-    progress.textContent = "";
-    showFeedback("RECEIVER DISCONNECTED");
-  }
+    receiverGeneration++;
+    stopPending = true;
+    const previousPlayer = player;
+    player = null;
 
-  async function tuneAudio() {
-    manuallyStopped = false;
-    setPlaybackState("connecting", "● CONNECTING");
-    showFeedback("ESTABLISHING AUDIO CONNECTION...");
+    setPlaybackState("standby", "● STANDBY");
+    tuneButton.disabled = true;
+    resetMetadata("PROGRAM METADATA / DISCONNECTED");
+    showFeedback("RECEIVER DISCONNECTED");
+
     try {
-      // Always rejoin the live edge, rather than resuming an old paused buffer.
+      if (previousPlayer) await previousPlayer.detachAudioElement();
+    } catch (error) {
+      console.warn("WTLEB receiver cleanup failed", error);
+    } finally {
       audio.pause();
       audio.removeAttribute("src");
       audio.load();
-      audio.src = AUDIO_URL;
-      await audio.play();
-    } catch (error) {
-      if (manuallyStopped) return;
+      stopPending = false;
+      tuneButton.disabled = false;
+    }
+  }
+
+  function tuneAudio() {
+    if (stopPending) return;
+    if (!manuallyStopped) {
+      // The button also acts as RECONNECT after a stall or terminal error.
+      if (playbackState === "playing" || playbackState === "connecting") return;
+      void stopAudio().then(() => tuneAudio());
+      return;
+    }
+    manuallyStopped = false;
+    const generation = ++receiverGeneration;
+    resetMetadata("PROGRAM METADATA / AWAITING AUDIO");
+    setPlaybackState("connecting", "● CONNECTING");
+    showFeedback("ESTABLISHING AUDIO CONNECTION...");
+
+    if (typeof window.IcecastMetadataPlayer !== "function") {
       setPlaybackState("error", "● SIGNAL UNAVAILABLE");
-      if (error && error.name === "NotAllowedError") {
-        showFeedback("AUTOMATIC PLAYBACK BLOCKED. SELECT TUNE TO START THE RECEIVER.", true);
-      } else {
-        showFeedback("UNABLE TO RECEIVE AUDIO. SELECT RECONNECT OR TRY A VIDEO RELAY.", true);
-      }
+      showFeedback("RADIO PLAYER COULD NOT BE LOADED.", true);
+      return;
+    }
+
+    try {
+      player = new window.IcecastMetadataPlayer(AUDIO_URL, {
+        audioElement: audio,
+        metadataTypes: ["icy"],
+        playbackMethod: "mediasource",
+        bufferLength: 1,
+        retryTimeout: 30,
+        onMetadata: (metadata) => {
+          if (!manuallyStopped && generation === receiverGeneration) {
+            renderIcyMetadata(metadata);
+          }
+        },
+        onRetry: () => {
+          if (!manuallyStopped && generation === receiverGeneration) {
+            setPlaybackState("buffering", "● RECONNECTING");
+            showFeedback("SIGNAL INTERRUPTED — RECONNECTING...");
+          }
+        },
+        onRetryTimeout: () => {
+          if (!manuallyStopped && generation === receiverGeneration) {
+            setPlaybackState("error", "● SIGNAL UNAVAILABLE");
+            showFeedback("UNABLE TO RESTORE TRANSMISSION. SELECT RECONNECT.", true);
+          }
+        },
+        onError: (message, error) => {
+          if (!manuallyStopped && generation === receiverGeneration) {
+            console.warn("WTLEB playback issue", message, error);
+            showFeedback("AUDIO CONNECTION ISSUE — ATTEMPTING RECOVERY");
+          }
+        }
+      });
+      // Start inside the user gesture (important for mobile Safari).
+      void player.play().catch(error => {
+        if (manuallyStopped || generation !== receiverGeneration) return;
+        setPlaybackState("error", "● SIGNAL UNAVAILABLE");
+        const blocked = error && error.name === "NotAllowedError";
+        showFeedback(blocked
+          ? "PLAYBACK BLOCKED. SELECT TUNE TO START THE RECEIVER."
+          : "UNABLE TO RECEIVE AUDIO. SELECT RECONNECT OR TRY A VIDEO RELAY.", true);
+      });
+    } catch (error) {
+      if (generation !== receiverGeneration) return;
+      setPlaybackState("error", "● SIGNAL UNAVAILABLE");
+      showFeedback("UNABLE TO INITIALIZE RADIO RECEIVER.", true);
+      console.warn("WTLEB receiver initialization failed", error);
     }
   }
 
@@ -138,12 +195,6 @@
   audio.addEventListener("playing", () => {
     if (manuallyStopped) return;
     setPlaybackState("playing", "● RECEIVING AUDIO");
-    if (latestMetadata && lastGoodMetadata &&
-        Date.now() - lastGoodMetadata <= FRESHNESS_MS) {
-      // The receiver may have loaded metadata in standby. Establish the
-      // initial timer anchor only after audio playback actually begins.
-      renderMetadata(latestMetadata);
-    }
     showFeedback("CONNECTED TO THE CONTINUOUS AUDIO TRANSMISSION");
     if (isPopup && window.opener && !window.opener.closed) {
       // Avoid two audible receivers when the listener transfers to the pop-out.
@@ -232,202 +283,65 @@
     }
   }
 
-  function clock(seconds) {
-    let value = Math.max(0, Math.floor(seconds));
-    const s = String(value % 60).padStart(2, "0");
-    value = Math.floor(value / 60);
-    const m = String(value % 60).padStart(2, "0");
-    const h = Math.floor(value / 60);
-    return h ? h + ":" + m + ":" + s : m + ":" + s;
+  // Current ICY metadata: readable title and event identity in StreamUrl.
+  // Future versioned StreamUrl telemetry will be decoded in a later change.
+  function eventIdFromStreamUrl(streamUrl) {
+    if (typeof streamUrl !== "string") return "";
+    try {
+      const value = new URL(streamUrl);
+      if (value.origin !== "https://wtleb1720am.com") return "";
+      const id = decodeURIComponent(value.hash.slice(1));
+      return /^[a-zA-Z0-9_-]{1,180}$/.test(id) ? id : "";
+    } catch {
+      return "";
+    }
   }
 
-  function setUnknownMetadata(message) {
-    storyClock = null;
-    latestMetadata = null;
-    title.textContent = "STATION DATA UNAVAILABLE";
+  function resetMetadata(message) {
+    title.textContent = "AWAITING STATION DATA";
     context.hidden = true;
     progress.hidden = true;
+    progress.textContent = "";
     condition.textContent = "UNAVAILABLE";
     root.removeAttribute("data-condition");
+    root.removeAttribute("data-event-id");
     bars.forEach(bar => { bar.style.opacity = "0.16"; });
     barGroup.setAttribute("aria-label", "Signal indicator unavailable");
     metadataStatus.textContent = message;
   }
 
-  function freezeStoryClock() {
-    if (!storyClock || !storyClock.advancing) return;
-    const elapsed = Math.max(0, (performance.now() - storyClock.receivedAt) / 1000);
-    storyClock.position = Math.min(storyClock.duration, storyClock.position + elapsed);
-    storyClock.receivedAt = performance.now();
-    storyClock.advancing = false;
-    updateStoryClock();
-  }
+  function renderIcyMetadata(metadata) {
+    if (!metadata || typeof metadata !== "object") return;
+    const display = typeof metadata.StreamTitle === "string"
+      ? metadata.StreamTitle.trim().slice(0, 180) : "";
+    if (!display) return;
 
-  function synchronizeStoryClockPlayback() {
-    if (!storyClock) return;
-    const shouldAdvance = !manuallyStopped && playbackState === "playing" &&
-      !audio.paused && storyClock.category === "story" &&
-      lastGoodMetadata && Date.now() - lastGoodMetadata <= FRESHNESS_MS;
-    if (shouldAdvance && !storyClock.advancing) {
-      storyClock.receivedAt = performance.now();
-      storyClock.advancing = true;
-    } else if (!shouldAdvance && storyClock.advancing) {
-      freezeStoryClock();
-    }
-  }
+    title.textContent = display;
+    const eventId = eventIdFromStreamUrl(metadata.StreamUrl);
+    if (eventId) root.dataset.eventId = eventId;
+    else root.removeAttribute("data-event-id");
 
-  function updateStoryClock() {
-    // This is a listener playback counter, not a station-wide wall clock.
-    // Nothing may expose or advance it until audio has actually played.
-    if (manuallyStopped || playbackState === "standby" ||
-        playbackState === "connecting") {
-      storyClock = null;
-      progress.hidden = true;
-      return;
-    }
-    if (!storyClock) return;
-    synchronizeStoryClockPlayback();
-    // Stop extrapolating if the receiver loses contact with the metadata feed.
-    if (lastGoodMetadata && Date.now() - lastGoodMetadata > FRESHNESS_MS &&
-        storyClock.advancing) {
-      freezeStoryClock();
-    }
-    const elapsed = storyClock.advancing
-      ? Math.max(0, (performance.now() - storyClock.receivedAt) / 1000)
-      : 0;
-    const position = Math.min(storyClock.duration, storyClock.position + elapsed);
-    storyClock.displayPosition = position;
-    progress.textContent = "STORY POSITION: " + clock(position) +
-      " / " + clock(storyClock.duration);
-  }
-
-  function renderMetadata(data) {
-    const playout = data.playout;
-    const environment = data.environment;
-    const displayed = typeof playout.display_text === "string"
-      ? playout.display_text.trim().slice(0, 180) : "";
-    title.textContent = displayed || "WTLEB 1720 AM";
-
-    const story = typeof playout.story_title === "string"
-      ? playout.story_title.trim().slice(0, 180) : "";
-    context.hidden = !story || playout.category === "story";
-    if (!context.hidden) context.textContent = "PROGRAM: " + story;
-
-    const position = playout.story_position_seconds;
-    const duration = playout.story_duration_seconds;
-    const hasProgress = typeof position === "number" && Number.isFinite(position) &&
-      position >= 0 && typeof duration === "number" && Number.isFinite(duration) && duration > 0;
-    const listenerActive = !manuallyStopped &&
-      (playbackState === "playing" || playbackState === "buffering") &&
-      (playbackState === "buffering" ? storyClock !== null : !audio.paused);
-    progress.hidden = !hasProgress || !listenerActive;
-    if (hasProgress && listenerActive) {
-      const eventId = typeof playout.event_id === "string" && playout.event_id
-        ? playout.event_id : playout.category + ":" + displayed;
-      const sameEvent = storyClock && storyClock.eventId === eventId;
-      const isPlaying = !manuallyStopped && playbackState === "playing" && !audio.paused;
-
-      // When disconnected or buffering, preserve the last displayed position
-      // rather than jumping forward each time a new JSON snapshot arrives.
-      if (!sameEvent || isPlaying) {
-        let basePosition = Math.min(position, duration);
-        if (sameEvent && storyClock.advancing && playout.category === "story") {
-          const localPosition = Math.min(storyClock.duration, storyClock.position +
-            Math.max(0, (performance.now() - storyClock.receivedAt) / 1000));
-          // Ignore tiny transport jitter that would otherwise make the counter
-          // skip or repeat a second; correct meaningful drift immediately.
-          if (Math.abs(basePosition - localPosition) < 2) basePosition = localPosition;
-        }
-        storyClock = {
-          eventId,
-          category: playout.category,
-          position: basePosition,
-          duration,
-          receivedAt: performance.now(),
-          advancing: isPlaying && playout.category === "story"
-        };
-      } else {
-        freezeStoryClock();
-      }
-      updateStoryClock();
-    } else {
-      storyClock = null;
-    }
-
-    const allowed = ["NORMAL", "ELEVATED", "DEGRADED", "CRITICAL"];
-    const state = allowed.includes(environment.condition) ? environment.condition : "";
-    condition.textContent = state || "UNAVAILABLE";
-    if (state) root.dataset.condition = state;
-    else root.removeAttribute("data-condition");
-
-    const levels = environment.signal_bar_levels;
-    const validLevels = Array.isArray(levels) && levels.length === 4 &&
-      levels.every(level => typeof level === "number" &&
-        Number.isFinite(level) && level >= 0 && level <= 1);
-    if (validLevels) {
-      bars.forEach((bar, i) => { bar.style.opacity = String(0.16 + levels[i] * 0.84); });
-      const count = Math.max(0, Math.min(4, Math.round(levels.reduce((a, b) => a + b, 0))));
-      barGroup.setAttribute("aria-label", "Broadcast signal: " + count + " of 4 bars");
-    } else {
-      bars.forEach(bar => { bar.style.opacity = "0.16"; });
-      barGroup.setAttribute("aria-label", "Signal indicator unavailable");
-    }
-    metadataStatus.textContent = "STATION TELEMETRY / RECEIVING";
-  }
-
-  async function refreshMetadata() {
-    if (metadataPending) return;
-    // Idle background tabs need not poll; active receivers keep their updates.
-    if (document.hidden && manuallyStopped) return;
-    metadataPending = true;
-    const controller = new AbortController();
-    const timeout = window.setTimeout(() => controller.abort(), 4500);
-    try {
-      const response = await fetch(METADATA_URL, {
-        mode: "cors", cache: "no-store", signal: controller.signal
-      });
-      if (!response.ok) throw new Error("Metadata HTTP " + response.status);
-      const data = await response.json();
-      if (!data || data.schema_version !== 2 || !data.playout ||
-          typeof data.playout !== "object" || !data.environment ||
-          typeof data.environment !== "object" || !data.updated_at) {
-        throw new Error("Unsupported metadata schema");
-      }
-      const updated = Date.parse(data.updated_at);
-      if (!Number.isFinite(updated) || updated > Date.now() + 60000 ||
-          Date.now() - updated > FRESHNESS_MS) {
-        setUnknownMetadata("STATION TELEMETRY / STALE");
-        lastGoodMetadata = 0;
-        return;
-      }
-      latestMetadata = data;
-      renderMetadata(data);
-      lastGoodMetadata = Date.now();
-    } catch (error) {
-      if (!lastGoodMetadata || Date.now() - lastGoodMetadata > FRESHNESS_MS) {
-        setUnknownMetadata("STATION TELEMETRY / UNAVAILABLE");
-        lastGoodMetadata = 0;
-      } else {
-        metadataStatus.textContent = "STATION TELEMETRY / RETRYING";
-      }
-    } finally {
-      window.clearTimeout(timeout);
-      metadataPending = false;
-    }
+    // RF telemetry and a reliable story clock are not in the v1.2 ICY payload.
+    // Station-side live.json could be ahead of listener playback, so don't poll.
+    context.hidden = true;
+    progress.hidden = true;
+    metadataStatus.textContent = player && player.playbackMethod === "html5"
+      ? "PROGRAM METADATA / FALLBACK TIMING"
+      : "PROGRAM METADATA / ICY RECEIVING";
   }
 
   setPlaybackState("standby", "● STANDBY");
-  setUnknownMetadata("STATION TELEMETRY / CONNECTING");
+  resetMetadata("PROGRAM METADATA / AWAITING AUDIO");
   showFeedback("SELECT TUNE TO LISTEN TO THE LIVE TRANSMISSION");
-  void refreshMetadata();
-  window.setInterval(() => { void refreshMetadata(); }, POLL_MS);
-  window.setInterval(updateStoryClock, 1000);
-  document.addEventListener("visibilitychange", () => {
-    if (!document.hidden) void refreshMetadata();
+
+  window.addEventListener("pagehide", () => {
+    manuallyStopped = true;
+    receiverGeneration++;
+    if (player) void player.stop();
   });
 
   if (isPopup && new URLSearchParams(window.location.search).get("autotune") === "1") {
     // Best effort only; browsers may require a fresh tap in the new window.
-    void tuneAudio();
+    tuneAudio();
   }
 })();
