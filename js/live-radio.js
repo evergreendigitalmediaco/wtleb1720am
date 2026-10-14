@@ -36,6 +36,7 @@
   let metadataPending = false;
   let lastGoodMetadata = 0;
   let storyClock = null; // Latest confirmed position plus a local monotonic clock.
+  let latestMetadata = null; // Last fresh station snapshot for when playback starts.
 
   function setPlaybackState(state, label) {
     playbackState = state;
@@ -60,6 +61,9 @@
     audio.removeAttribute("src");
     audio.load(); // Release the streaming HTTP connection.
     setPlaybackState("standby", "● STANDBY");
+    storyClock = null;
+    progress.hidden = true;
+    progress.textContent = "";
     showFeedback("RECEIVER DISCONNECTED");
   }
 
@@ -134,6 +138,12 @@
   audio.addEventListener("playing", () => {
     if (manuallyStopped) return;
     setPlaybackState("playing", "● RECEIVING AUDIO");
+    if (latestMetadata && lastGoodMetadata &&
+        Date.now() - lastGoodMetadata <= FRESHNESS_MS) {
+      // The receiver may have loaded metadata in standby. Establish the
+      // initial timer anchor only after audio playback actually begins.
+      renderMetadata(latestMetadata);
+    }
     showFeedback("CONNECTED TO THE CONTINUOUS AUDIO TRANSMISSION");
     if (isPopup && window.opener && !window.opener.closed) {
       // Avoid two audible receivers when the listener transfers to the pop-out.
@@ -233,6 +243,7 @@
 
   function setUnknownMetadata(message) {
     storyClock = null;
+    latestMetadata = null;
     title.textContent = "STATION DATA UNAVAILABLE";
     context.hidden = true;
     progress.hidden = true;
@@ -266,6 +277,14 @@
   }
 
   function updateStoryClock() {
+    // This is a listener playback counter, not a station-wide wall clock.
+    // Nothing may expose or advance it until audio has actually played.
+    if (manuallyStopped || playbackState === "standby" ||
+        playbackState === "connecting") {
+      storyClock = null;
+      progress.hidden = true;
+      return;
+    }
     if (!storyClock) return;
     synchronizeStoryClockPlayback();
     // Stop extrapolating if the receiver loses contact with the metadata feed.
@@ -298,8 +317,11 @@
     const duration = playout.story_duration_seconds;
     const hasProgress = typeof position === "number" && Number.isFinite(position) &&
       position >= 0 && typeof duration === "number" && Number.isFinite(duration) && duration > 0;
-    progress.hidden = !hasProgress;
-    if (hasProgress) {
+    const listenerActive = !manuallyStopped &&
+      (playbackState === "playing" || playbackState === "buffering") &&
+      (playbackState === "buffering" ? storyClock !== null : !audio.paused);
+    progress.hidden = !hasProgress || !listenerActive;
+    if (hasProgress && listenerActive) {
       const eventId = typeof playout.event_id === "string" && playout.event_id
         ? playout.event_id : playout.category + ":" + displayed;
       const sameEvent = storyClock && storyClock.eventId === eventId;
@@ -378,6 +400,7 @@
         lastGoodMetadata = 0;
         return;
       }
+      latestMetadata = data;
       renderMetadata(data);
       lastGoodMetadata = Date.now();
     } catch (error) {
