@@ -67,10 +67,10 @@
         // PRIMARY AUDIO PATH: direct to speakers, entirely independent from
         // peak-meter loading, audioWorklet callbacks and visualization updates.
         meterSource.connect(meterContext.destination);
-        // The metering library internally connects its worklet to destination.
-        // Supply a silent analysis tap so its output cannot double the sound.
+        // Feed the analyzer a full-level tap. The locally patched meter library
+        // silences ONLY its worklet output; direct speaker audio is separate.
         meterTap = meterContext.createGain();
-        meterTap.gain.value = 0;
+        meterTap.gain.value = 1;
         meterSource.connect(meterTap);
         try {
           meterInstance = new Meter(meterTap, meterHost, {
