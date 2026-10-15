@@ -146,10 +146,10 @@
     const previousPlayer = player;
     player = null;
 
-    setPlaybackState("standby", "● STANDBY");
+    setPlaybackState("standby", "● DISCONNECTED");
     tuneButton.disabled = true;
     resetMetadata("PROGRAM METADATA / DISCONNECTED");
-    showFeedback("RECEIVER DISCONNECTED");
+    showFeedback("");
 
     try {
       if (previousPlayer) await previousPlayer.detachAudioElement();
@@ -282,7 +282,7 @@
   audio.addEventListener("playing", () => {
     if (manuallyStopped) return;
     setPlaybackState("playing", "● RECEIVING AUDIO");
-    showFeedback("CONNECTED TO THE CONTINUOUS AUDIO TRANSMISSION");
+    showFeedback("");
     if (isPopup && window.opener && !window.opener.closed) {
       // Avoid two audible receivers when the listener transfers to the pop-out.
       window.opener.postMessage({ type: "wtleb-radio-popup-playing" }, window.location.origin);
@@ -547,9 +547,9 @@
     updateIcyClock();
   }
 
-  setPlaybackState("standby", "● STANDBY");
+  setPlaybackState("standby", "● DISCONNECTED");
   resetMetadata("PROGRAM METADATA / AWAITING AUDIO");
-  showFeedback("SELECT TUNE TO LISTEN TO THE LIVE TRANSMISSION");
+  showFeedback("");
 
   window.addEventListener("pagehide", () => {
     manuallyStopped = true;
