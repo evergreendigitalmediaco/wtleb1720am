@@ -1067,3 +1067,6 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
   outline: 1px solid #dba85e;
   outline-offset: 2px;
 }
+
+/* Keep the archive navigation label on a single line. */
+.sidebar .link-button-archive { font-size: 11px; white-space: nowrap; letter-spacing: .2px; }
