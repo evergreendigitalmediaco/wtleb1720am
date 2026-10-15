@@ -610,3 +610,46 @@
   .radio-control-panel .radio-controls { flex: 1 1 100%; }
   .radio-control-panel .radio-volume-group { flex: 1 1 130px; }
 }
+
+/* Pop-out only: prioritize a single horizontal transport/volume row. */
+.radio-popup-shell .radio-control-panel {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: 7px;
+  padding: 8px;
+}
+.radio-popup-shell .radio-control-panel .radio-controls {
+  flex: 0 0 auto;
+  gap: 5px;
+  min-width: 0;
+}
+.radio-popup-shell .radio-control-panel .radio-controls .radio-button {
+  min-width: 0;
+  min-height: 33px;
+  padding: 5px 7px;
+  gap: 5px;
+  white-space: nowrap;
+}
+.radio-popup-shell .radio-control-panel .radio-volume-group {
+  flex: 1 1 0;
+  min-width: 0;
+  gap: 5px;
+  justify-content: flex-end;
+  flex-wrap: nowrap;
+}
+.radio-popup-shell .radio-control-panel .radio-volume {
+  flex: 1 1 55px;
+  width: 100%;
+  min-width: 32px;
+  max-width: 85px;
+}
+.radio-popup-shell .radio-control-panel .radio-mute-button {
+  flex: none;
+  min-width: 31px;
+  width: 31px;
+}
+@media (max-width: 345px) {
+  .radio-popup-shell .radio-control-panel { flex-wrap: wrap; }
+  .radio-popup-shell .radio-control-panel .radio-volume-group { flex: 1 1 100%; }
+}
