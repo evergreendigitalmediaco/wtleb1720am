@@ -1,4 +1,4 @@
-/* WTLEB 1720 AM — listener-aligned ICY radio receiver (v1.3). */
+/* WTLEB 1720 AM — ICY-only listener telemetry and receiver (v1.6). */
 (() => {
   "use strict";
 
@@ -33,9 +33,17 @@
   let player = null;
   let stopPending = false;
   let receiverGeneration = 0;
+  let icyProgress = null;
+  let lastIcyAt = 0;
+  let lastStoryTitle = "";
 
   function setPlaybackState(state, label) {
+    if (state !== "playing") freezeIcyProgress();
     playbackState = state;
+    if (state === "playing" && icyProgress && icyProgress.category === "s") {
+      icyProgress.at = performance.now();
+      icyProgress.advancing = true;
+    }
     root.dataset.audioState = state;
     status.textContent = label;
     tuneButton.disabled = state === "connecting" || state === "playing";
@@ -283,15 +291,86 @@
     }
   }
 
-  // Current ICY metadata: readable title and event identity in StreamUrl.
-  // Future versioned StreamUrl telemetry will be decoded in a later change.
+  // Versioned fragment carried in the MP3 ICY StreamUrl. No live.json calls.
+  // <event-id>!v1!<category>!<position-ds>!<duration-ds>!<rf>!<4hex>
+  function decodeIcyTelemetry(streamUrl) {
+    if (typeof streamUrl !== "string" || streamUrl.length > 256) return null;
+    try {
+      const url = new URL(streamUrl);
+      if (url.origin !== "https://wtleb1720am.com" ||
+          url.pathname !== "/" || url.search) return null;
+      const parts = decodeURIComponent(url.hash.slice(1)).split("!");
+      if (parts.length !== 7 || parts[1] !== "v1" ||
+          !/^WTLEB-[a-f0-9]{32}-[1-9][0-9]*$/.test(parts[0]) ||
+          !/^[scibau]$/.test(parts[2]) ||
+          !/^[NEDC-]$/.test(parts[5]) ||
+          !/^(?:[0-9a-f]{4}|----)$/.test(parts[6])) return null;
+      const readSeconds = value => {
+        if (value === "-") return null;
+        if (!/^[0-9]{1,8}$/.test(value)) return NaN;
+        return Number(value) / 10;
+      };
+      const position = readSeconds(parts[3]);
+      const duration = readSeconds(parts[4]);
+      if (Number.isNaN(position) || Number.isNaN(duration) ||
+          (position !== null && duration !== null && position > duration)) {
+        return null;
+      }
+      return {
+        eventId: parts[0], category: parts[2], position, duration,
+        condition: parts[5],
+        levels: parts[6] === "----" ? null :
+          [...parts[6]].map(char => parseInt(char, 16) / 15)
+      };
+    } catch {
+      return null;
+    }
+  }
+
+  function clock(seconds) {
+    let value = Math.max(0, Math.floor(seconds));
+    const ss = String(value % 60).padStart(2, "0");
+    value = Math.floor(value / 60);
+    const mm = String(value % 60).padStart(2, "0");
+    const hh = Math.floor(value / 60);
+    return hh ? hh + ":" + mm + ":" + ss : mm + ":" + ss;
+  }
+
+  function freezeIcyProgress() {
+    if (!icyProgress || !icyProgress.advancing) return;
+    icyProgress.position = Math.min(icyProgress.duration, icyProgress.position +
+      Math.max(0, (performance.now() - icyProgress.at) / 1000));
+    icyProgress.at = performance.now();
+    icyProgress.advancing = false;
+  }
+
+  function updateIcyClock() {
+    if (manuallyStopped || !icyProgress ||
+        (playbackState !== "playing" && playbackState !== "buffering")) {
+      progress.hidden = true;
+      return;
+    }
+    // Fail closed on stalled/absent metadata rather than displaying an
+    // indefinitely extrapolated station time.
+    if (performance.now() - lastIcyAt > 20000) freezeIcyProgress();
+    const seconds = Math.min(icyProgress.duration, icyProgress.position +
+      (icyProgress.advancing
+        ? Math.max(0, (performance.now() - icyProgress.at) / 1000) : 0));
+    progress.textContent = "STORY POSITION: " + clock(seconds) +
+      " / " + clock(icyProgress.duration);
+    progress.hidden = false;
+  }
+
+  window.setInterval(updateIcyClock, 1000);
+
+  // ICY is the only receiver metadata source; StreamTitle is readable.
   function eventIdFromStreamUrl(streamUrl) {
     if (typeof streamUrl !== "string") return "";
     try {
       const value = new URL(streamUrl);
       if (value.origin !== "https://wtleb1720am.com") return "";
-      const id = decodeURIComponent(value.hash.slice(1));
-      return /^[a-zA-Z0-9_-]{1,180}$/.test(id) ? id : "";
+      const id = decodeURIComponent(value.hash.slice(1)).split("!")[0];
+      return /^WTLEB-[a-f0-9]{32}-[1-9][0-9]*$/.test(id) ? id : "";
     } catch {
       return "";
     }
@@ -305,6 +384,9 @@
     condition.textContent = "UNAVAILABLE";
     root.removeAttribute("data-condition");
     root.removeAttribute("data-event-id");
+    icyProgress = null;
+    lastIcyAt = 0;
+    lastStoryTitle = "";
     bars.forEach(bar => { bar.style.opacity = "0.16"; });
     barGroup.setAttribute("aria-label", "Signal indicator unavailable");
     metadataStatus.textContent = message;
@@ -321,13 +403,69 @@
     if (eventId) root.dataset.eventId = eventId;
     else root.removeAttribute("data-event-id");
 
-    // RF telemetry and a reliable story clock are not in the v1.2 ICY payload.
-    // Station-side live.json could be ahead of listener playback, so don't poll.
-    context.hidden = true;
-    progress.hidden = true;
+    const decoded = decodeIcyTelemetry(metadata.StreamUrl);
+    if (!decoded) {
+      // Old Icecast v1.2 stream (title + event ID only). Do not guess time or
+      // fetch station JSON: the listener's audio can be behind the broadcaster.
+      icyProgress = null;
+      lastIcyAt = 0;
+      progress.hidden = true;
+      context.hidden = true;
+      condition.textContent = "UNAVAILABLE";
+      root.removeAttribute("data-condition");
+      bars.forEach(bar => { bar.style.opacity = "0.16"; });
+      barGroup.setAttribute("aria-label", "Signal indicator unavailable");
+      metadataStatus.textContent = "PROGRAM METADATA / ICY TITLE ONLY";
+      return;
+    }
+
+    lastIcyAt = performance.now();
+    if (decoded.category === "s") lastStoryTitle = display;
+    context.hidden = decoded.category === "s" || !lastStoryTitle;
+    if (!context.hidden) context.textContent = "PROGRAM: " + lastStoryTitle;
+    const old = icyProgress;
+    const sameEvent = old && old.eventId === decoded.eventId;
+    if (decoded.position !== null && decoded.duration !== null &&
+        decoded.duration > 0 && decoded.position <= decoded.duration) {
+      let position = decoded.position;
+      if (sameEvent && old.advancing && decoded.category === "s") {
+        const local = Math.min(old.duration, old.position +
+          Math.max(0, (performance.now() - old.at) / 1000));
+        if (Math.abs(local - position) < 2) position = local;
+      }
+      icyProgress = {
+        eventId: decoded.eventId,
+        category: decoded.category,
+        duration: decoded.duration,
+        position,
+        at: performance.now(),
+        advancing: playbackState === "playing" && !audio.paused &&
+          decoded.category === "s"
+      };
+    } else {
+      icyProgress = null;
+    }
+
+    const states = { N: "NORMAL", E: "ELEVATED", D: "DEGRADED", C: "CRITICAL" };
+    const name = states[decoded.condition] || "UNAVAILABLE";
+    condition.textContent = name;
+    if (name !== "UNAVAILABLE") root.dataset.condition = name;
+    else root.removeAttribute("data-condition");
+    if (decoded.levels) {
+      bars.forEach((bar, i) => {
+        bar.style.opacity = String(0.16 + decoded.levels[i] * 0.84);
+      });
+      const total = decoded.levels.reduce((a, b) => a + b, 0);
+      barGroup.setAttribute("aria-label",
+        "Broadcast signal: " + Math.round(total) + " of 4 bars");
+    } else {
+      bars.forEach(bar => { bar.style.opacity = "0.16"; });
+      barGroup.setAttribute("aria-label", "Signal indicator unavailable");
+    }
     metadataStatus.textContent = player && player.playbackMethod === "html5"
-      ? "PROGRAM METADATA / FALLBACK TIMING"
-      : "PROGRAM METADATA / ICY RECEIVING";
+      ? "STATION TELEMETRY / ICY FALLBACK"
+      : "STATION TELEMETRY / ICY RECEIVING";
+    updateIcyClock();
   }
 
   setPlaybackState("standby", "● STANDBY");
