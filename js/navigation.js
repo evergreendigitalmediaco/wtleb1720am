@@ -5,7 +5,7 @@
 
   const links = [
     { text: "STATION HOME", url: "/", path: "/" },
-    { text: "LIVE ON AIR!", url: "/live.html", path: "/live.html" },
+    { text: "LIVE BROADCAST", url: "/live.html", path: "/live.html", broadcast: true },
     { text: "STATION INFO", url: "/station-info.html", path: "/station-info.html" },
     { text: "RELAY NETWORKS", url: "/relay.html", path: "/relay.html" },
     { text: "ARCHIVED BROADCASTS", url: "/archive.html", path: "/archive.html" },
@@ -42,7 +42,21 @@
     const link = document.createElement("a");
     link.className = "link-button";
     link.href = item.url;
-    link.textContent = item.text;
+    if (item.broadcast) {
+      link.classList.add("link-button-broadcast");
+      const icon = document.createElement("img");
+      icon.src = "/images/wtleb-broadcast-signal.svg";
+      icon.alt = "";
+      icon.width = 16;
+      icon.height = 16;
+      icon.setAttribute("aria-hidden", "true");
+      link.appendChild(icon);
+      const label = document.createElement("span");
+      label.textContent = item.text;
+      link.appendChild(label);
+    } else {
+      link.textContent = item.text;
+    }
     if (!item.path) {
       link.target = "_blank";
       link.rel = "noopener noreferrer";
