@@ -393,3 +393,24 @@
 @media (prefers-reduced-motion: reduce) {
   .radio-button, .radio-popout-button, .radio-mute-button { transition: none; }
 }
+
+/* WTLEB v1.7: compact horizontal audio peak meter replacing the metadata status. */
+.radio-audio-meter { margin-top: 10px; min-width: 0; }
+.radio-audio-meter-label {
+  display: flex; justify-content: space-between; gap: 12px;
+  margin-bottom: 4px; font-size: 10px; letter-spacing: 0.75px;
+  color: #ad926d; font-variant-numeric: tabular-nums;
+}
+#radio-audio-db { color: #dba85e; white-space: nowrap; }
+.radio-audio-meter-gauge {
+  width: 100%; height: 38px; overflow: hidden; background: #14120f;
+  border: 1px solid #4a3b27; border-radius: 2px;
+  box-sizing: border-box;
+}
+.radio-audio-meter-gauge > div { box-sizing: border-box; }
+.radio-visually-hidden {
+  position: absolute !important; width: 1px !important; height: 1px !important;
+  margin: -1px !important; padding: 0 !important; border: 0 !important;
+  overflow: hidden !important; clip: rect(0 0 0 0) !important;
+  white-space: nowrap !important;
+}
