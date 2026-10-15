@@ -45,7 +45,7 @@
         <section class="live-radio" id="live-radio" data-receiver="inline" data-audio-state="standby" aria-label="WTLEB 1720 AM live radio receiver">
           <div class="radio-topline">
             <span>WTLEB RECEIVER / AUDIO CHANNEL 01</span>
-            <span id="radio-playback-status" class="radio-playback-status" role="status"><span class="radio-status-led" aria-hidden="true"></span>● STANDBY</span>
+            <span id="radio-playback-status" class="radio-playback-status" role="status"><span class="radio-status-led" aria-hidden="true"></span>● DISCONNECTED</span>
           </div>
           <div class="radio-dial">
             <div class="radio-frequency" aria-label="WTLEB 1720 kilohertz">
@@ -99,7 +99,7 @@
             
             <button class="radio-popout-button" type="button" id="radio-popout" title="Pop out receiver" aria-label="Pop out receiver"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="9" width="12" height="11" rx="1"/><path d="M12 4h8v8M20 4l-9 9"/></svg></button>
           </div>
-          <p class="radio-feedback" id="radio-feedback" role="status" aria-live="polite">SELECT TUNE TO LISTEN TO THE LIVE TRANSMISSION</p>
+          <p class="radio-feedback" id="radio-feedback" role="status" aria-live="polite" hidden></p>
           <audio class="radio-audio-element" id="radio-audio" preload="none" crossorigin="anonymous" playsinline aria-label="WTLEB live audio stream"></audio>
         </section>
 
@@ -117,6 +117,6 @@
   <script src="/js/footer.js"></script>
   <script src="/js/vendor/icecast-metadata-player/icecast-metadata-player-1.17.13.main.min.js"></script>
   <script src="/js/vendor/web-audio-peak-meter/web-audio-peak-meter-3.1.0.min.js?v=1.7.2"></script>
-  <script src="/js/live-radio.js?v=1.8"></script>
+  <script src="/js/live-radio.js?v=1.8.1"></script>
 </body>
 </html>
