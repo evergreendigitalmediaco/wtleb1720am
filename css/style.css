@@ -1005,3 +1005,19 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
       .archive-record-header { flex-direction: column; }
       .archive-load-more { width: 100%; }
     }
+
+/* Featured live-broadcast link: compact, static station signal symbol. */
+.link-button-broadcast {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  white-space: nowrap;
+  font-size: 11px;
+  letter-spacing: .2px;
+}
+.link-button-broadcast img {
+  display: block;
+  width: 16px;
+  height: 16px;
+  flex: 0 0 16px;
+}
