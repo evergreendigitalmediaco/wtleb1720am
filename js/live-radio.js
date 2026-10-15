@@ -1,4 +1,4 @@
-/* WTLEB 1720 AM — ICY-only listener telemetry and receiver (v1.7). */
+/* WTLEB 1720 AM — ICY-only listener telemetry and receiver (v1.7.1 playback hotfix). */
 (() => {
   "use strict";
 
@@ -165,7 +165,10 @@
       return;
     }
     manuallyStopped = false;
-    startAudioMeter();
+    // Meter disabled pending verified cross-origin audio routing.
+    // Never attach the receiver's audio element to Web Audio unless playback
+    // safety is proven on the production MP3 endpoint.
+    if (meterDB) meterDB.textContent = "METER OFFLINE";
     const generation = ++receiverGeneration;
     resetMetadata("PROGRAM METADATA / AWAITING AUDIO");
     setPlaybackState("connecting", "● CONNECTING");
