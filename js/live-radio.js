@@ -1,4 +1,4 @@
-/* WTLEB 1720 AM — ICY-only listener telemetry and receiver (v1.7.1 playback hotfix). */
+/* WTLEB 1720 AM — ICY-only listener telemetry and receiver (v1.7.2 split-route analyzer test). */
 (() => {
   "use strict";
 
@@ -40,6 +40,7 @@
   let lastStoryTitle = "";
   let meterContext = null;
   let meterSource = null;
+  let meterTap = null;
   let meterInstance = null;
   let meterTimer = null;
   let meterUnavailable = false;
@@ -63,8 +64,16 @@
       }
       if (!meterSource) {
         meterSource = meterContext.createMediaElementSource(audio);
+        // PRIMARY AUDIO PATH: direct to speakers, entirely independent from
+        // peak-meter loading, audioWorklet callbacks and visualization updates.
+        meterSource.connect(meterContext.destination);
+        // The metering library internally connects its worklet to destination.
+        // Supply a silent analysis tap so its output cannot double the sound.
+        meterTap = meterContext.createGain();
+        meterTap.gain.value = 0;
+        meterSource.connect(meterTap);
         try {
-          meterInstance = new Meter(meterSource, meterHost, {
+          meterInstance = new Meter(meterTap, meterHost, {
             vertical: false,
             borderSize: 0,
             fontSize: 9,
@@ -79,9 +88,8 @@
             maskTransition: "0.12s"
           });
         } catch (error) {
-          // A Web Audio source cannot be detached from its HTML media element.
-          // Restore audible output if the optional renderer cannot initialize.
-          meterSource.connect(meterContext.destination);
+          // Direct playback stays connected even if the visualizer fails.
+          meterTap.disconnect();
           throw error;
         }
       }
@@ -165,10 +173,7 @@
       return;
     }
     manuallyStopped = false;
-    // Meter disabled pending verified cross-origin audio routing.
-    // Never attach the receiver's audio element to Web Audio unless playback
-    // safety is proven on the production MP3 endpoint.
-    if (meterDB) meterDB.textContent = "METER OFFLINE";
+    startAudioMeter();
     const generation = ++receiverGeneration;
     resetMetadata("PROGRAM METADATA / AWAITING AUDIO");
     setPlaybackState("connecting", "● CONNECTING");
