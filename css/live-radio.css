@@ -529,3 +529,24 @@
   white-space: nowrap;
   overflow-wrap: normal;
 }
+
+/* Minimal video relay links: platform marks carry the color, not button chrome. */
+.live-relay-strip .live-relay-chip {
+  padding: 5px 7px;
+  border: 0;
+  border-radius: 3px;
+  background: transparent;
+  color: #cfb78b;
+  transition: color .15s ease, background-color .15s ease;
+}
+.live-relay-strip .live-relay-chip:hover,
+.live-relay-strip .live-relay-chip:focus-visible {
+  border: 0;
+  background: #241e15;
+  color: #f0c873;
+  text-decoration: none;
+}
+.live-relay-strip .live-relay-chip:focus-visible {
+  outline: 1px solid #dba85e;
+  outline-offset: 2px;
+}
