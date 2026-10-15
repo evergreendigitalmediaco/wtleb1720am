@@ -8,7 +8,7 @@
     { text: "LIVE BROADCAST", url: "/live.html", path: "/live.html", broadcast: true },
     { text: "STATION INFO", url: "/station-info.html", path: "/station-info.html" },
     { text: "RELAY NETWORKS", url: "/relay.html", path: "/relay.html" },
-    { text: "ARCHIVED BROADCASTS", url: "/archive.html", path: "/archive.html" },
+    { text: "ARCHIVED BROADCASTS", url: "/archive.html", path: "/archive.html", archive: true },
     { text: "SECURE CHANNEL", url: "https://www.patreon.com/TheLastEmergencyBroadcast" },
     { text: "SUPPLY ACCESS", url: "https://shop.wtleb1720am.com" },
     { text: "SUBMIT REPORT", url: "/report.html", path: "/report.html" }
@@ -42,6 +42,7 @@
     const link = document.createElement("a");
     link.className = "link-button";
     link.href = item.url;
+    if (item.archive) link.classList.add("link-button-archive");
     if (item.broadcast) {
       link.classList.add("link-button-broadcast");
       const icon = document.createElement("img");
