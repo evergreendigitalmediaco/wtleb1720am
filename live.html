@@ -18,7 +18,7 @@
   <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon/apple-touch-icon.png">
   <link rel="manifest" href="/images/favicon/site.webmanifest">
   <link rel="stylesheet" href="/css/style.css">
-  <link rel="stylesheet" href="/css/live-radio.css?v=1.3">
+  <link rel="stylesheet" href="/css/live-radio.css?v=1.4">
 </head>
 <body>
   <div class="container">
@@ -32,6 +32,15 @@
           Monitor the WTLEB 1720 AM continuous audio transmission.
           Select TUNE to connect to the live station. Transmission availability may vary.
         </p>
+        <nav class="live-relay-strip" aria-label="Alternate live video transmissions">
+          <span class="live-relay-strip-label">VIDEO RELAYS</span>
+          <a class="live-relay-chip live-relay-youtube" href="https://youtube.com/@wtleb1720am/live" target="_blank" rel="noopener noreferrer" aria-label="Watch WTLEB live on YouTube (new tab)">
+            <svg viewBox="0 0 24 24" width="19" height="19" aria-hidden="true" fill="currentColor"><path d="M23 7.2a2.9 2.9 0 0 0-2-2C19.2 4.7 12 4.7 12 4.7s-7.2 0-9 .5a2.9 2.9 0 0 0-2 2A30 30 0 0 0 .5 12a30 30 0 0 0 .5 4.8 2.9 2.9 0 0 0 2 2c1.8.5 9 .5 9 .5s7.2 0 9-.5a2.9 2.9 0 0 0 2-2 30 30 0 0 0 .5-4.8 30 30 0 0 0-.5-4.8ZM9.7 15.7V8.3L16 12l-6.3 3.7Z"/></svg><span>YOUTUBE</span>
+          </a>
+          <a class="live-relay-chip live-relay-rumble" href="https://rumble.com/c/wtleb1720am/live" target="_blank" rel="noopener noreferrer" aria-label="Watch WTLEB live on Rumble (new tab)">
+            <svg viewBox="0 0 24 24" width="19" height="19" aria-hidden="true" fill="currentColor"><path d="M5 2.5c-1.3-.8-3 .2-3 1.8v15.4c0 1.6 1.7 2.6 3 1.8l15-7.7c1.5-.8 1.5-2.8 0-3.6L5 2.5Zm2 5.3 8.3 4.2L7 16.2V7.8Z"/></svg><span>RUMBLE</span>
+          </a>
+        </nav>
         <p class="station-section-code">PRIMARY RECEIVER / LIVE AUDIO</p>
         <section class="live-radio" id="live-radio" data-receiver="inline" data-audio-state="standby" aria-label="WTLEB 1720 AM live radio receiver">
           <div class="radio-topline">
@@ -71,44 +80,27 @@
             </div>
           </div>
           <div class="radio-controls">
-            <button class="radio-button radio-tune-button" type="button" id="radio-tune">▶ TUNE INTO TRANSMISSION</button>
-            <button class="radio-button radio-disconnect-button" type="button" id="radio-disconnect" disabled>DISCONNECT</button>
+            <button class="radio-button radio-tune-button" type="button" id="radio-tune"><svg class="radio-control-icon" viewBox="0 0 24 24" width="14" height="14" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg><span class="radio-tune-label">TUNE IN</span></button>
+            <button class="radio-button radio-disconnect-button" type="button" id="radio-disconnect" disabled><svg class="radio-control-icon" viewBox="0 0 24 24" width="13" height="13" fill="currentColor" aria-hidden="true"><rect x="5" y="5" width="14" height="14" rx="1"/></svg><span>STOP</span></button>
           </div>
           <div class="radio-bottomline">
             <div class="radio-volume-group">
               <label for="radio-volume">VOLUME</label>
-              <input class="radio-volume" type="range" id="radio-volume" min="0" max="100" value="75" step="1" aria-label="Receiver volume">
+              <input class="radio-volume" type="range" id="radio-volume" min="0" max="100" value="50" step="1" aria-label="Receiver volume">
               <button class="radio-mute-button" type="button" id="radio-mute" aria-pressed="false" aria-label="Mute audio" title="Mute audio">
                 <svg class="radio-mute-icon" viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
                   <path d="M11 5 6 9H3v6h3l5 4V5Z"></path>
                   <path class="radio-icon-waves" d="M15.5 8.5a5 5 0 0 1 0 7 M18.5 5.5a9 9 0 0 1 0 13"></path>
                   <path class="radio-icon-muted" d="m16 9 5 6 m0-6-5 6"></path>
                 </svg>
-                <span class="radio-mute-label">MUTE</span>
+                <span class="radio-visually-hidden radio-mute-label">MUTE</span>
               </button>
             </div>
             
-            <button class="radio-popout-button" type="button" id="radio-popout" title="Open the receiver in a separate window">POP OUT RECEIVER ↗</button>
+            <button class="radio-popout-button" type="button" id="radio-popout" title="Pop out receiver" aria-label="Pop out receiver"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="9" width="12" height="11" rx="1"/><path d="M12 4h8v8M20 4l-9 9"/></svg></button>
           </div>
           <p class="radio-feedback" id="radio-feedback" role="status" aria-live="polite">SELECT TUNE TO LISTEN TO THE LIVE TRANSMISSION</p>
           <audio class="radio-audio-element" id="radio-audio" preload="none" crossorigin="anonymous" playsinline aria-label="WTLEB live audio stream"></audio>
-        </section>
-
-        <section class="live-relays" aria-labelledby="live-relays-heading">
-          <p class="station-section-code">EXTERNAL RELAYS / VIDEO</p>
-          <h2 class="station-section-heading" id="live-relays-heading">ALTERNATE LIVE TRANSMISSIONS</h2>
-          <div class="live-relay-grid">
-            <a class="live-relay-tile" href="https://youtube.com/@wtleb1720am/live" target="_blank" rel="noopener noreferrer" aria-label="Open WTLEB's YouTube live video relay in a new tab">
-              <span class="live-relay-type">VIDEO RELAY / 01</span>
-              <span class="live-relay-name">YOUTUBE</span>
-              <span class="live-relay-action">OPEN LIVE RELAY ↗</span>
-            </a>
-            <a class="live-relay-tile" href="https://rumble.com/c/wtleb1720am/live" target="_blank" rel="noopener noreferrer" aria-label="Open WTLEB's Rumble live video relay in a new tab">
-              <span class="live-relay-type">VIDEO RELAY / 02</span>
-              <span class="live-relay-name">RUMBLE</span>
-              <span class="live-relay-action">OPEN LIVE RELAY ↗</span>
-            </a>
-          </div>
         </section>
 
         <p class="station-note">
@@ -125,6 +117,6 @@
   <script src="/js/footer.js"></script>
   <script src="/js/vendor/icecast-metadata-player/icecast-metadata-player-1.17.13.main.min.js"></script>
   <script src="/js/vendor/web-audio-peak-meter/web-audio-peak-meter-3.1.0.min.js?v=1.7.2"></script>
-  <script src="/js/live-radio.js?v=1.7.2"></script>
+  <script src="/js/live-radio.js?v=1.8"></script>
 </body>
 </html>
