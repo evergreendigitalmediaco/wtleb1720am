@@ -506,3 +506,6 @@
     text-shadow: none;
   }
 }
+
+/* Reusable PNG platform marks for live video relay links (v1.9). */
+.live-relay-logo { width: 24px; height: 24px; display: block; object-fit: contain; flex: none; }
