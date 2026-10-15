@@ -87,6 +87,11 @@
             gradient: ["#ce7041 2%", "#e4a24b 18%", "#b9863c 50%", "#846335 100%"],
             maskTransition: "0.12s"
           });
+          // The meter library renders its own per-channel peak labels,
+          // including a static -∞ hold label. Our separate dBFS readout
+          // already provides the number, so give the bars all available width.
+          meterInstance.peakLabels.forEach(label => { label.style.display = "none"; });
+          meterInstance.bars.forEach(bar => { bar.style.width = "100%"; });
         } catch (error) {
           // Direct playback stays connected even if the visualizer fails.
           meterTap.disconnect();
