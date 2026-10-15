@@ -93,11 +93,21 @@
     return node;
   }
 
-  function sourceLink(url, label) {
-    const link = element("a", "archive-source-link", label + " ↗");
+  function sourceLink(url, label, platform) {
+    const link = element("a", "archive-source-link");
     link.href = url;
     link.target = "_blank";
     link.rel = "noopener noreferrer";
+    link.setAttribute("aria-label", "Open " + label + " source in a new tab");
+
+    const icon = element("img", "archive-source-icon");
+    icon.src = "/images/platforms/" + platform + ".svg";
+    icon.alt = "";
+    icon.width = 16;
+    icon.height = 16;
+    icon.setAttribute("aria-hidden", "true");
+    link.appendChild(icon);
+    link.appendChild(element("span", "", label));
     return link;
   }
 
@@ -141,8 +151,8 @@
 
     const relays = element("div", "archive-source-links");
     relays.appendChild(element("span", "archive-relay-caption", "AVAILABLE SOURCES:"));
-    if (youtubeUrl) relays.appendChild(sourceLink(youtubeUrl, "YOUTUBE"));
-    if (podcastUrl) relays.appendChild(sourceLink(podcastUrl, "PODCAST"));
+    if (youtubeUrl) relays.appendChild(sourceLink(youtubeUrl, "YOUTUBE", "youtube"));
+    if (podcastUrl) relays.appendChild(sourceLink(podcastUrl, "SPOTIFY", "spotify"));
     if (!youtubeUrl && !podcastUrl) {
       relays.appendChild(element("span", "archive-no-source", "SOURCE LINK UNAVAILABLE"));
     }
