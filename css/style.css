@@ -1036,3 +1036,34 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
   height: 16px;
   object-fit: contain;
 }
+
+/* Match Live Radio's minimalist platform-link treatment in the archive. */
+.archive-source-links { align-items: center; gap: 7px 12px; }
+.archive-source-link,
+.archive-source-link:link,
+.archive-source-link:visited {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 7px;
+  border: 0;
+  border-radius: 3px;
+  background: transparent;
+  color: #cfb78b;
+  text-decoration: none;
+  font-size: 11px;
+  font-weight: bold;
+  letter-spacing: .8px;
+  line-height: 1.45;
+  transition: color .15s ease, background-color .15s ease;
+}
+.archive-source-link:hover,
+.archive-source-link:focus-visible {
+  background: #241e15;
+  color: #f0c873;
+  text-decoration: none;
+}
+.archive-source-link:focus-visible {
+  outline: 1px solid #dba85e;
+  outline-offset: 2px;
+}
