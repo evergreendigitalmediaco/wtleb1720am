@@ -457,6 +457,7 @@
 
   function resetMetadata(message) {
     title.textContent = "AWAITING STATION DATA";
+    title.title = "";
     context.hidden = true;
     progress.hidden = true;
     progress.textContent = "";
@@ -478,6 +479,7 @@
     if (!display) return;
 
     title.textContent = display;
+    title.title = display;
     const eventId = eventIdFromStreamUrl(metadata.StreamUrl);
     if (eventId) root.dataset.eventId = eventId;
     else root.removeAttribute("data-event-id");
