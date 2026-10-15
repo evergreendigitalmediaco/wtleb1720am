@@ -1012,7 +1012,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
   align-items: center;
   gap: 7px;
   white-space: nowrap;
-  font-size: 11px;
+  font-size: 12px;
   letter-spacing: .2px;
 }
 .link-button-broadcast img {
