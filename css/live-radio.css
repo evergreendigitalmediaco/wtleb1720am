@@ -509,3 +509,13 @@
 
 /* Reusable PNG platform marks for live video relay links (v1.9). */
 .live-relay-logo { width: 24px; height: 24px; display: block; object-fit: contain; flex: none; }
+
+/* Compact pop-out titles stay one line; full title remains in DOM tooltip. */
+.radio-popup-shell .radio-current-title {
+  display: block;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow-wrap: normal;
+}
