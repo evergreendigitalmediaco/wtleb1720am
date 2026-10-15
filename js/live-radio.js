@@ -1,4 +1,4 @@
-/* WTLEB 1720 AM — ICY-only listener telemetry and receiver (v1.6). */
+/* WTLEB 1720 AM — ICY-only listener telemetry and receiver (v1.7). */
 (() => {
   "use strict";
 
@@ -7,6 +7,8 @@
 
   const AUDIO_URL = "https://live.wtleb1720am.com/live.mp3";
   const audio = document.getElementById("radio-audio");
+  const meterHost = document.getElementById("radio-audio-meter");
+  const meterDB = document.getElementById("radio-audio-db");
   const tuneButton = document.getElementById("radio-tune");
   const disconnectButton = document.getElementById("radio-disconnect");
   const volume = document.getElementById("radio-volume");
@@ -36,6 +38,73 @@
   let icyProgress = null;
   let lastIcyAt = 0;
   let lastStoryTitle = "";
+  let meterContext = null;
+  let meterSource = null;
+  let meterInstance = null;
+  let meterTimer = null;
+  let meterUnavailable = false;
+
+  function startAudioMeter() {
+    if (meterUnavailable || !meterHost || !meterDB) return;
+    const Context = window.AudioContext || window.webkitAudioContext;
+    const Meter = window.webAudioPeakMeter && window.webAudioPeakMeter.WebAudioPeakMeter;
+    if (!Context || !Meter) {
+      meterUnavailable = true;
+      meterDB.textContent = "UNAVAILABLE";
+      return;
+    }
+    try {
+      if (!meterContext) meterContext = new Context();
+      // Fail open: do not attach the audio element unless AudioWorklet works.
+      if (!meterContext.audioWorklet) {
+        meterUnavailable = true;
+        meterDB.textContent = "UNAVAILABLE";
+        return;
+      }
+      if (!meterSource) {
+        meterSource = meterContext.createMediaElementSource(audio);
+        try {
+          meterInstance = new Meter(meterSource, meterHost, {
+            vertical: false,
+            borderSize: 0,
+            fontSize: 9,
+            dbRangeMin: -48,
+            dbRangeMax: 0,
+            dbTickSize: 12,
+            peakHoldDuration: 1200,
+            backgroundColor: "#14120f",
+            tickColor: "#9f8b6c",
+            labelColor: "#d9a560",
+            gradient: ["#ce7041 2%", "#e4a24b 18%", "#b9863c 50%", "#846335 100%"],
+            maskTransition: "0.12s"
+          });
+        } catch (error) {
+          // A Web Audio source cannot be detached from its HTML media element.
+          // Restore audible output if the optional renderer cannot initialize.
+          meterSource.connect(meterContext.destination);
+          throw error;
+        }
+      }
+      void meterContext.resume().catch(() => {
+        meterDB.textContent = "UNAVAILABLE";
+      });
+      if (!meterTimer) meterTimer = window.setInterval(() => {
+        if (manuallyStopped || playbackState !== "playing" || !meterInstance) {
+          meterDB.textContent = "— dBFS";
+          return;
+        }
+        const readings = meterInstance.getPeaks().currentDB;
+        const level = Math.max(...readings);
+        meterDB.textContent = Number.isFinite(level)
+          ? level.toFixed(1) + " dBFS" : "−∞ dBFS";
+      }, 200);
+    } catch (error) {
+      meterUnavailable = true;
+      meterDB.textContent = "UNAVAILABLE";
+      console.warn("WTLEB optional audio meter unavailable", error);
+    }
+  }
+
 
   function setPlaybackState(state, label) {
     if (state !== "playing") freezeIcyProgress();
@@ -63,6 +132,7 @@
   async function stopAudio() {
     if (stopPending) return;
     manuallyStopped = true;
+    if (meterDB) meterDB.textContent = "— dBFS";
     receiverGeneration++;
     stopPending = true;
     const previousPlayer = player;
@@ -95,6 +165,7 @@
       return;
     }
     manuallyStopped = false;
+    startAudioMeter();
     const generation = ++receiverGeneration;
     resetMetadata("PROGRAM METADATA / AWAITING AUDIO");
     setPlaybackState("connecting", "● CONNECTING");
