@@ -1,4 +1,4 @@
-/* WTLEB 1720 AM — ICY-only listener telemetry and receiver (v1.7.2 split-route analyzer test). */
+/* WTLEB 1720 AM — ICY-only listener telemetry and receiver (v1.8 compact receiver controls). */
 (() => {
   "use strict";
 
@@ -125,8 +125,8 @@
     status.textContent = label;
     tuneButton.disabled = state === "connecting" || state === "playing";
     disconnectButton.disabled = state === "standby";
-    tuneButton.textContent = (state === "error" || state === "buffering")
-      ? "↻ RECONNECT TRANSMISSION" : "▶ TUNE INTO TRANSMISSION";
+    const tuneLabel = tuneButton.querySelector(".radio-tune-label");
+    if (tuneLabel) tuneLabel.textContent = (state === "error" || state === "buffering") ? "RECONNECT" : "TUNE IN";
   }
 
   function showFeedback(message, isError = false) {
@@ -234,7 +234,7 @@
   }
 
   const muteLabel = muteButton.querySelector(".radio-mute-label");
-  let previousVolume = Number(volume.value) > 0 ? Number(volume.value) : 75;
+  let previousVolume = Number(volume.value) > 0 ? Number(volume.value) : 50;
 
   function updateVolumeControls() {
     const muted = audio.muted || Number(volume.value) === 0;
