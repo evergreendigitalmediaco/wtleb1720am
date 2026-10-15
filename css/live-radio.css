@@ -519,3 +519,13 @@
   white-space: nowrap;
   overflow-wrap: normal;
 }
+
+/* Keep main receiver program title compact, with full text on hover. */
+.live-radio .radio-current-title {
+  display: block;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow-wrap: normal;
+}
