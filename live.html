@@ -18,7 +18,7 @@
   <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon/apple-touch-icon.png">
   <link rel="manifest" href="/images/favicon/site.webmanifest">
   <link rel="stylesheet" href="/css/style.css">
-  <link rel="stylesheet" href="/css/live-radio.css?v=1.10">
+  <link rel="stylesheet" href="/css/live-radio.css?v=1.11">
 </head>
 <body>
   <div class="container">
@@ -79,13 +79,13 @@
               <p class="radio-metadata-status radio-visually-hidden" id="radio-metadata-status">STATION TELEMETRY / CONNECTING</p>
             </div>
           </div>
-          <div class="radio-controls">
+          <div class="radio-control-panel" aria-label="Receiver controls">
+            <div class="radio-controls">
             <button class="radio-button radio-tune-button" type="button" id="radio-tune"><svg class="radio-control-icon" viewBox="0 0 24 24" width="14" height="14" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg><span class="radio-tune-label">TUNE IN</span></button>
             <button class="radio-button radio-disconnect-button" type="button" id="radio-disconnect" disabled><svg class="radio-control-icon" viewBox="0 0 24 24" width="13" height="13" fill="currentColor" aria-hidden="true"><rect x="5" y="5" width="14" height="14" rx="1"/></svg><span>STOP</span></button>
           </div>
-          <div class="radio-bottomline">
             <div class="radio-volume-group">
-              <label for="radio-volume">VOLUME</label>
+              <label for="radio-volume">VOL</label>
               <input class="radio-volume" type="range" id="radio-volume" min="0" max="100" value="50" step="1" aria-label="Receiver volume">
               <button class="radio-mute-button" type="button" id="radio-mute" aria-pressed="false" aria-label="Mute audio" title="Mute audio">
                 <svg class="radio-mute-icon" viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
@@ -96,8 +96,8 @@
                 <span class="radio-visually-hidden radio-mute-label">MUTE</span>
               </button>
             </div>
-            
-            <button class="radio-popout-button" type="button" id="radio-popout" title="Pop out receiver" aria-label="Pop out receiver"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="9" width="12" height="11" rx="1"/><path d="M12 4h8v8M20 4l-9 9"/></svg></button>
+
+            <div class="radio-popout-slot"><button class="radio-popout-button" type="button" id="radio-popout" title="Pop out receiver" aria-label="Pop out receiver"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="9" width="12" height="11" rx="1"/><path d="M12 4h8v8M20 4l-9 9"/></svg></button></div>
           </div>
           <p class="radio-feedback" id="radio-feedback" role="status" aria-live="polite" hidden></p>
           <audio class="radio-audio-element" id="radio-audio" preload="none" crossorigin="anonymous" playsinline aria-label="WTLEB live audio stream"></audio>
