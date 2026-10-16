@@ -771,24 +771,40 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
       min-width: 0;
     }
 
-    .home-relay-links a {
+    /* Match the icon-and-label hover treatment of recovered broadcast links. */
+    .home-relay-links a,
+    .home-relay-links a:link,
+    .home-relay-links a:visited {
       display: flex;
       align-items: center;
-      justify-content: space-between;
-      gap: 8px;
-      color: #e0a106;
-      font-size: 12px;
-      letter-spacing: .5px;
+      justify-content: flex-start;
+      gap: 6px;
+      padding: 14px 7px;
+      border-radius: 3px;
+      color: #cfb78b;
+      background: transparent;
       text-decoration: none;
-      padding: 14px 1px;
+      font-size: 11px;
+      font-weight: bold;
+      letter-spacing: .8px;
+      line-height: 1.45;
+      transition: color .15s ease, background-color .15s ease;
     }
 
     .home-relay-links a:hover,
     .home-relay-links a:focus-visible {
-      color: #fff;
+      background: #241e15;
+      color: #f0c873;
+      text-decoration: none;
     }
 
-    .home-relay-links a span { color: #82735e; }
+    .home-relay-links a:focus-visible {
+      outline: 1px solid #dba85e;
+      outline-offset: 2px;
+    }
+
+    .home-relay-links .home-relay-label { color: inherit; }
+    .home-relay-links .archive-source-icon { flex: 0 0 16px; }
 
     .home-advisory {
       border-top: 1px solid #29251e;
