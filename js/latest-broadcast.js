@@ -5,9 +5,10 @@
   // on WTLEB's continuous livestream.
   const LATEST_URL = "https://api.evergreendigitalmedia.co/catalog/v1/tleb/stories/latest";
   const title = document.getElementById("latest-broadcast-title");
+  const description = document.getElementById("latest-broadcast-description");
   const metadata = document.getElementById("latest-broadcast-meta");
   const sourceLinks = document.getElementById("latest-broadcast-links");
-  if (!title || !metadata || !sourceLinks) return;
+  if (!title || !metadata || !sourceLinks || !description) return;
 
   function safeUrl(value) {
     if (typeof value !== "string") return null;
@@ -42,6 +43,18 @@
     return anchor;
   }
 
+  function teaser(value) {
+    if (typeof value !== "string") return "";
+    const firstParagraph = value.trim().split(/\r?\n\s*\r?\n/)[0]
+      .replace(/\s+/g, " ").trim();
+    if (!firstParagraph) return "";
+    const limit = 150;
+    if (firstParagraph.length <= limit) return firstParagraph;
+    const clipped = firstParagraph.slice(0, limit + 1);
+    const end = clipped.lastIndexOf(" ");
+    return (end > limit * 0.6 ? clipped.slice(0, end) : firstParagraph.slice(0, limit)).trimEnd() + "…";
+  }
+
   async function updateLatestBroadcast() {
     const controller = new AbortController();
     const timeout = setTimeout(() => controller.abort(), 12000);
@@ -68,6 +81,10 @@
         : "PUBLICATION DATE: UNVERIFIED";
 
       const sources = Array.isArray(story.sources) ? story.sources : [];
+      const youtube = sources.find(item => item && item.source_type === "youtube");
+      const summary = teaser(story.description) || teaser(youtube && youtube.description);
+      description.textContent = summary;
+      description.hidden = !summary;
       for (const [sourceType, label, platform] of [["youtube", "YOUTUBE", "youtube"], ["podcast_rss", "SPOTIFY", "spotify"]]) {
         const source = sources.find(item => item.source_type === sourceType && safeUrl(item.source_url));
         if (source) sourceLinks.appendChild(link(safeUrl(source.source_url), label, platform));
@@ -76,6 +93,8 @@
       console.warn("WTLEB latest broadcast retrieval failed:", error);
       title.textContent = "LATEST TRANSMISSION DETAILS TEMPORARILY UNAVAILABLE";
       metadata.textContent = "REMOTE CATALOG CONNECTION INTERRUPTED";
+      description.textContent = "";
+      description.hidden = true;
     } finally {
       clearTimeout(timeout);
     }
