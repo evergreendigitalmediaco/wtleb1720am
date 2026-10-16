@@ -187,7 +187,19 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
 
 /* Relay directory: avoid premature wrapping in introductions and relay descriptions. */
 .relay-page .page-intro,
-.relay-page .station-row-desc { max-width: none; }
+.relay-page .station-row-title-with-icon {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+}
+.station-platform-icon {
+  display: block;
+  width: 20px;
+  height: 20px;
+  flex: 0 0 20px;
+  object-fit: contain;
+}
+.station-row-desc { max-width: none; }
 .station-section {
   margin: 30px 0 0;
   padding-top: 23px;
