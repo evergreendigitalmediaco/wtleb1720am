@@ -608,7 +608,22 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
       overflow-wrap: anywhere;
     }
 
+    .home-broadcast > p {
+      max-width: none;
+    }
+
+    .home-now-icon {
+      display: block;
+      width: 15px;
+      height: 15px;
+      flex: none;
+      color: #b69b65;
+    }
+
     .home-now-label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
       color: #b69b65;
       font-size: 10px;
       font-weight: bold;
