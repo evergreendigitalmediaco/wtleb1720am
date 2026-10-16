@@ -653,3 +653,21 @@
   .radio-popup-shell .radio-control-panel { flex-wrap: wrap; }
   .radio-popup-shell .radio-control-panel .radio-volume-group { flex: 1 1 100%; }
 }
+
+
+/* Full live page only: make TUNE IN more prominent than STOP.
+   The pop-out receiver does not use the live-page body class. */
+.live-page .radio-control-panel .radio-controls .radio-tune-button {
+  min-width: 210px;
+}
+@media (max-width: 650px) {
+  .live-page .radio-control-panel .radio-controls .radio-tune-button {
+    min-width: 155px;
+  }
+}
+@media (max-width: 390px) {
+  .live-page .radio-control-panel .radio-controls .radio-tune-button {
+    min-width: 0;
+    flex: 1 1 auto;
+  }
+}
