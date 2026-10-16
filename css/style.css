@@ -181,6 +181,9 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
   max-width: 65ch;
   margin: 0 0 30px;
 }
+
+/* Live receiver introduction uses the full main content width. */
+.live-page .page-intro { max-width: none; }
 .station-section {
   margin: 30px 0 0;
   padding-top: 23px;
