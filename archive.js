@@ -111,6 +111,77 @@
     return link;
   }
 
+  // List responses omit source descriptions; detail responses include them.
+  // Keep requests limited to visible archive batches, with bounded concurrency.
+  function teaser(value) {
+    if (typeof value !== "string") return "";
+    const firstParagraph = value.trim().split(/\r?\n\s*\r?\n/)[0]
+      .replace(/\s+/g, " ").trim();
+    if (!firstParagraph) return "";
+    const limit = 150;
+    if (firstParagraph.length <= limit) return firstParagraph;
+    const clipped = firstParagraph.slice(0, limit + 1);
+    const end = clipped.lastIndexOf(" ");
+    return (end > limit * 0.6 ? clipped.slice(0, end) : firstParagraph.slice(0, limit)).trimEnd() + "…";
+  }
+
+  function storySelector(story) {
+    if (typeof story.content_id === "string" &&
+        /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(story.content_id)) {
+      return story.content_id;
+    }
+    return Number.isInteger(story.episode_number) && story.episode_number > 0
+      ? String(story.episode_number) : null;
+  }
+
+  async function fillDescription(story, paragraph) {
+    const canonical = teaser(story.description);
+    if (canonical) {
+      paragraph.textContent = canonical;
+      paragraph.hidden = false;
+      return;
+    }
+    const selector = storySelector(story);
+    if (!selector) return;
+
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), FETCH_TIMEOUT_MS);
+    try {
+      const response = await fetch(CATALOG_URL + "/" + encodeURIComponent(selector), {
+        method: "GET",
+        headers: { "Accept": "application/json" },
+        mode: "cors",
+        credentials: "omit",
+        signal: controller.signal
+      });
+      if (!response.ok) return;
+      const detail = await response.json();
+      const youtube = Array.isArray(detail.sources)
+        ? detail.sources.find(source => source && source.source_type === "youtube")
+        : null;
+      const summary = teaser(detail.description) || teaser(youtube && youtube.description);
+      if (summary) {
+        paragraph.textContent = summary;
+        paragraph.hidden = false;
+      }
+    } catch (error) {
+      console.warn("WTLEB archive description retrieval failed:", error);
+    } finally {
+      clearTimeout(timeout);
+    }
+  }
+
+  async function fillDescriptions(jobs) {
+    let next = 0;
+    const worker = async () => {
+      while (next < jobs.length) {
+        const job = jobs[next++];
+        await fillDescription(job.story, job.paragraph);
+      }
+    };
+    await Promise.all(Array.from({ length: Math.min(3, jobs.length) }, worker));
+  }
+
   function renderTransmission(story) {
     if (!story || typeof story.title !== "string" || !story.title.trim()) return;
 
@@ -143,6 +214,10 @@
     }
     entry.appendChild(heading);
 
+    const description = element("p", "archive-story-description");
+    description.hidden = true;
+    entry.appendChild(description);
+
     const meta = element("div", "archive-record-meta");
     meta.appendChild(element("span", "", "LOGGED: " + displayDate(story.published_date)));
     const duration = durationLabel(story);
@@ -158,6 +233,7 @@
     }
     entry.appendChild(relays);
     list.appendChild(entry);
+    return { story, paragraph: description };
   }
 
   async function retrieveRecords() {
@@ -196,7 +272,10 @@
 
       // The catalog publishes at most PAGE_SIZE records, newest first, and
       // supplies an opaque cursor if another page is available.
-      for (const story of page.stories) renderTransmission(story);
+      const descriptions = page.stories.map(renderTransmission).filter(Boolean);
+      // Render the records first, then fetch optional descriptions without
+      // blocking pagination or the rest of the archive UI.
+      void fillDescriptions(descriptions);
       retrievedCount += page.stories.length;
       nextCursor = page.next_cursor;
 
