@@ -599,6 +599,38 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
       margin: 0;
     }
 
+    /* Live playout metadata: compact, read-only station status display. */
+    .home-now-transmitting {
+      margin-top: 20px;
+      padding: 13px 15px;
+      border: 1px solid #383021;
+      background: #17140f;
+      overflow-wrap: anywhere;
+    }
+
+    .home-now-label {
+      color: #b69b65;
+      font-size: 10px;
+      font-weight: bold;
+      letter-spacing: 1px;
+      margin-bottom: 8px;
+    }
+
+    .home-now-title {
+      color: #e0a106;
+      font-size: 16px;
+      font-weight: bold;
+      line-height: 1.5;
+    }
+
+    .home-now-meta {
+      color: #82796b;
+      font-size: 10px;
+      letter-spacing: .65px;
+      line-height: 1.5;
+      margin-top: 6px;
+    }
+
     .home-panel-link {
       color: #e0a106;
       margin-top: 22px;
