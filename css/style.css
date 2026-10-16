@@ -965,6 +965,15 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
       text-underline-offset: 4px;
     }
 
+    .archive-story-description {
+      color: #aaa398;
+      font-size: 14px;
+      line-height: 1.7;
+      margin: 0 0 12px;
+    }
+
+    .archive-story-description[hidden] { display: none; }
+
     .archive-record-meta {
       display: flex;
       flex-wrap: wrap;
