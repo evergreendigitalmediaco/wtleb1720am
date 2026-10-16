@@ -599,6 +599,11 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
       margin: 0;
     }
 
+    /* Allow the relay description to use the available column width. */
+    .home-relays > p {
+      max-width: none;
+    }
+
     /* Live playout metadata: compact, read-only station status display. */
     .home-now-transmitting {
       margin-top: 20px;
