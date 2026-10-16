@@ -500,7 +500,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
       color: #d1cdc3;
       font-size: 16px;
       line-height: 1.7;
-      max-width: 60ch;
+      max-width: none;
       margin: 0 0 15px;
     }
 
@@ -508,7 +508,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
       color: #918b82;
       font-size: 14px;
       line-height: 1.7;
-      max-width: 64ch;
+      max-width: none;
       margin: 0;
     }
 
@@ -646,15 +646,9 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
       margin-top: 6px;
     }
 
-    .home-panel-link {
-      color: #e0a106;
-      margin-top: 22px;
-      text-decoration: underline;
-      text-underline-offset: 4px;
+    .home-live-link {
+      margin-top: 18px;
     }
-
-    .home-panel-link:hover,
-    .home-panel-link:focus-visible { color: #fff; }
 
     .home-panel-bottom {
       border-top: 1px solid #332c23;
