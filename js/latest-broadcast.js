@@ -19,13 +19,26 @@
     }
   }
 
-  function link(url, label) {
+  function link(url, label, platform) {
     const anchor = document.createElement("a");
-    anchor.className = "home-latest-link";
+    anchor.className = "archive-source-link";
     anchor.href = url;
     anchor.target = "_blank";
     anchor.rel = "noopener noreferrer";
-    anchor.textContent = label + " ↗";
+    anchor.setAttribute("aria-label", "Open " + label + " source in a new tab");
+
+    const icon = document.createElement("img");
+    icon.className = "archive-source-icon";
+    icon.src = "/images/platforms/" + platform + ".svg";
+    icon.alt = "";
+    icon.width = 16;
+    icon.height = 16;
+    icon.setAttribute("aria-hidden", "true");
+    anchor.appendChild(icon);
+
+    const text = document.createElement("span");
+    text.textContent = label;
+    anchor.appendChild(text);
     return anchor;
   }
 
@@ -55,9 +68,9 @@
         : "PUBLICATION DATE: UNVERIFIED";
 
       const sources = Array.isArray(story.sources) ? story.sources : [];
-      for (const [sourceType, label] of [["youtube", "YOUTUBE"], ["podcast_rss", "PODCAST"]]) {
+      for (const [sourceType, label, platform] of [["youtube", "YOUTUBE", "youtube"], ["podcast_rss", "SPOTIFY", "spotify"]]) {
         const source = sources.find(item => item.source_type === sourceType && safeUrl(item.source_url));
-        if (source) sourceLinks.appendChild(link(safeUrl(source.source_url), label));
+        if (source) sourceLinks.appendChild(link(safeUrl(source.source_url), label, platform));
       }
     } catch (error) {
       console.warn("WTLEB latest broadcast retrieval failed:", error);
