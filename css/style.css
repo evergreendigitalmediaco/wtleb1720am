@@ -692,6 +692,15 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
       margin: 0 0 8px;
     }
 
+    .home-latest-description {
+      color: #aaa398;
+      font-size: 14px;
+      line-height: 1.7;
+      margin: 0 0 12px;
+    }
+
+    .home-latest-description[hidden] { display: none; }
+
     .home-latest-meta {
       color: #938a7c;
       font-size: 11px;
